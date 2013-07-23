@@ -1,0 +1,35 @@
+/* Private message */
+.message-batch-action {
+  margin-left: 20px;
+}
+
+.message-item {
+  padding-bottom: 15px;
+  border-bottom: 1px solid #e5e5e5;
+  margin-bottom: 15px;
+}
+
+.message-item-read {
+  background: #D9EDF7;
+}
+
+.message-item .span9 {
+  margin-top: -5px;
+}
+
+.message-head {
+  line-height: 24px;
+}
+
+.message-head  input[type="checkbox"] {
+  margin: 0 4px 0 0;
+}
+
+
+/* Message detail */
+.message-send-text ul {
+  display: inline-block;
+  *display: inline;
+  vertical-align: top;
+  color: #B94A48;
+}
