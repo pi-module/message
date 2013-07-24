@@ -1,4 +1,5 @@
 (function($) {
+    var options;
     var app = {
         init: function() {
             this.cacheElements();
@@ -28,12 +29,20 @@
                 checked.each(function() {
                     ids.push($(this).attr('data-id'));
                 });
-                var p = app.$('input[name="p"]').val();
-                location.href = "/message/index/" + action + "/ids-" + ids + '/p-' + p;
+                var url = options.host + "index/" + action + "/ids-" + ids;
+                if (options.p) {
+                    location.href = url + '/p-' + options.p;
+                } else {
+                    location.href = url;
+                }
             } else {
                 app.$select.attr('value', '');
             }
         }
     };
-    app.init();
+
+    this.messageIndex = function(opts) {
+        options = opts || {};
+        app.init();
+    };
 })(jQuery);
