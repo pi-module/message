@@ -1,5 +1,5 @@
-Message Module 1.0 Release
-==========================
+Message Module 1.0.0 Release
+============================
 
 This is the first version of the Message module for Pi.
 User can send private messages to each other and receive system notification by this module.
