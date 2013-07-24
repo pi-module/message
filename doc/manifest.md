@@ -1,5 +1,5 @@
-Message Module 1.0 Release
-==========================
+Message Module
+==============
 Features and Requirements
 
 1. Feature description
