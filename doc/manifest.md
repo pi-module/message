@@ -3,7 +3,8 @@ Message Module
 Features and Requirements
 
 1. Feature description
-2. Information architecture
+2. Use case
+3. Information architecture
 
 Design
 
