@@ -11,4 +11,5 @@ Design
 1. System architecture
 2. Controller && Action design
 3. Api design
-4. Database design
+4. Main Program Logical Flowchart
+5. Database design
