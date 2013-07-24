@@ -1,0 +1,161 @@
+<?php
+    $this->css($this->assetModule('script/front.css'));
+    $this->jQuery();
+?>
+<ul class="nav nav-tabs">
+    <li><a href="<?php echo $this->url('', array('controller' => 'index', 'action' => 'index')); ?>" title="<?php _e('Private message'); ?>"><?php _e('Private message'); ?></a></li>
+    <li class="active"><a href="<?php echo $this->url('', array('controller' => 'notify', 'action' => 'index')); ?>" title="<?php _e('Notification'); ?>"><?php _e('Notification'); ?></a></li>
+    <li><a href="<?php echo $this->url('', array('controller' => 'index', 'action' => 'send')); ?>" title="<?php _e('Send message'); ?>"><?php _e('Send message'); ?></a></li>
+</ul>
+<div class="messages" id="message-js">
+    <?php if (!empty($notifications)) { ?>
+    <form class="form-inline" method="post" action="">
+        <input type="checkbox" class="message-js-batch" title="<?php _e('Checked all'); ?>">
+        <select class="message-batch-action">
+            <option value=""><?php _e('With selected:'); ?></option>
+            <option value="delete"><?php _e('Delete'); ?></option>
+            <option value="mark"><?php _e('Mark read'); ?></option>
+        </select>
+        <?php
+            if (isset($paginator)) {
+                echo '<input type="hidden" name="p" value="' . $paginator->getCurrentPageNumber() . '" />';
+            }
+        ?>
+    </form>
+    <?php foreach ($notifications as $notification) { ?>
+    <div class="row-fluid message-item<?php if($notification['is_new']) { echo 'message-item-read'; } ?>">
+        <div class="span1">
+            <?php echo $adminAvatar; ?>
+        </div>
+        <div class="span9">
+            <div class="message-head">
+                <input type="checkbox" class="message-js-check" data-id="<?php echo $notification['id']; ?>">
+                <strong class="message-title"><?php echo $adminName ?></strong>
+            </div>
+            <p class="message-body"><?php echo $this->escape($message['content']); ?></p>
+            <small class="message-action">
+                <a href="
+                <?php echo $this->url('', array('action' => 'detail', 'mid' => $notification['id'])); ?>">
+                    <?php _e('Detail'); ?>
+                </a>
+                <span class="pi-divider">|</span>
+                <a href="<?php echo $this->url('', array('action' => 'delete', 'ids' => $notification['id'])); ?>" class="message-js-delete">
+                    <?php _e('Delete'); ?>
+                </a>
+            </small>
+        </div>
+        <div class="span2">
+            <span class="muted"><?php echo date('Y/m/d H:i', $notification['time_send']); ?></span>
+        </div>
+    </div>
+    <?php } ?>
+    <?php } else {
+        _e('No notification for you!');
+    } ?>
+    <?php
+        if (isset($paginator)) {
+            echo $this->paginationControl($paginator, 'Sliding', 'paginator.phtml', array(
+                'class' => 'pagination-right'
+            ));
+        }
+    ?>
+</div>
+<script src="<?php echo $this->assetModule('script/notify-index.js'); ?>"></script>
+<script>
+/*(function($){
+    var page = {
+        el: $('#js-notification'),
+        $: function(selector) {
+            return this.el.find(selector);
+        },
+        init: function() {
+            _.bindAll(this);
+            this.$('input[name=mark_read]').click(this.markAction);
+            this.$('input[name=del_notifications]').click(this.deleteAction);
+            this.$('input[name=select_all]').click(this.selectAll);
+            this.$('input[name="check_notifications[]"]').click(this.cancelSelectAll);
+            this.$('.message-delete').click(this.ajaxDeleteAction);
+        },
+        markAction: function(e) {
+            var checked = this.$('input[name="check_notifications[]"]:checked');
+            var checks = '';
+            checked.each(function(i){
+                checks = checks + $(this).val() + ',';
+            });
+            if (checks != '') {
+                checks = checks.substr(0, checks.length - 1);
+            } else {
+                this.alertMessage("<?php _e('No notification is checked.'); ?>");
+                return;
+            }
+            $.post("<?php echo $this->url('', array('action' => 'mark')); ?>", {
+                check_notifications: checks
+            }).done(function(res) {
+                res = $.parseJSON(res);
+                if (!res.status) {
+                    this.alertMessage(res.message);
+                } else {
+                    var msg = this.$(".message-msg");
+                    alert = '<button data-dismiss="alert" class="close" type="button">×</button>';
+                    alert = '<div class="alert alert-success">' + alert + res.message + '</div>';
+                    msg.html(alert);
+                }
+            });
+        },
+        deleteAction: function(e) {
+            var checked = this.$('input[name="check_notifications[]"]:checked');
+            if (checked.length <= 0) {
+                this.alertMessage("<?php _e('No notification is checked.'); ?>");
+                return;
+            }
+            $("form:first").attr('action', "<?php echo $this->url('', array('action' => 'delete')); ?>").submit();
+        },
+        ajaxDeleteAction: function(e) {
+            var tr = $(e.target).closest('tr');
+            trId = tr.attr("id");
+            var notificationId = trId.substr(trId.lastIndexOf('-') + 1);
+            var trLen = this.$(".table tr").length;
+            $.post("<?php echo $this->url('', array('action' => 'delete')); ?>", {
+                mid: notificationId
+            }).done(function(res) {
+                res = $.parseJSON(res);
+                if (!res.status) {
+                    this.alertMessage(res.message);
+                } else {
+                    if (trLen - 2 == 0) {
+                        tr.next().remove();
+                        tr.remove();
+                    } else {
+                        tr.remove();
+                    }
+                }
+            });
+        },
+        alertMessage: function(message) {
+            var msg = this.$(".message-msg");
+            alert = '<button data-dismiss="alert" class="close" type="button">×</button>';
+            alert = '<div class="alert alert-error">' + alert + message + '</div>';
+            $("body,html").animate({
+                scrollTop: msg.offset().top
+            },0);
+            msg.html(alert);
+        },
+        selectAll: function(e) {
+            var $this = $(e.target);
+            var selectAll = $this.attr('checked');
+            if (selectAll) {
+                this.$('input[name="check_notifications[]"]').attr('checked', true);
+            } else {
+                this.$('input[name="check_notifications[]"]').attr('checked', false);
+            }
+        },
+        cancelSelectAll: function(e) {
+            var $this = $(e.target);
+            if (!$this.attr('checked') && this.$('input[name=select_all]').attr('checked')) {
+                this.$('input[name=select_all]').attr('checked', false);
+            }
+        }
+    }
+    page.init();
+})(jQuery)*/
+</script>
