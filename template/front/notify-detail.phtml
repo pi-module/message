@@ -34,6 +34,7 @@ if (!empty($notification)) { ?>
                 <strong class="message-title">
                     <?php echo $notification['username'] . ':'; ?>
                     <?php
+                        echo '<br />';
                         if (!empty($notification['tag'])) {
                             echo '[' . $notification['tag']. '] ';
                         }

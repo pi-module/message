@@ -34,7 +34,17 @@
                     <?php _e('Detail'); ?>
                 </a>
                 <span class="pi-divider">|</span>
-                <a href="<?php echo $this->url('', array('action' => 'delete', 'ids' => $notification['id'])); ?>" class="message-js-delete">
+                <a href="<?php
+                    if (isset($paginator)) {
+                        echo $this->url('', array(
+                            'action' => 'delete',
+                            'ids'    => $notification['id'],
+                            'p'      => $paginator->getCurrentPageNumber()
+                        ));
+                    } else {
+                        echo $this->url('', array('action' => 'delete', 'ids' => $notification['id']));
+                    }
+                ?>" class="message-js-delete">
                     <?php _e('Delete'); ?>
                 </a>
             </small>

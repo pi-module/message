@@ -12,7 +12,7 @@
  * @copyright       Copyright (c) Pi Engine http://www.xoopsengine.org
  * @license         http://www.xoopsengine.org/license New BSD License
  * @author          Xingyu Ji <xingyu@eefocus.com>
- * @since           1.0
+ * @since           1.0.0
  * @package         Module\Message
  * @subpackage      Controller\Front
  */
@@ -29,6 +29,8 @@ use Pi\Paginator\Paginator;
 use Pi;
 
 /**
+ * Private message controller
+ *
  * Feature list:
  * 1. List of messages
  * 2. Show details of a message
@@ -36,11 +38,15 @@ use Pi;
  * 4. Send a message
  * 5. Mark the messages as read
  * 6. Delete one or more messages
+ *
+ * @author Xingyu Ji <xingyu@eefocus.com>
  */
 class IndexController extends ActionController
 {
     /**
      * List private messages
+     *
+     * @return void
      */
     public function indexAction()
     {
@@ -84,15 +90,16 @@ class IndexController extends ActionController
                             ->limit($limit)
                             ->offset($offset);
             $rowset = $model->selectWith($select);
-            if (!$rowset && $page > 1) {
+            $messageList = $rowset->toArray();
+            //jump to last page
+            if (empty($messageList) && $page > 1) {
                 $this->redirect()->toRoute('', array(
                     'controller' => 'index',
                     'action'     => 'index',
-                    'p'          => $page - 1,
+                    'p'          => ceil($count / $limit),
                 ));
                 return;
             }
-            $messageList = $rowset->toArray();
 
             array_walk($messageList, function(&$v, $k) use($userId){
                 //format messages
@@ -118,16 +125,13 @@ class IndexController extends ActionController
             $paginator->setItemCountPerPage($limit);
             $paginator->setCurrentPageNumber($page);
             $paginator->setUrlOptions(array(
-                // Use router to build URL for each page
-                'pageParam'     => 'p',
-                'totalParam'    => 't',
+                'page_param'    => 'p',
                 'router'        => $this->getEvent()->getRouter(),
                 'route'         => $this->getEvent()->getRouteMatch()->getMatchedRouteName(),
                 'params'        => array(
                     'module'        => $this->getModule(),
                     'controller'    => 'index',
                     'action'        => 'index',
-                    //'role'          => $role,
                 ),
             ));
             $this->view()->assign('paginator', $paginator);
@@ -140,6 +144,8 @@ class IndexController extends ActionController
 
     /**
      * Send a private message
+     *
+     * @return void
      */
     public function sendAction()
     {
@@ -204,6 +210,8 @@ class IndexController extends ActionController
 
     /**
      * Message detail and reply message
+     *
+     * @return void
      */
     public function detailAction()
     {
@@ -297,6 +305,8 @@ class IndexController extends ActionController
 
     /**
      * Mark the message as read
+     *
+     * @return void
      */
     public function markAction()
     {
@@ -328,6 +338,8 @@ class IndexController extends ActionController
 
     /**
      * Delete messages
+     *
+     * @return void
      */
     public function deleteAction()
     {

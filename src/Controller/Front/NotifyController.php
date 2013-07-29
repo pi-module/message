@@ -12,7 +12,7 @@
  * @copyright       Copyright (c) Pi Engine http://www.xoopsengine.org
  * @license         http://www.xoopsengine.org/license New BSD License
  * @author          Xingyu Ji <xingyu@eefocus.com>
- * @since           1.0
+ * @since           1.0.0
  * @package         Module\Message
  * @subpackage      Controller\Front
  */
@@ -25,16 +25,22 @@ use Pi\Paginator\Paginator;
 use Pi;
 
 /**
+ * System notification controller
+ *
  * Feature list:
  * 1. List of notifications
  * 2. Show details of a notification
  * 3. Mark the notifications as read
  * 4. Delete one or more notifications
+ *
+ * @author Xingyu Ji <xingyu@eefocus.com>
  */
 class NotifyController extends ActionController
 {
     /**
      * List notifications
+     *
+     * @return void
      */
     public function indexAction()
     {
@@ -61,11 +67,12 @@ class NotifyController extends ActionController
                             ->offset($offset);
             $rowset = $model->selectWith($select);
             $notificationList = $rowset->toArray();
+            //jump to last page
             if (empty($notificationList) && $page > 1) {
                 $this->redirect()->toRoute('', array(
                     'controller' => 'notify',
                     'action'     => 'index',
-                    'p'          => $page - 1,
+                    'p'          => ceil($count / $limit),
                 ));
                 return;
             }
@@ -73,22 +80,19 @@ class NotifyController extends ActionController
             //get admin name TODO
             $adminName = Pi::user()->getUser(1)->identity;
             //get admin avatar
-            $admiinAvatar = Pi::user()->avatar(1)->get('small');
+            $adminAvatar = Pi::user()->avatar(1)->get('small');
 
             $paginator = Paginator::factory(intval($count));
             $paginator->setItemCountPerPage($limit);
             $paginator->setCurrentPageNumber($page);
             $paginator->setUrlOptions(array(
-                // Use router to build URL for each page
-                'pageParam'     => 'p',
-                'totalParam'    => 't',
+                'page_param'    => 'p',
                 'router'        => $this->getEvent()->getRouter(),
                 'route'         => $this->getEvent()->getRouteMatch()->getMatchedRouteName(),
                 'params'        => array(
                     'module'        => $this->getModule(),
                     'controller'    => 'notify',
                     'action'        => 'index',
-                    //'role'          => $role,
                 ),
             ));
             $this->view()->assign('paginator', $paginator);
@@ -97,13 +101,15 @@ class NotifyController extends ActionController
         }
         $this->view()->assign('notifications', $notificationList);
         $this->view()->assign('adminName', $adminName);
-        $this->view()->assign('adminAvatar', $admiinAvatar);
+        $this->view()->assign('adminAvatar', $adminAvatar);
 
         return;
     }
 
     /**
      * Notification detail
+     *
+     * @return void
      */
     public function detailAction()
     {
@@ -136,6 +142,8 @@ class NotifyController extends ActionController
 
     /**
      * Mark the notification as read
+     *
+     * @return void
      */
     public function markAction()
     {
@@ -169,6 +177,8 @@ class NotifyController extends ActionController
 
     /**
      * Delete notifications
+     *
+     * @return void
      */
     public function deleteAction()
     {

@@ -12,7 +12,7 @@
  * @copyright       Copyright (c) Pi Engine http://www.xoopsengine.org
  * @license         http://www.xoopsengine.org/license New BSD License
  * @author          Xingyu Ji <xingyu@eefocus.com>
- * @since           1.0
+ * @since           1.0.0
  * @package         Module\Message
  * @subpackage      Form
  */
@@ -25,11 +25,13 @@ use Zend\Validator\StringLength;
 
 /**
  * Filter of send message
+ *
+ * @author Xingyu Ji <xingyu@eefocus.com>
  */
 class SendFilter extends InputFilter
 {
     /**
-     * Initialize send filter
+     * Constructor
      *
      * @return void
      */

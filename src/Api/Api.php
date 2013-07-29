@@ -12,7 +12,7 @@
  * @copyright       Copyright (c) Pi Engine http://www.xoopsengine.org
  * @license         http://www.xoopsengine.org/license New BSD License
  * @author          Xingyu Ji <xingyu@eefocus.com>
- * @since           1.0
+ * @since           1.0.0
  * @package         Module\Message
  */
 
@@ -22,16 +22,14 @@ use Pi;
 use Pi\Application\AbstractApi;
 
 /**
- * Api list:
- * 1. Send a message
- * 2. Send a notification
- * 3. Get total count
- * 4. Get new message count to alert
+ * Message manipulation API
+ *
+ * @author Xingyu Ji <xingyu@eefocus.com>
  */
 class Api extends AbstractApi
 {
     /**
-     * The number of records each insertion
+     * The number of records each insertion in the loop
      *
      * @var int
      */
@@ -138,6 +136,7 @@ class Api extends AbstractApi
     /**
      * Get total account
      *
+     * @param int $uid
      * @return int|false
      */
     public function getAccount($uid)
@@ -168,6 +167,7 @@ class Api extends AbstractApi
     /**
      * Get new message count to alert
      *
+     * @param int $uid
      * @return int|false
      */
     public function getAlert($uid)

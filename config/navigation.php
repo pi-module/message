@@ -12,7 +12,7 @@
  * @copyright       Copyright (c) Pi Engine http://www.xoopsengine.org
  * @license         http://www.xoopsengine.org/license New BSD License
  * @author          Xingyu Ji <xingyu@eefocus.com>
- * @package         Message
+ * @package         Module\Message
  */
 
 return array(

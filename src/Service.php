@@ -12,7 +12,7 @@
  * @copyright       Copyright (c) Pi Engine http://www.xoopsengine.org
  * @license         http://www.xoopsengine.org/license New BSD License
  * @author          Xingyu Ji <xingyu@eefocus.com>
- * @since           1.0
+ * @since           1.0.0
  * @package         Module\Message
  * @subpackage      Controller
  */
@@ -22,20 +22,11 @@ use Pi;
 
 /**
  * Public function for message module
+ *
+ * @author Xingyu Ji <xingyu@eefocus.com>
  */
 class Service
 {
-    /**
-     * Format a message
-     *
-     * @param string $message
-     * @return string
-     */
-    public static function formatMessage($message)
-    {//TODO
-        return $message;
-    }
-
     /**
      * Message summary
      *

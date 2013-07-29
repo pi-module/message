@@ -12,7 +12,7 @@
  * @copyright       Copyright (c) Pi Engine http://www.xoopsengine.org
  * @license         http://www.xoopsengine.org/license New BSD License
  * @author          Xingyu Ji <xingyu@eefocus.com>
- * @since           1.0
+ * @since           1.0.0
  * @package         Module\Message
  * @subpackage      Form
  */
@@ -26,6 +26,8 @@ use Zend\Form\Element;
 
 /**
  * Form of reply message
+ *
+ * @author Xingyu Ji <xingyu@eefocus.com>
  */
 class ReplyForm extends BaseForm
 {
@@ -41,6 +43,7 @@ class ReplyForm extends BaseForm
      *
      * @param null|string|int $name Optional name for the element
      * @param string $markup Page type: text, html, markdown
+     * @return void
      */
     public function __construct($name = null, $markup = null)
     {
