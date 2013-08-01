@@ -26,7 +26,7 @@
     echo $this->form()->openTag($form);
     $this->FormElementErrors()->setMessageOpenFormat('<span class="help-inline">')->setMessageCloseString('</span>');
 ?>
-<legend><?php echo $this->escape($title); ?></legend>
+<legend><?php echo _escape($title); ?></legend>
 <?php
     $element = $form->get('username');
     echo sprintf('<div class="control-group%s"><label class="control-label">%s</label><div class="controls">%s%s</div></div>',
@@ -53,3 +53,41 @@
     echo sprintf('<div class="controls">%s</div>', $this->formSubmit($element));
     echo $this->form()->closeTag($form); 
 ?>
+<script>
+(function($) {
+    $("input[name='username']").keyup(function() {
+        var username = $(this).val();
+        $.post('<?php echo $this->url('', array('controller' => 'index', 'action' => 'checkUsername')); ?>', {
+            username: username
+        }).done(function(res) {
+            res = $.parseJSON(res);
+            var alert = $('.alert');
+            if (res.status) {
+                if (alert.length <= 0) {
+                    var ul = $('ul.nav');
+                    alertDom = '<button data-dismiss="alert" class="close" type="button">×</button>';
+                    alertDom = '<div class="alert alert-success">' + alertDom + '<?php _e('Username is correct.'); ?>' + '</div>';
+                    ul.after(alertDom);
+                } else {
+                    alert.removeClass('alert-error');
+                    alert.addClass('alert-success');
+                    alertDom = '<button data-dismiss="alert" class="close" type="button">×</button>';
+                    alertDom = alertDom + '<?php _e('Username is correct.'); ?>';
+                    alert.html(alertDom);
+                }
+            } else if (res.message) {
+                if (alert.length <= 0) {
+                    var ul = $('ul.nav');
+                    alertDom = '<button data-dismiss="alert" class="close" type="button">×</button>';
+                    alertDom = '<div class="alert alert-error">' + alertDom + res.message + '</div>';
+                    ul.after(alertDom);
+                }
+            } else {
+                if (alert.length > 0) {
+                    alert.remove();
+                }
+            }
+        });
+    });
+})(jQuery);
+</script>

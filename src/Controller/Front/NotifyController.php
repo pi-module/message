@@ -1,20 +1,10 @@
 <?php
 /**
- * Message module notify controller
+ * Pi Engine (http://pialog.org)
  *
- * You may not change or alter any portion of this comment or credits
- * of supporting developers from this source code or any supporting source code
- * which is considered copyrighted (c) material of the original comment or credit authors.
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
- *
- * @copyright       Copyright (c) Pi Engine http://www.xoopsengine.org
- * @license         http://www.xoopsengine.org/license New BSD License
- * @author          Xingyu Ji <xingyu@eefocus.com>
- * @since           1.0.0
- * @package         Module\Message
- * @subpackage      Controller\Front
+ * @link            http://code.pialog.org for the Pi Engine source repository
+ * @copyright       Copyright (c) Pi Engine http://pialog.org
+ * @license         http://pialog.org/license.txt New BSD License
  */
 
 namespace Module\Message\Controller\Front;
@@ -28,10 +18,11 @@ use Pi;
  * System notification controller
  *
  * Feature list:
- * 1. List of notifications
- * 2. Show details of a notification
- * 3. Mark the notifications as read
- * 4. Delete one or more notifications
+ *
+ *  - List of notifications
+ *  - Show details of a notification
+ *  - Mark the notifications as read
+ *  - Delete one or more notifications
  *
  * @author Xingyu Ji <xingyu@eefocus.com>
  */
@@ -44,7 +35,8 @@ class NotifyController extends ActionController
      */
     public function indexAction()
     {
-        $page = $this->params('p', 1);
+        $page = _get('p', 'int');
+        $page = $page ?: 1;
         $limit = Pi::config('list_number');
         $offset = (int) ($page - 1) * $limit;
 
@@ -113,7 +105,8 @@ class NotifyController extends ActionController
      */
     public function detailAction()
     {
-        $notificationId = $this->params('mid', 0);
+        $notificationId = _get('mid', 'int');
+        $notificationId = $notificationId ?: 0;
         //current user id
         $userId = Pi::user()->getUser()->id;
 
@@ -130,6 +123,8 @@ class NotifyController extends ActionController
         $detail['username'] = Pi::user()->getUser(1)->identity;;//TODO
         //get admin avatar
         $detail['avatar'] = Pi::user()->avatar(1)->get('small');
+        //markup content
+        $detail['content'] = Pi::service('markup')->render($detail['content'], 'text');
 
         if ($detail['is_new']) {
             //mark the notification as read
@@ -150,7 +145,8 @@ class NotifyController extends ActionController
         $notificationIds = _get('ids',
                                 'regexp',
                                 array('regexp' => '/^[0-9,]+$/'));
-        $page = $this->params('p', 1);
+        $page = _get('p', 'int');
+        $page = $page ?: 1;
         //current user id
         $userId = Pi::user()->getUser()->id;
         if (empty($notificationIds)) {
@@ -183,7 +179,8 @@ class NotifyController extends ActionController
     public function deleteAction()
     {
         $notificationIds = _get('ids', 'regexp', array('regexp' => '/^[0-9,]+$/'));
-        $page = $this->params('p', 1);
+        $page = _get('p', 'int');
+        $page = $page ?: 1;
 
         if (strpos($notificationIds, ',')) {
             $notificationIds = explode(',', $notificationIds);

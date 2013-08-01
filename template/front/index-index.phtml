@@ -33,7 +33,7 @@
                     <input type="checkbox" class="message-js-check" data-id="<?php echo $message['id']; ?>">
                     <strong class="message-title"><?php echo $message['username']; ?></strong>
                 </div>
-                <p class="message-body"><?php echo $this->escape($message['content']); ?></p>
+                <p class="message-body"><?php echo $message['content']; ?></p>
                 <small class="message-action">
                     <a href="<?php echo $this->url('', array('action' => 'detail', 'mid' => $message['id'])); ?>">
                         <?php _e('Detail'); ?>

@@ -27,7 +27,7 @@
                 <input type="checkbox" class="message-js-check" data-id="<?php echo $notification['id']; ?>">
                 <strong class="message-title"><?php echo $adminName ?></strong>
             </div>
-            <p class="message-body"><?php echo $this->escape($notification['subject']); ?></p>
+            <p class="message-body"><?php echo _escape($notification['subject']); ?></p>
             <small class="message-action">
                 <a href="
                 <?php echo $this->url('', array('action' => 'detail', 'mid' => $notification['id'])); ?>">

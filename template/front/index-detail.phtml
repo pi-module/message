@@ -31,7 +31,7 @@ if (!empty($message)) { ?>
             <div class="message-head">
                 <strong class="message-title"><?php echo $message['username'] . ':'; ?></strong>
             </div>
-            <pre class="message-body"><?php echo $this->escape($message['content']); ?></pre>
+            <p class="message-body"><?php echo $message['content']; ?></p>
             <small class="message-action">
                 <a href="<?php echo $this->url('', array('action' => 'delete', 'ids' => $message['id'], 'tid' => $message['uid_to'])); ?>"><?php _e('Delete'); ?></a>
             </small>

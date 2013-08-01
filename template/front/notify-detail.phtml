@@ -42,7 +42,7 @@ if (!empty($notification)) { ?>
                     ?>
                 </strong>
             </div>
-            <pre class="message-body"><?php echo $this->escape($notification['content']); ?></pre>
+            <p class="message-body"><?php echo $notification['content']; ?></p>
             <small class="message-action">
                 <a href="<?php echo $this->url('', array('action' => 'delete', 'ids' => $notification['id'])); ?>"><?php _e('Delete'); ?></a>
             </small>

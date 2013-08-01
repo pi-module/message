@@ -1,19 +1,10 @@
 <?php
 /**
- * Message module message api for global
+ * Pi Engine (http://pialog.org)
  *
- * You may not change or alter any portion of this comment or credits
- * of supporting developers from this source code or any supporting source code
- * which is considered copyrighted (c) material of the original comment or credit authors.
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
- *
- * @copyright       Copyright (c) Pi Engine http://www.xoopsengine.org
- * @license         http://www.xoopsengine.org/license New BSD License
- * @author          Xingyu Ji <xingyu@eefocus.com>
- * @since           1.0.0
- * @package         Module\Message
+ * @link            http://code.pialog.org for the Pi Engine source repository
+ * @copyright       Copyright (c) Pi Engine http://pialog.org
+ * @license         http://pialog.org/license.txt New BSD License
  */
 
 namespace Module\Message\Api;
@@ -23,6 +14,27 @@ use Pi\Application\AbstractApi;
 
 /**
  * Message manipulation API
+ *
+ * Usage:
+ *
+ * ```
+ *  // Send message to a user
+ *  Pi::user()->message(1)->send('message 2=>1', 2);
+ *  or
+ *  Pi::service('api')->message->send(1, 'message 2=>1', 2);
+ *  // Send notification to a user
+ *  Pi::user()->message(1)->notify('notification to 1', 'subject', 'announcement');
+ *  or
+ *  Pi::service('api')->message->notify(1, 'notification to 1', 'subject', 'announcement');
+ *  // Get message total count of current user
+ *  Pi::user()->message(1)->getCount();
+ *  or
+ *  Pi::service('api')->message->getCount(1);
+ *  // Get message alert (new) count of current user
+ *  Pi::user()->message(1)->getAlert();
+ *  or
+ *  Pi::service('api')->message->getAlert(1);
+ * ```
  *
  * @author Xingyu Ji <xingyu@eefocus.com>
  */
@@ -45,6 +57,9 @@ class Api extends AbstractApi
      */
     public function send($to, $message, $from)
     {
+        if ($to == $from) {
+            return false;
+        }
         $model  = Pi::model('private_message', $this->getModule());
         $privateMessage = array(
             'uid_from'   => $from,
@@ -134,12 +149,12 @@ class Api extends AbstractApi
     }
 
     /**
-     * Get total account
+     * Get total count
      *
      * @param int $uid
      * @return int|false
      */
-    public function getAccount($uid)
+    public function getCount($uid)
     {
         //get total private message count
         $privateModel  = Pi::model('private_message', $this->getModule());
