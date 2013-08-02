@@ -20,8 +20,8 @@ class Service
     /**
      * Message summary
      *
-     * @param string $message
-     * @param int $length
+     * @param  string $message
+     * @param  int    $length
      * @return string
      */
     public static function messageSummary($message, $length = 40)
@@ -29,9 +29,9 @@ class Service
         $encoding = Pi::service('i18n')->getCharset();
         $message = trim($message);
 
-        if($length && strlen($message) > $length) {
+        if ($length && strlen($message) > $length) {
             $wordscut = '';
-            if(strtolower($encoding) == 'utf-8') {
+            if (strtolower($encoding) == 'utf-8') {
                 $n = 0;
                 $tn = 0;
                 $noc = 0;
@@ -73,8 +73,8 @@ class Service
                 }
                 $wordscut = substr($message, 0, $n);
             } else {
-                for($i = 0; $i < $length - 1; $i++) {
-                    if(ord($message[$i]) > 127) {
+                for ($i = 0; $i < $length - 1; $i++) {
+                    if (ord($message[$i]) > 127) {
                         $wordscut .= $message[$i] . $message[$i + 1];
                         $i++;
                     } else {
@@ -84,6 +84,7 @@ class Service
             }
             $message = $wordscut . '...';
         }
+
         return trim($message);
     }
 }

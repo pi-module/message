@@ -11,7 +11,6 @@ namespace Module\Message\Form;
 
 use Pi;
 use Zend\InputFilter\InputFilter;
-use Zend\Validator\StringLength;
 
 /**
  * Filter of reply message
@@ -32,6 +31,6 @@ class ReplyFilter extends InputFilter
                     'name'  => 'StringTrim',
                 ),
             ),
-        ));   
+        ));
     }
 }

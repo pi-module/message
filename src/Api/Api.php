@@ -50,9 +50,9 @@ class Api extends AbstractApi
     /**
      * Send a message
      *
-     * @param int $to
-     * @param string $message
-     * @param int $from
+     * @param  int    $to
+     * @param  string $message
+     * @param  int    $from
      * @return bool
      */
     public function send($to, $message, $from)
@@ -78,16 +78,17 @@ class Api extends AbstractApi
             );
             Pi::service('audit')->log('message', $args);
         }
+
         return $result;
     }
 
     /**
      * Send a notification
      *
-     * @param int|array $to
-     * @param string $message
-     * @param string $subject
-     * @param string $tag
+     * @param  int|array $to
+     * @param  string    $message
+     * @param  string    $subject
+     * @param  string    $tag
      * @return int|false
      */
     public function notify($to, $message, $subject, $tag = '')
@@ -145,13 +146,14 @@ class Api extends AbstractApi
                 }
             }
         }
+
         return true;
     }
 
     /**
      * Get total count
      *
-     * @param int $uid
+     * @param  int       $uid
      * @return int|false
      */
     public function getCount($uid)
@@ -176,13 +178,14 @@ class Api extends AbstractApi
                               ->columns(array('count' => new \Zend\Db\Sql\Predicate\Expression('count(*)')))
                               ->where(array('uid' => $uid, 'delete_status' => 0));
         $notifyCount = $notifyModel->selectWith($select)->current()->count;
+
         return $privateCount + $notifyCount;
     }
 
     /**
      * Get new message count to alert
      *
-     * @param int $uid
+     * @param  int       $uid
      * @return int|false
      */
     public function getAlert($uid)
@@ -199,6 +202,7 @@ class Api extends AbstractApi
                               ->columns(array('count' => new \Zend\Db\Sql\Predicate\Expression('count(*)')))
                               ->where(array('uid' => $uid, 'delete_status' => 0, 'is_new' => 1));
         $notifyCount = $notifyModel->selectWith($select)->current()->count;
+
         return $privateCount + $notifyCount;
     }
 }

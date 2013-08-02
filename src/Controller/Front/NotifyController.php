@@ -66,6 +66,7 @@ class NotifyController extends ActionController
                     'action'     => 'index',
                     'p'          => ceil($count / $limit),
                 ));
+
                 return;
             }
 
@@ -132,6 +133,7 @@ class NotifyController extends ActionController
         }
 
         $this->view()->assign('notification', $detail);
+
         return;
     }
 
@@ -204,6 +206,7 @@ class NotifyController extends ActionController
             'action'     => 'index',
             'p'          => $page
         ));
+
         return;
     }
 }

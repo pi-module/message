@@ -6,7 +6,7 @@
  * @copyright       Copyright (c) Pi Engine http://pialog.org
  * @license         http://pialog.org/license.txt New BSD License
  */
- 
+
 namespace Module\Message\Form;
 
 use Pi;
@@ -31,8 +31,8 @@ class ReplyForm extends BaseForm
     /**
      * Constructor
      *
-     * @param null|string|int $name Optional name for the element
-     * @param string $markup Page type: text, html, markdown
+     * @param null|string|int $name   Optional name for the element
+     * @param string          $markup Page type: text, html, markdown
      */
     public function __construct($name = null, $markup = null)
     {

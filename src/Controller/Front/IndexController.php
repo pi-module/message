@@ -90,10 +90,11 @@ class IndexController extends ActionController
                     'action'     => 'index',
                     'p'          => ceil($count / $limit),
                 ));
+
                 return;
             }
 
-            array_walk($messageList, function(&$v, $k) use($userId){
+            array_walk($messageList, function(&$v, $k) use ($userId) {
                 //format messages
                 $v['content'] = Service::messageSummary($v['content']);
 
@@ -131,6 +132,7 @@ class IndexController extends ActionController
             $messageList = array();
         }
         $this->view()->assign('messages', $messageList);
+
         return;
     }
 
@@ -148,6 +150,7 @@ class IndexController extends ActionController
             $form->setInputFilter(new SendFilter);
             if (!$form->isValid()) {
                 $this->renderSendForm($form);
+
                 return;
             }
             $data   = $form->getData();
@@ -156,6 +159,7 @@ class IndexController extends ActionController
             if (!$toUserId) {
                 $this->view()->assign('errMessage', __('Username is invalid, please try again.'));
                 $this->renderSendForm($form);
+
                 return;
             }
 
@@ -165,10 +169,12 @@ class IndexController extends ActionController
             if (!$result) {
                 $this->view()->assign('errMessage', __('Send failed, please try again.'));
                 $this->renderSendForm($form);
+
                 return;
             }
 
             $this->redirect()->toRoute('', array('controller' => 'index', 'action' => 'index'));
+
             return;
         }
         $this->renderSendForm($form);
@@ -203,7 +209,7 @@ class IndexController extends ActionController
     /**
      * Initialize send form instance
      *
-     * @param string $name
+     * @param  string   $name
      * @return SendForm
      */
     protected function getSendForm($name)
@@ -217,7 +223,7 @@ class IndexController extends ActionController
     /**
      * Render send form
      *
-     * @param SendForm $form
+     * @param  SendForm $form
      * @return void
      */
     protected function renderSendForm($form)
@@ -250,6 +256,7 @@ class IndexController extends ActionController
             if (!$form->isValid()) {
                 $this->view()->assign('form', $form);
                 $this->showDetail($messageId);
+
                 return;
             }
             $data = $form->getData();
@@ -261,10 +268,12 @@ class IndexController extends ActionController
                 $this->view()->assign('errMessage', __('Send failed, please try again.'));
                 $this->view()->assign('form', $form);
                 $this->showDetail($messageId);
+
                 return;
             }
 
             $this->redirect()->toRoute('', array('controller' => 'index', 'action' => 'index'));
+
             return;
         } else {
             $detail = $this->showDetail($messageId);
@@ -277,7 +286,7 @@ class IndexController extends ActionController
     /**
      * Show details of a message
      *
-     * @param int $messageId
+     * @param  int   $messageId
      * @return array
      */
     protected function showDetail($messageId)
@@ -322,6 +331,7 @@ class IndexController extends ActionController
 
         $this->view()->assign('myAvatar', Pi::user()->avatar()->get('small'));
         $this->view()->assign('message', $detail);
+
         return $detail;
     }
 
@@ -412,6 +422,7 @@ class IndexController extends ActionController
             'action'     => 'index',
             'p'          => $page
         ));
+
         return;
     }
 }

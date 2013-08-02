@@ -31,8 +31,8 @@ class SendForm extends BaseForm
     /**
      * Constructor
      *
-     * @param null|string|int $name Optional name for the element
-     * @param string $markup Page type: text, html, markdown
+     * @param null|string|int $name   Optional name for the element
+     * @param string          $markup Page type: text, html, markdown
      */
     public function __construct($name = null, $markup = null)
     {
