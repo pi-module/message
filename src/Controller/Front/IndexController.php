@@ -106,20 +106,27 @@ class IndexController extends ActionController
                 $v['content'] = Pi::service('markup')->render($v['content']);
 
                 if ($userId == $v['uid_from']) {
-                    $v['is_new']   = 0;
-                    $v['username'] = __('Sent to')
-                                   . ' '
-                                   . Pi::user()->getUser($v['uid_to'])
+                    $v['is_new'] = 0;
+                    //get username url
+                    $username    = Pi::user()->getUser($v['uid_to'])
                                                ->identity;
+                    //TODO username link, 4 locations
+                    $usernameUrl = Pi::user()->getUrl('profile', $v['uid_to']);
+                    $v['username'] = __('To')
+                                   . ' '
+                                   . $usernameUrl;
                     //get avatar
                     $v['avatar'] = Pi::user()->avatar($v['uid_to'])
                                              ->get('small');
                 } else {
-                    $v['is_new']   = $v['is_new_to'];
-                    $v['username'] = __('Sent from')
+                    $v['is_new'] = $v['is_new_to'];
+                    //get username url
+                    $username    = Pi::user()->getUser($v['uid_from'])
+                                               ->identity;
+                    $usernameUrl = Pi::user()->getUrl('profile', $v['uid_to']);
+                    $v['username'] = __('From')
                                    . ' '
-                                   . Pi::user()->getUser($v['uid_from'])
-                                               ->identity;//TODO
+                                   . $usernameUrl;
                     //get avatar
                     $v['avatar'] = Pi::user()->avatar($v['uid_from'])
                                              ->get('small');
@@ -169,10 +176,16 @@ class IndexController extends ActionController
         $userId = Pi::user()->getUser()->id;
 
         $api = Pi::service('api')->message;
-        $messageAlert = $api->getAlert($userId, $api::TYPE_MESSAGE);
-        $notificationAlert = $api->getAlert($userId, $api::TYPE_NOTIFICATION);
-        $this->view()->assign('messageAlert', $messageAlert);
-        $this->view()->assign('notificationAlert', $notificationAlert);
+        $messageTitle = __('Private message(')
+                      . $api->getAlert($userId, $api::TYPE_MESSAGE)
+                      . ' '
+                      . __('unread)');
+        $notificationTitle = __('Notification(')
+                           . $api->getAlert($userId, $api::TYPE_NOTIFICATION)
+                           . ' '
+                           . __('unread)');
+        $this->view()->assign('messageTitle', $messageTitle);
+        $this->view()->assign('notificationTitle', $notificationTitle);
     }
 
     /**
@@ -245,20 +258,32 @@ class IndexController extends ActionController
             //current user id
             $selfUid = Pi::user()->getUser()->id;
             //check username
-            if ($uid && ($uid != $selfUid)) {
-                $avatar = Pi::user()->avatar($uid)->get('xsmall');
-
+            if (!$uid) {
                 return array(
-                    'status' => 1,
-                    'avatar' => $avatar
+                    'status'  => 0,
+                    'message' => __('User')
+                               . ' '
+                               . $username
+                               . ' '
+                               . __('not found')
+                );
+            } elseif ($uid == $selfUid) {
+                return array(
+                    'status'  => 0,
+                    'message' => __(
+                        __('Sorry, you can\'t send message to yourself')
+                    )
                 );
             } else {
-                return array('status' => 0);
+                return array(
+                    'status'   => 1,
+                    'username' => $username
+                );
             }
         } catch (Exception $e) {
             return array(
                 'status'    => 0,
-                'message'   => __('An error occurred, please try again.')
+                'message'   => __('An error occurred, please try again')
             );
         }
     }
@@ -380,23 +405,26 @@ class IndexController extends ActionController
             return;
         }
         $detail = $rowset->toArray();
+        //get avatar
+        $detail['avatar'] = Pi::user()->avatar($detail['uid_from'])
+                                      ->get('small');
 
         if ($userId == $detail['uid_from']) {
-            //get avatar
-            $detail['avatar']   = Pi::user()->avatar($detail['uid_to'])
-                                            ->get('small');
-            $detail['username'] = __('Message to')
+            //get username url
+            $username    = Pi::user()->getUser($detail['uid_to'])
+                                       ->identity;
+            $usernameUrl = Pi::user()->getUrl('profile', $detail['uid_to']);
+            $detail['username'] = __('To')
                                 . ' '
-                                . Pi::user()->getUser($detail['uid_to'])
-                                            ->identity;
+                                . $usernameUrl;
         } else {
-            //get avatar
-            $detail['avatar']   = Pi::user()->avatar($detail['uid_from'])
-                                            ->get('small');
-            $detail['username'] = __('Message from')
+            //get username url
+            $username    = Pi::user()->getUser($detail['uid_from'])
+                                       ->identity;
+            $usernameUrl = Pi::user()->getUrl('profile', $detail['uid_from']);
+            $detail['username'] = __('From')
                                 . ' '
-                                . Pi::user()->getUser($detail['uid_from'])
-                                            ->identity;
+                                . $usernameUrl;
         }
 
         //markup content

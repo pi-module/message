@@ -39,10 +39,16 @@ class NotifyController extends ActionController
         $userId = Pi::user()->getUser()->id;
 
         $api = Pi::service('api')->message;
-        $messageAlert = $api->getAlert($userId, $api::TYPE_MESSAGE);
-        $notificationAlert = $api->getAlert($userId, $api::TYPE_NOTIFICATION);
-        $this->view()->assign('messageAlert', $messageAlert);
-        $this->view()->assign('notificationAlert', $notificationAlert);
+        $messageTitle = __('Private message(')
+                      . $api->getAlert($userId, $api::TYPE_MESSAGE)
+                      . ' '
+                      . __('unread)');
+        $notificationTitle = __('Notification(')
+                           . $api->getAlert($userId, $api::TYPE_NOTIFICATION)
+                           . ' '
+                           . __('unread)');
+        $this->view()->assign('messageTitle', $messageTitle);
+        $this->view()->assign('notificationTitle', $notificationTitle);
     }
 
     /**
