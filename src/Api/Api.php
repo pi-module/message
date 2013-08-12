@@ -11,6 +11,7 @@ namespace Module\Message\Api;
 
 use Pi;
 use Pi\Application\AbstractApi;
+use Zend\Db\Sql\Predicate\Expression;
 
 /**
  * Message manipulation API
@@ -23,17 +24,25 @@ use Pi\Application\AbstractApi;
  *  or
  *  Pi::service('api')->message->send(1, 'message 2=>1', 2);
  *  // Send notification to a user
- *  Pi::user()->message(1)->notify('notification to 1', 'subject', 'announcement');
+ *  Pi::user()->message(1)
+ *            ->notify('notification to 1', 'subject', 'announcement');
  *  or
- *  Pi::service('api')->message->notify(1, 'notification to 1', 'subject', 'announcement');
+ *  Pi::service('api')->message->notify(
+ *      1,
+ *      'notification to 1',
+ *      'subject',
+ *      'announcement'
+ *  );
  *  // Get message total count of current user
  *  Pi::user()->message(1)->getCount();
  *  or
- *  Pi::service('api')->message->getCount(1);
+ *  $api = Pi::service('api')->message;
+ *  $api->getCount(1, $api::TYPE_MESSAGE);
  *  // Get message alert (new) count of current user
  *  Pi::user()->message(1)->getAlert();
  *  or
- *  Pi::service('api')->message->getAlert(1);
+ *  $api = Pi::service('api')->message;
+ *  $api->getAlert(1, $api::TYPE_MESSAGE);
  * ```
  *
  * @author Xingyu Ji <xingyu@eefocus.com>
@@ -46,6 +55,20 @@ class Api extends AbstractApi
      * @var int
      */
     protected static $batchInsertLen = 1000;
+
+    /**
+     * Message type: private message
+     *
+     * @var int
+     */
+    const TYPE_MESSAGE = 0;
+
+    /**
+     * Message type: notification
+     *
+     * @var int
+     */
+    const TYPE_NOTIFICATION = 1;
 
     /**
      * Send a message
@@ -116,8 +139,13 @@ class Api extends AbstractApi
                 return false;
             }
             if (!empty($uids)) {
-                $tableName      = Pi::db()->prefix('notification', $this->getModule());
-                $columns        = array('uid', 'subject', 'content', 'tag', 'time_send');
+                $tableName      = Pi::db()->prefix('notification',
+                                                   $this->getModule());
+                $columns        = array(
+                    'uid', 'subject',
+                    'content', 'tag',
+                    'time_send'
+                );
                 $values         = array($subject, $message, $tag, time());
                 $columnString   = '';
                 $valueString    = ':uid, ';
@@ -129,12 +157,17 @@ class Api extends AbstractApi
                 }
                 $columnString = substr($columnString, 0, -2);
                 $valueString = substr($valueString, 0, -2);
-                $sql = 'INSERT INTO ' . $model->quoteIdentifier($tableName) . ' (' . $columnString . ') VALUES ';
+                $sql = 'INSERT INTO '
+                     . $model->quoteIdentifier($tableName)
+                     . ' (' . $columnString . ') VALUES ';
                 while (!empty($uids)) {
                     $mySql = $sql;
                     $loop = 0;
                     foreach ($uids as $key => $uid) {
-                        $myValueString = str_replace(':uid', $model->quoteValue($uid), $valueString);
+                        $myValueString = str_replace(
+                            ':uid',
+                            $model->quoteValue($uid), $valueString
+                        );
                         $mySql .= '(' . $myValueString . '), ';
                         unset($uids[$key]);
                         if (++$loop > static::$batchInsertLen) {
@@ -142,7 +175,10 @@ class Api extends AbstractApi
                         }
                     }
                     $mySql = substr($mySql, 0, -2);
-                    $model->getAdapter()->query($mySql, \Zend\Db\Adapter\Adapter::QUERY_MODE_EXECUTE);
+                    $model->getAdapter()->query(
+                        $mySql,
+                        \Zend\Db\Adapter\Adapter::QUERY_MODE_EXECUTE
+                    );
                 }
             }
         }
@@ -154,55 +190,83 @@ class Api extends AbstractApi
      * Get total count
      *
      * @param  int       $uid
+     * @param  int       $type
      * @return int|false
      */
-    public function getCount($uid)
+    public function getCount($uid, $type = self::TYPE_MESSAGE)
     {
-        //get total private message count
-        $privateModel  = Pi::model('private_message', $this->getModule());
-        $select = $privateModel->select()
-                               ->columns(array('count' => new \Zend\Db\Sql\Predicate\Expression('count(*)')))
-                               ->where(function($where) use ($uid) {
-                                   $fromWhere = clone $where;
-                                   $toWhere = clone $where;
-                                   $fromWhere->equalTo('uid_from', $uid);
-                                   $fromWhere->equalTo('delete_status_from', 0);
-                                   $toWhere->equalTo('uid_to', $uid);
-                                   $toWhere->equalTo('delete_status_to', 0);
-                                   $where->andPredicate($fromWhere)->orPredicate($toWhere);
-                               });
-        $privateCount = $privateModel->selectWith($select)->current()->count;
-        //get total notification count
-        $notifyModel  = Pi::model('notification', $this->getModule());
-        $select = $notifyModel->select()
-                              ->columns(array('count' => new \Zend\Db\Sql\Predicate\Expression('count(*)')))
-                              ->where(array('uid' => $uid, 'delete_status' => 0));
-        $notifyCount = $notifyModel->selectWith($select)->current()->count;
+        if ($type == self::TYPE_MESSAGE) {
+            //get total private message count
+            $privateModel  = Pi::model('private_message', $this->getModule());
+            $select = $privateModel->select()
+                                   ->columns(array(
+                                       'count' => new Expression('count(*)')
+                                   ))
+                                   ->where(function($where) use ($uid) {
+                                       $fromWhere = clone $where;
+                                       $toWhere = clone $where;
+                                       $fromWhere->equalTo('uid_from', $uid);
+                                       $fromWhere->equalTo('delete_status_from', 0);
+                                       $toWhere->equalTo('uid_to', $uid);
+                                       $toWhere->equalTo('delete_status_to', 0);
+                                       $where->andPredicate($fromWhere)
+                                             ->orPredicate($toWhere);
+                                   });
+            $count = $privateModel->selectWith($select)->current()->count;
+        } else {
+            //get total notification count
+            $notifyModel  = Pi::model('notification', $this->getModule());
+            $select = $notifyModel->select()
+                                   ->columns(array(
+                                       'count' => new Expression('count(*)')
+                                   ))
+                                  ->where(array(
+                                      'uid' => $uid,
+                                      'delete_status' => 0
+                                  ));
+            $count = $notifyModel->selectWith($select)->current()->count;
+        }
 
-        return $privateCount + $notifyCount;
+        return $count;
     }
 
     /**
      * Get new message count to alert
      *
      * @param  int       $uid
+     * @param  int       $type
      * @return int|false
      */
-    public function getAlert($uid)
+    public function getAlert($uid, $type = self::TYPE_MESSAGE)
     {
-        //get new private message count
-        $privateModel  = Pi::model('private_message', $this->getModule());
-        $select = $privateModel->select()
-                               ->columns(array('count' => new \Zend\Db\Sql\Predicate\Expression('count(*)')))
-                               ->where(array('uid_to' => $uid, 'delete_status_to' => 0, 'is_new_to' => 1));
-        $privateCount = $privateModel->selectWith($select)->current()->count;
-        //get new notification count
-        $notifyModel  = Pi::model('notification', $this->getModule());
-        $select = $notifyModel->select()
-                              ->columns(array('count' => new \Zend\Db\Sql\Predicate\Expression('count(*)')))
-                              ->where(array('uid' => $uid, 'delete_status' => 0, 'is_new' => 1));
-        $notifyCount = $notifyModel->selectWith($select)->current()->count;
+        if ($type == self::TYPE_MESSAGE) {
+            //get new private message count
+            $privateModel  = Pi::model('private_message', $this->getModule());
+            $select = $privateModel->select()
+                                   ->columns(array(
+                                       'count' => new Expression('count(*)')
+                                   ))
+                                   ->where(array(
+                                       'uid_to' => $uid,
+                                       'delete_status_to' => 0,
+                                       'is_new_to' => 1
+                                   ));
+            $count = $privateModel->selectWith($select)->current()->count;
+        } else {
+            //get new notification count
+            $notifyModel  = Pi::model('notification', $this->getModule());
+            $select = $notifyModel->select()
+                                   ->columns(array(
+                                       'count' => new Expression('count(*)')
+                                   ))
+                                  ->where(array(
+                                      'uid' => $uid,
+                                      'delete_status' => 0,
+                                      'is_new' => 1
+                                  ));
+            $count = $notifyModel->selectWith($select)->current()->count;
+        }
 
-        return $privateCount + $notifyCount;
+        return $count;
     }
 }

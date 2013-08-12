@@ -29,6 +29,23 @@ use Pi;
 class NotifyController extends ActionController
 {
     /**
+     * Render new message count of tab navigation
+     *
+     * @return void
+     */
+    protected function renderNav()
+    {
+        //current user id
+        $userId = Pi::user()->getUser()->id;
+
+        $api = Pi::service('api')->message;
+        $messageAlert = $api->getAlert($userId, $api::TYPE_MESSAGE);
+        $notificationAlert = $api->getAlert($userId, $api::TYPE_NOTIFICATION);
+        $this->view()->assign('messageAlert', $messageAlert);
+        $this->view()->assign('notificationAlert', $notificationAlert);
+    }
+
+    /**
      * List notifications
      *
      * @return void
@@ -46,14 +63,21 @@ class NotifyController extends ActionController
         $model = $this->getModel('notification');
         //get notification list count
         $select = $model->select()
-                        ->columns(array('count' => new \Zend\Db\Sql\Predicate\Expression('count(*)')))
+                        ->columns(array(
+                            'count' => new \Zend\Db\Sql\Predicate\Expression(
+                                'count(*)'
+                            )
+                        ))
                         ->where(array('uid' => $userId, 'delete_status' => 0));
         $count = $model->selectWith($select)->current()->count;
 
         if ($count) {
             //get notification list
             $select = $model->select()
-                            ->where(array('uid' => $userId, 'delete_status' => 0))
+                            ->where(array(
+                                'uid' => $userId,
+                                'delete_status' => 0
+                            ))
                             ->order('time_send DESC')
                             ->limit($limit)
                             ->offset($offset);
@@ -70,6 +94,11 @@ class NotifyController extends ActionController
                 return;
             }
 
+            array_walk($notificationList, function (&$v, $k) {
+                //markup content
+                $v['content'] = Pi::service('markup')->render($v['content']);
+            });
+
             //get admin name TODO
             $adminName = Pi::user()->getUser(1)->identity;
             //get admin avatar
@@ -81,7 +110,9 @@ class NotifyController extends ActionController
             $paginator->setUrlOptions(array(
                 'page_param'    => 'p',
                 'router'        => $this->getEvent()->getRouter(),
-                'route'         => $this->getEvent()->getRouteMatch()->getMatchedRouteName(),
+                'route'         => $this->getEvent()
+                                        ->getRouteMatch()
+                                        ->getMatchedRouteName(),
                 'params'        => array(
                     'module'        => $this->getModule(),
                     'controller'    => 'notify',
@@ -89,6 +120,7 @@ class NotifyController extends ActionController
                 ),
             ));
             $this->view()->assign('paginator', $paginator);
+            $this->renderNav();
         } else {
             $notificationList = array();
         }
@@ -114,7 +146,10 @@ class NotifyController extends ActionController
         $model = $this->getModel('notification');
         //get notification
         $select = $model->select()
-                        ->where(array('id' => $notificationId, 'uid' => $userId));
+                        ->where(array(
+                            'id' => $notificationId,
+                            'uid' => $userId
+                        ));
         $rowset = $model->selectWith($select)->current();
         if (!$rowset) {
             return;
@@ -125,14 +160,16 @@ class NotifyController extends ActionController
         //get admin avatar
         $detail['avatar'] = Pi::user()->avatar(1)->get('small');
         //markup content
-        $detail['content'] = Pi::service('markup')->render($detail['content'], 'text');
+        $detail['content'] = Pi::service('markup')->render($detail['content']);
 
         if ($detail['is_new']) {
             //mark the notification as read
-            $model->update(array('is_new' => 0), array('id' => $notificationId));
+            $model->update(array('is_new' => 0),
+                           array('id' => $notificationId));
         }
 
         $this->view()->assign('notification', $detail);
+        $this->renderNav();
 
         return;
     }
@@ -158,7 +195,10 @@ class NotifyController extends ActionController
                 'p'          => $page
             ));
         }
-        $notificationIds = explode(',', $notificationIds);
+
+        if (strpos($notificationIds, ',')) {
+            $notificationIds = explode(',', $notificationIds);
+        }
 
         $model = $this->getModel('notification');
         $model->update(array('is_new' => 0), array(
@@ -180,7 +220,9 @@ class NotifyController extends ActionController
      */
     public function deleteAction()
     {
-        $notificationIds = _get('ids', 'regexp', array('regexp' => '/^[0-9,]+$/'));
+        $notificationIds = _get('ids',
+                                'regexp',
+                                array('regexp' => '/^[0-9,]+$/'));
         $page = _get('p', 'int');
         $page = $page ?: 1;
 
