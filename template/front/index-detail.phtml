@@ -4,11 +4,19 @@
     $this->bootstrap('js/bootstrap.min.js');
 ?>
 <ul class="nav nav-tabs">
-    <li class="active"><a href="<?php echo $this->url('', array('controller' => 'index', 'action' => 'index')); ?>" title="<?php _e('Private message'); ?>"><?php _e('Private message'); ?></a></li>
-    <li><a href="<?php echo $this->url('', array('controller' => 'notify', 'action' => 'index')); ?>" title="<?php _e('Notification'); ?>"><?php _e('Notification'); ?></a></li>
-    <li><a href="<?php echo $this->url('', array('controller' => 'index', 'action' => 'send')); ?>" title="<?php _e('Send message'); ?>"><?php _e('Send message'); ?></a></li>
+    <li class="active">
+        <a href="<?php echo $this->url('', array('controller' => 'index', 'action' => 'index')); ?>" title="<?php _e('Messages'); ?>"><?php _e('Messages'); ?></a>
+    </li>
+    <li>
+        <a href="<?php echo $this->url('', array('controller' => 'notify', 'action' => 'index')); ?>" title="<?php _e('Notification'); ?>"><?php _e('Notification'); ?></a>
+    </li>
+    <li>
+        <button type="button" class="btn message-nav-btn" onclick="location.href='<?php echo $this->url('', array('controller' => 'index', 'action' => 'send')); ?>'" title="<?php _e('New message'); ?>"><?php _e('New message'); ?></button>
+    </li>
 </ul>
-
+<?php
+    d(options.host + 'index/'+ action + '/ids-' + ids+'/p-' + options.p)
+?>
 <?php
     if (!empty($errMessage)) {
         $class = ' alert-error';
@@ -23,36 +31,44 @@
 <?php }
 if (!empty($message)) { ?>
 <div class="messages" id="message-js">
-    <div class="row-fluid message-item">
-        <div class="span1">
-            <?php echo $message['avatar']; ?>
+    <div class="media message-detail">
+        <div class="message-detail-head">
+            <h5 class="media-heading pull-left message-head">                
+                <span>From</span>
+                <a href="#"><?php echo $message['username'] . ':'; ?></a>
+            </h5>
+            <p class="message-time text-right">
+               <span class="muted"><?php echo date('Y/m/d H:i', $message['time_send']); ?></span>
+            </p>
         </div>
-        <div class="span9">
-            <div class="message-head">
-                <strong class="message-title"><?php echo $message['username'] . ':'; ?></strong>
-            </div>
-            <p class="message-body"><?php echo $message['content']; ?></p>
-            <small class="message-action">
-                <a href="<?php echo $this->url('', array('action' => 'delete', 'ids' => $message['id'], 'tid' => $message['uid_to'])); ?>"><?php _e('Delete'); ?></a>
-            </small>
-        </div>
-        <div class="span2">
-            <span class="muted"><?php echo date('Y/m/d H:i', $message['time_send']); ?></span>
-        </div>
-    </div>
-    <div class="row-fluid message-item">
-        <div class="span1">
-            <?php echo $myAvatar; ?>
-        </div>
-        <div class="span11">
-            <?php echo $this->form()->openTag($form); ?>
+        <div class="media message-detail-primary">
+            <a href="#" class="pull-left">
+                <?php echo $message['avatar']; ?>
+            </a>
+            <div class="media-body message-detail-con">
+                <p>
+                    <?php echo $message['content']; ?>
+                </p>
+                <div class="message-detail-hidden">
+                    <p class="message-hidden pull-right">
+                        <span>
+                            <a href="<?php echo $this->url('', array('action' => 'delete', 'ids' => $message['id'], 'tid' => $message['uid_to'])); ?>" class="message-js-delete" ><?php _e('Delete'); ?></a>
+                        </span>
+                    </p>
+                </div>
+            </div> 
+        </div>  
+    </div>        
+        <?php 
+            $form->setAttribute('class', 'message-form-posi');
+            echo $this->form()->openTag($form); ?>
             <?php 
                 $element = $form->get('content');
                 $element->setAttributes(array(
-                    'class' => 'span7',
+                    'class' => 'span12',
                     'rows' => '6'
                 ));
-                echo '<div class="message-send-text">' . $this->formElement($element);
+                echo '<div class="message-send-text message-detail-text">' . $this->formElement($element);
                 echo $this->formElementErrors($element);
                 echo '</div>'
             ?>
@@ -60,12 +76,37 @@ if (!empty($message)) { ?>
                 echo $this->formElement($form->get('uid_to'));
                 $element = $form->get('submit');
                 $element->setAttributes(array(
-                    'class' => 'btn btn-primary',
+                    'class' => 'btn btn-primary pull-right',
                 ));
                 echo $this->formSubmit($element); 
                 echo $this->form()->closeTag($form); 
             ?>
-        </div>
-    </div>
 </div>
 <?php } ?>
+
+<script>
+(function($) {
+    $('.message-send-text').append('<span></span>');
+    $('form').submit(function(){
+        var self = $('[name="content"]'),
+            val = self.val();
+        if(val == ''){
+           var $span = $('.message-send-text').find('span');
+           $span.addClass('pull-right message-help-block').html('You can’t send a empty message').css('color','#b94a48');
+           self.addClass('message-username');
+           return false;
+        }  
+    });
+
+    $('[name="content"]').focus(function(){
+        $(this).removeClass('message-username');
+        $('.message-send-text').find('span').empty();
+    })
+
+    $('.message-js-delete').click(function() {
+        if(!confirm('确定要删除')) {
+            return false;
+        }
+    });
+})(jQuery)
+</script>

@@ -1,11 +1,13 @@
 <?php
+    $this->bootstrap();
+    $this->css($this->assetModule('script/front.css'));
     $this->jQuery();
     $this->bootstrap('js/bootstrap.min.js');
 ?>
 <ul class="nav nav-tabs">
-    <li><a href="<?php echo $this->url('', array('controller' => 'index', 'action' => 'index')); ?>" title="<?php _e('Private message'); ?>"><?php _e('Private message'); ?></a></li>
+    <li><a href="<?php echo $this->url('', array('controller' => 'index', 'action' => 'index')); ?>" title="<?php _e('Messages'); ?>"><?php _e('Messages'); ?></a></li>
     <li><a href="<?php echo $this->url('', array('controller' => 'notify', 'action' => 'index')); ?>" title="<?php _e('Notification'); ?>"><?php _e('Notification'); ?></a></li>
-    <li class="active"><a href="<?php echo $this->url('', array('controller' => 'index', 'action' => 'send')); ?>" title="<?php _e('Send message'); ?>"><?php _e('Send message'); ?></a></li>
+    <li class="active"><a href="<?php echo $this->url('', array('controller' => 'index', 'action' => 'send')); ?>" title="<?php _e('New message'); ?>"><?php _e('New message'); ?></a></li>
 </ul>
 
 <?php
@@ -22,14 +24,13 @@
 <?php } ?>
 
 <?php
-    $form->setAttribute('class', 'form-horizontal');
+    $form->setAttribute('class', 'form-horizontal message-form-posi');
     echo $this->form()->openTag($form);
     $this->FormElementErrors()->setMessageOpenFormat('<span class="help-inline">')->setMessageCloseString('</span>');
 ?>
-<legend><?php echo _escape($title); ?></legend>
 <?php
     $element = $form->get('username');
-    echo sprintf('<div class="control-group%s"><label class="control-label">%s</label><div class="controls">%s%s</div></div>',
+    echo sprintf('<div class="control-group%s"><label class="control-label message-label-left">%s</label><div class="controls message-input-right message-input-posi">%s%s</div></div>',
     $element->getMessages() ? ' error' : '',
     $element->getOption('label'),
     $this->formElement($element),
@@ -41,7 +42,7 @@
             'class' => 'span7',
             'rows' => '6'
     ));
-    echo sprintf('<div class="control-group%s"><label class="control-label">%s</label><div class="controls">%s%s</div></div>',
+    echo sprintf('<div class="control-group%s"><label class="control-label text-left message-label-left">%s</label><div class="controls message-input-right message-send-text">%s%s</div></div>',
     $element->getMessages() ? ' error' : '',
     $element->getOption('label'),
     $this->formElement($element),
@@ -49,45 +50,63 @@
 ?>
 <?php
     $element = $form->get('submit');
-    $element->setAttribute('class', 'btn btn-primary');
+    $element->setAttribute('class', 'btn btn-primary message-btn-margin');
     echo sprintf('<div class="controls">%s</div>', $this->formSubmit($element));
-    echo $this->form()->closeTag($form); 
+    echo $this->form()->closeTag($form);    
 ?>
 <script>
 (function($) {
-    $("input[name='username']").keyup(function() {
-        var username = $(this).val();
-        $.post('<?php echo $this->url('', array('controller' => 'index', 'action' => 'checkUsername')); ?>', {
-            username: username
-        }).done(function(res) {
-            res = $.parseJSON(res);
-            var alert = $('.alert');
-            if (res.status) {
-                if (alert.length <= 0) {
-                    var ul = $('ul.nav');
-                    alertDom = '<button data-dismiss="alert" class="close" type="button">×</button>';
-                    alertDom = '<div class="alert alert-success">' + alertDom + '<?php _e('Username is correct.'); ?>' + '</div>';
-                    ul.after(alertDom);
-                } else {
-                    alert.removeClass('alert-error');
-                    alert.addClass('alert-success');
-                    alertDom = '<button data-dismiss="alert" class="close" type="button">×</button>';
-                    alertDom = alertDom + '<?php _e('Username is correct.'); ?>';
-                    alert.html(alertDom);
-                }
-            } else if (res.message) {
-                if (alert.length <= 0) {
-                    var ul = $('ul.nav');
-                    alertDom = '<button data-dismiss="alert" class="close" type="button">×</button>';
-                    alertDom = '<div class="alert alert-error">' + alertDom + res.message + '</div>';
-                    ul.after(alertDom);
-                }
-            } else {
-                if (alert.length > 0) {
-                    alert.remove();
-                }
-            }
+    var $userName = $('[name="username"]');
+    $userName.parent().append('<span></span>');
+    function showErro (tip){
+        $userName.parent().find('span').html(tip == null ? '' : tip).addClass('message-error');
+        $userName.addClass('message-username');
+    }  
+
+    $('.message-input-posi').append('<p class="label label-info message-user-suc"></p>');
+    $userName.attr('placeholder', 'Type the username ').blur(function(){
+        var self = $(this),
+            val = $.trim( self.val() ).toLowerCase(),
+            tip;
+            self.val(val);
+        $.get("<?php echo $this->url('',array('controller' =>'index','action' =>'checkUsername'));?>" ,{username:val}, function(data){
+            var invalid = ( $.parseJSON(data).status == 1 );
+            if( invalid ) {               
+                $('.message-input-posi p').html(val+'<a href="javascript:;">×</a>');
+                $userName.removeClass().parent().find('span').empty();                 
+            }else {
+                tip = 'User '+ val+' is not found';
+                $('.message-input-posi p').empty();
+                showErro (tip)
+            } 
         });
+    }); 
+
+    $userName.focus(function() {
+        $(this).removeClass().parent().find('span').empty(); 
+        $('.message-input-posi p').empty();
     });
-})(jQuery);
+
+    $('.message-input-posi').on('click', '.message-user-suc>a', function() {
+        $(this).parent().empty();
+        $userName.val('');
+    });
+
+    $('[name="content"]').attr('placeholder','Message content');
+    $('.message-send-text').append('<span></span>');
+    $('form').submit(function(){
+        var self = $('[name="content"]'),
+            val = self.val();
+        if(val == ''){
+           var $span = $('.message-send-text').find('span');
+           $span.addClass('pull-right message-help-block').html('You can’t send a empty message').css('color','#b94a48');
+           self.addClass('message-username');
+           return false;
+        }  
+    });
+    $('[name="content"]').focus(function(){
+        $(this).removeClass('message-username');
+        $('.message-send-text').find('span').empty();
+    })
+})(jQuery)
 </script>

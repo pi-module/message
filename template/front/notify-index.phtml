@@ -1,40 +1,35 @@
 <?php
+    $this->bootstrap();
     $this->css($this->assetModule('script/front.css'));
     $this->jQuery();
 ?>
+
 <ul class="nav nav-tabs">
-    <li><a href="<?php echo $this->url('', array('controller' => 'index', 'action' => 'index')); ?>" title="<?php _e('Private message'); ?>"><?php _e('Private message'); ?></a></li>
+    <li><a href="<?php echo $this->url('', array('controller' => 'index', 'action' => 'index')); ?>" title="<?php _e('Messages'); ?>"><?php _e('Messages'); ?></a></li>
     <li class="active"><a href="<?php echo $this->url('', array('controller' => 'notify', 'action' => 'index')); ?>" title="<?php _e('Notification'); ?>"><?php _e('Notification'); ?></a></li>
-    <li><a href="<?php echo $this->url('', array('controller' => 'index', 'action' => 'send')); ?>" title="<?php _e('Send message'); ?>"><?php _e('Send message'); ?></a></li>
+    <li><button type="button" class="btn message-nav-btn" onclick="location.href='<?php echo $this->url('', array('controller' => 'index', 'action' => 'send')); ?>'" title="<?php _e('New message'); ?>"><?php _e('New message'); ?></button></li>
 </ul>
+
 <div class="messages" id="message-js">
     <?php if (!empty($notifications)) { ?>
-    <form class="form-inline" method="post" action="">
-        <input type="checkbox" class="message-js-batch" title="<?php _e('Checked all'); ?>">
-        <select class="message-batch-action">
-            <option value=""><?php _e('With selected:'); ?></option>
-            <option value="delete"><?php _e('Delete'); ?></option>
-            <option value="mark"><?php _e('Mark read'); ?></option>
-        </select>
-    </form>
-    <?php foreach ($notifications as $notification) { ?>
-    <div class="row-fluid message-item<?php if($notification['is_new']) { echo ' message-item-read'; } ?>">
-        <div class="span1">
-            <?php echo $adminAvatar; ?>
+    <?php foreach ($notifications as $notification) { ?>   
+    <div class="media message-item<?php if($notification['is_new']) { echo ' message-item-read'; } ?>">
+        <div class='pull-left'>
+            <input type="checkbox" class="message-js-check" data-id="<?php echo $notification['id']; ?>">
         </div>
-        <div class="span9">
-            <div class="message-head">
-                <input type="checkbox" class="message-js-check" data-id="<?php echo $notification['id']; ?>">
-                <strong class="message-title"><?php echo $adminName ?></strong>
-            </div>
-            <p class="message-body"><?php echo _escape($notification['subject']); ?></p>
-            <small class="message-action">
-                <a href="
-                <?php echo $this->url('', array('action' => 'detail', 'mid' => $notification['id'])); ?>">
-                    <?php _e('Detail'); ?>
-                </a>
-                <span class="pi-divider">|</span>
-                <a href="<?php
+        <div class="pull-right text-right message-media-right">
+            <p class="message-time">
+                <span class="muted"><?php echo date('Y/m/d H:i', $notification['time_send']); ?></span>
+            </p>
+            <p class="message-hidden">
+                <span>
+                    <a href="<?php echo $this->url('', array('module' => 'message')); ?>notify/mark/ids-<?php echo $notification['id']; ?>">
+                    <?php _e('Mark as read'); ?>
+                    </a>
+                </span>
+                <span class="message-divider">|</span>
+                <span>
+                    <a href="<?php
                     if (isset($paginator)) {
                         echo $this->url('', array(
                             'action' => 'delete',
@@ -46,12 +41,21 @@
                     }
                 ?>" class="message-js-delete">
                     <?php _e('Delete'); ?>
+                    </a>
+                </span>
+            </p>
+        </div>
+        <div class="media-body message-content">
+            <h5 class="media-heading message-head">                
+                <a href="#"><?php echo _escape($notification['subject']); ?></a>
+                <span class="label label-info message-label-type">Type B</span>
+            </h5>
+            <p class="message-body">
+                <a href="<?php echo $this->url('', array('action' => 'detail', 'mid' => $notification['id'])); ?>">
+                    <?php echo $notification['content']; ?>
                 </a>
-            </small>
-        </div>
-        <div class="span2">
-            <span class="muted"><?php echo date('Y/m/d H:i', $notification['time_send']); ?></span>
-        </div>
+            </p>
+        </div>   
     </div>
     <?php } ?>
     <?php } else {
@@ -64,11 +68,27 @@
             ));
         }
     ?>
+    <form class="form-inline message-foot-form" action="">
+        <input type="checkbox" class="message-js-batch" title="<?php _e('Checked all'); ?>">
+        <select class="message-batch-action">
+            <option value=""><?php _e('With selected:'); ?></option>
+            <option value="delete"><?php _e('Delete'); ?></option>
+            <option value="mark"><?php _e('Mark read'); ?></option>
+        </select>
+    </form>
 </div>
 <script src="<?php echo $this->assetModule('script/notify-index.js'); ?>"></script>
 <script>
 messageIndex({
     p: '<?php echo isset($paginator) ? $paginator->getCurrentPageNumber() : ''; ?>',
     host: '<?php echo $this->url('', array('module' => 'message')); ?>'
+});
+
+$('.message-item-read').css('background','#eefbff');
+
+$('.message-js-delete').click(function() {
+    if(!confirm('确定要删除')) {
+        return false;
+    }
 });
 </script>

@@ -1,12 +1,13 @@
 <?php
+    $this->bootstrap();
     $this->css($this->assetModule('script/front.css'));
     $this->jQuery();
     $this->bootstrap('js/bootstrap.min.js');
 ?>
 <ul class="nav nav-tabs">
-    <li><a href="<?php echo $this->url('', array('controller' => 'index', 'action' => 'index')); ?>" title="<?php _e('Private message'); ?>"><?php _e('Private message'); ?></a></li>
+    <li><a href="<?php echo $this->url('', array('controller' => 'index', 'action' => 'index')); ?>" title="<?php _e('Messages'); ?>"><?php _e('Messages'); ?></a></li>
     <li class="active"><a href="<?php echo $this->url('', array('controller' => 'notify', 'action' => 'index')); ?>" title="<?php _e('Notification'); ?>"><?php _e('Notification'); ?></a></li>
-    <li><a href="<?php echo $this->url('', array('controller' => 'index', 'action' => 'send')); ?>" title="<?php _e('Send message'); ?>"><?php _e('Send message'); ?></a></li>
+    <li><button type="button" class="btn message-nav-btn" onclick="location.href='<?php echo $this->url('', array('controller' => 'index', 'action' => 'send')); ?>'" title="<?php _e('New message'); ?>"><?php _e('New message'); ?></button></li>
 </ul>
 
 <?php
@@ -21,35 +22,42 @@
 </div>
 
 <script>$(".alert").alert();</script>
+
 <?php }
 
 if (!empty($notification)) { ?>
 <div class="messages" id="message-js">
-    <div class="row-fluid message-item">
-        <div class="span1">
-            <?php echo $notification['avatar']; ?>
+    <div class="media message-detail">
+        <div class="message-detail-head">
+            <h5 class="media-heading pull-left message-head">                
+                <?php echo $notification['subject']?>
+                <span class="label label-info message-label-type">Type B</span>
+            </h5>
+            <p class="message-time text-right">
+                <span class="muted">
+                    <?php echo date('Y/m/d H:i', $notification['time_send']); ?>
+                </span>
+            </p>
         </div>
-        <div class="span9">
-            <div class="message-head">
-                <strong class="message-title">
-                    <?php echo $notification['username'] . ':'; ?>
-                    <?php
-                        echo '<br />';
-                        if (!empty($notification['tag'])) {
-                            echo '[' . $notification['tag']. '] ';
-                        }
-                        echo $notification['subject'];
-                    ?>
-                </strong>
-            </div>
-            <p class="message-body"><?php echo $notification['content']; ?></p>
-            <small class="message-action">
-                <a href="<?php echo $this->url('', array('action' => 'delete', 'ids' => $notification['id'])); ?>"><?php _e('Delete'); ?></a>
-            </small>
-        </div>
-        <div class="span2">
-            <span class="muted"><?php echo date('Y/m/d H:i', $notification['time_send']); ?></span>
-        </div>
+        <div class="media message-detail-primary">
+            <div class="media-body">
+                <p class="message-body"><?php echo $notification['content']; ?></p>
+                <div class="message-detail-hidden">
+                    <p class="message-hidden pull-right">
+                        <span>
+                            <a href="<?php echo $this->url('', array('action' => 'delete', 'ids' => $notification['id'])); ?>" class="message-js-delete"><?php _e('Delete'); ?></a>
+                        </span>
+                    </p>
+                </div>
+            </div> 
+        </div>  
     </div>
 </div>
 <?php } ?>
+<script>
+    $('.message-js-delete').click(function() {
+        if(!confirm('确定要删除')) {
+            return false;
+        }
+    });
+</script>
