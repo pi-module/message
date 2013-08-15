@@ -76,9 +76,7 @@
             <option value="mark"><?php _e('Mark read'); ?></option>
         </select>
     </form>
-    <?php
-        d($this->url('', array('module' => 'message')).'index/mark/ids-'.$message['id'])
-    ?>
+
     <script src="<?php echo $this->assetModule('script/index-index.js'); ?>"></script>
     <script>
     messageIndex({
@@ -87,6 +85,7 @@
     });
     </script>
     <script>
+    (function($){
         $('.message-item-read').css('background','#eefbff');
         $('.message-item-read .message-content p>a').css('color','#333')
 
@@ -94,6 +93,7 @@
             if(!confirm('确定要删除')) {
                 return false;
             }
-        });     
+        });
+    })(jQuery)     
     </script>
 </div>

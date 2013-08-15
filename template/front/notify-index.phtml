@@ -79,16 +79,18 @@
 </div>
 <script src="<?php echo $this->assetModule('script/notify-index.js'); ?>"></script>
 <script>
-messageIndex({
-    p: '<?php echo isset($paginator) ? $paginator->getCurrentPageNumber() : ''; ?>',
-    host: '<?php echo $this->url('', array('module' => 'message')); ?>'
-});
+    messageIndex({
+        p: '<?php echo isset($paginator) ? $paginator->getCurrentPageNumber() : ''; ?>',
+        host: '<?php echo $this->url('', array('module' => 'message')); ?>'
+    });
 
-$('.message-item-read').css('background','#eefbff');
+    (function($){
+        $('.message-item-read').css('background','#eefbff');
 
-$('.message-js-delete').click(function() {
-    if(!confirm('确定要删除')) {
-        return false;
-    }
-});
+        $('.message-js-delete').click(function() {
+            if(!confirm('确定要删除')) {
+                return false;
+            }
+        });
+    })(jQuery)   
 </script>
