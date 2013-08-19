@@ -5,7 +5,7 @@
 ?>
 <ul class="nav nav-tabs">
     <li class="active">
-        <a href="<?php echo $this->url('', array('controller' => 'index', 'action' => 'index')); ?>" title="<?php _e('Messages'); ?>"><?php _e('Messages'); ?></a>
+        <a href="<?php echo $this->url('', array('controller' => 'index', 'action' => 'index')); ?>" title="<?php _e('Private message'); ?>"><?php _e('Private message'); ?></a>
     </li>
     <li>
         <a href="<?php echo $this->url('', array('controller' => 'notify', 'action' => 'index')); ?>" title="<?php _e('Notification'); ?>"><?php _e('Notification'); ?></a>
@@ -34,7 +34,7 @@ if (!empty($message)) { ?>
     <div class="media message-detail">
         <div class="message-detail-head">
             <h5 class="media-heading pull-left message-head">                
-                <span>From</span>
+                <span><?php echo $uid == $message['uid_from']?'To':'From';?></span>
                 <a href="#"><?php echo $message['username'] . ':'; ?></a>
             </h5>
             <p class="message-time text-right">
@@ -65,7 +65,7 @@ if (!empty($message)) { ?>
             <?php 
                 $element = $form->get('content');
                 $element->setAttributes(array(
-                    'class' => 'span12',
+                    'class' => 'span12 message-textarea',
                     'rows' => '6'
                 ));
                 echo '<div class="message-send-text message-detail-text">' . $this->formElement($element);

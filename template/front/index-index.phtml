@@ -5,13 +5,15 @@
 ?>
 <ul class="nav nav-tabs">
     <li class="active">
-        <a href="<?php echo $this->url('', array('controller' => 'index', 'action' => 'index')); ?>" title="<?php _e('Messages'); ?>"><?php _e('Messages'); ?></a>
+        <a href="<?php echo $this->url('', array('controller' => 'index', 'action' => 'index')); ?>" title="<?php _e('Private message'); ?>"><?php _e('Private message'); ?></a>
     </li>
     <li>
         <a href="<?php echo $this->url('', array('controller' => 'notify', 'action' => 'index')); ?>" title="<?php _e('Notification'); ?>"><?php _e('Notification'); ?></a>
     </li>
     <li>
-        <button type="button" class="btn message-nav-btn" onclick="location.href='<?php echo $this->url('', array('controller' => 'index', 'action' => 'send')); ?>'" title="<?php _e('New message'); ?>"><?php _e('New message'); ?></button>
+        <button type="button" class="btn message-nav-btn" 
+        onclick="location.href='<?php echo $this->url('', array('controller' => 'index', 'action' => 'send')); ?>'" title="<?php _e('New message'); ?>"><?php _e('New message'); ?>
+        </button>
     </li>
 </ul>
 <div class="messages" id="message-js">
@@ -29,7 +31,17 @@
                 <span class="muted"><?php echo date('Y/m/d H:i', $message['time_send']); ?></span>
             </p>
             <p class="message-hidden">
-                <span><a href="<?php echo $this->url('', array('module' => 'message')); ?>index/mark/ids-<?php echo $message['id']; ?>">
+                <span><a href="<?php
+                if (isset($paginator)) {
+                    echo $this->url('', array(
+                        'action' => 'mark',
+                        'ids'    => $message['id'],
+                        'p'      => $paginator->getCurrentPageNumber()
+                    ));
+                } else {
+                    echo $this->url('', array('action' => 'mark', 'ids' => $message['id']));
+                }
+            ?>">
                     <?php _e('Mark as read'); ?></a></span>
                 <span class="message-divider">|</span>
                 <span><a href="<?php
@@ -48,7 +60,7 @@
         </div>
         <div class="media-body message-content">
             <h5 class="media-heading message-head">                
-                <span>From</span>
+                <span><?php echo $uid == $message['uid_from']?'To':'From';?></span>
                 <a href="#"><?php echo $message['username']; ?></a>
             </h5>
             <p>
@@ -59,7 +71,7 @@
     </div>
     <?php } ?>
     <?php } else {
-        _e('No notification for you!');
+        _e('<div class="alert alert-info message-js-alert">No message for you!</div>');
     } ?>
     <?php
         if (isset($paginator)) {
@@ -71,29 +83,56 @@
     <form class="form-inline message-foot-form" action="">
         <input type="checkbox" class="message-js-batch" title="<?php _e('Checked all'); ?>">
         <select class="message-batch-action">
-            <option value=""><?php _e('With selected:'); ?></option>
-            <option value="delete"><?php _e('Delete'); ?></option>
+            <option value=""><?php _e('Massive operation'); ?></option>
             <option value="mark"><?php _e('Mark read'); ?></option>
+            <option value="delete"><?php _e('Delete'); ?></option> 
         </select>
     </form>
+    <?php
+        d($this->url('', array('module' => 'message')).'index/mark/ids-'.$message['id'])
+    ?>
 
+    <script>
+        (function($) {
+            $('.message-item').bind("click", function (c) {
+                if (c.target.tagName === "A" || c.target.tagName === "INPUT"||c.target.tagName === "IMG") {
+                    return;
+                }
+                window.location= $(this).find(".message-content p a").attr("href")
+            });
+
+ // window.open("<?php echo $this->url('', array('action' => 'detail', 'mid' => $message['id'])); ?>");
+            $('.message-item-read').css('background','#eefbff');
+            $('.message-item').not('.message-item-read').find('p.message-hidden>span>a:firstChild').empty();
+            $('.message-item').not('.message-item-read').find('p.message-hidden>span.message-divider').empty();        
+            $('.message-item-read .message-content p>a').css('color','#333');
+            $('.message-js-alert').next('form').remove();
+
+            $('.message-js-delete').click(function() {
+                if(!confirm('确定要删除')) {
+                    return false;
+                }
+            });
+
+            $('.message-batch-action').change(function(event){
+                if($(this).val() == 'delete'){
+                    if(!confirm('Are you sure to delete the message selected ?')) {
+                        event.stopImmediatePropagation();
+                    }
+                }  
+            })
+            
+        })(jQuery) 
+
+           
+    </script>
     <script src="<?php echo $this->assetModule('script/index-index.js'); ?>"></script>
+    
     <script>
     messageIndex({
         p: '<?php echo isset($paginator) ? $paginator->getCurrentPageNumber() : ''; ?>',
         host: '<?php echo $this->url('', array('module' => 'message')); ?>'
     });
     </script>
-    <script>
-    (function($){
-        $('.message-item-read').css('background','#eefbff');
-        $('.message-item-read .message-content p>a').css('color','#333')
-
-        $('.message-js-delete').click(function() {
-            if(!confirm('确定要删除')) {
-                return false;
-            }
-        });
-    })(jQuery)     
-    </script>
+    
 </div>

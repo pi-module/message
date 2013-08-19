@@ -1,6 +1,14 @@
 /* Base */
+.pi-module-content {
+    min-height: 350px;
+}
+
 .messages {
     margin-top: -5px;
+}
+
+.breadcrumb {
+    display: none;
 }
 
 /* Message */
@@ -9,6 +17,11 @@
     padding-left: 12px\9;
     margin-top: 0;
     height: 46px;    
+    cursor: pointer;
+}
+
+.message-head span {
+    font-weight: normal;
 }
 
 .message-detail-primary:hover .message-hidden,
@@ -26,7 +39,7 @@
 }
 
 .message-time {
-    font: 13px Verdana, Geneva, sans-serif;
+    font-size: 13px;
     color: #999;
 }
 
@@ -164,6 +177,10 @@
     top: 200px;
     top: 177px\9;
     left: 300px;
+}
+
+.message-send-text .message-textarea {
+    resize: none;
 }
 
 .message-detail-text span {

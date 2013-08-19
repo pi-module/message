@@ -5,14 +5,14 @@
     $this->bootstrap('js/bootstrap.min.js');
 ?>
 <ul class="nav nav-tabs">
-    <li><a href="<?php echo $this->url('', array('controller' => 'index', 'action' => 'index')); ?>" title="<?php _e('Messages'); ?>"><?php _e('Messages'); ?></a></li>
+    <li><a href="<?php echo $this->url('', array('controller' => 'index', 'action' => 'index')); ?>" title="<?php _e('Private message'); ?>"><?php _e('Private message'); ?></a></li>
     <li><a href="<?php echo $this->url('', array('controller' => 'notify', 'action' => 'index')); ?>" title="<?php _e('Notification'); ?>"><?php _e('Notification'); ?></a></li>
     <li class="active"><a href="<?php echo $this->url('', array('controller' => 'index', 'action' => 'send')); ?>" title="<?php _e('New message'); ?>"><?php _e('New message'); ?></a></li>
 </ul>
 
 <?php
     if (!empty($errMessage)) {
-        $class = ' alert-error';
+        $class = ' alert-error message-js-error';
 ?>
 <div class="alert<?php echo $class; ?>">
     <button data-dismiss="alert" class="close" type="button">
@@ -39,7 +39,7 @@
 <?php
     $element = $form->get('content');
     $element->setAttributes(array(
-            'class' => 'span7',
+            'class' => 'span7 message-textarea',
             'rows' => '6'
     ));
     echo sprintf('<div class="control-group%s"><label class="control-label text-left message-label-left">%s</label><div class="controls message-input-right message-send-text">%s%s</div></div>',
@@ -56,7 +56,7 @@
 ?>
 <script>
 (function($) {
-    var $userName = $('[name="username"]');
+    var $userName = $('input[name="username"]');
     $userName.parent().append('<span></span>');
     function showErro (tip){
         $userName.parent().find('span').html(tip == null ? '' : tip).addClass('message-error');
@@ -74,10 +74,12 @@
             if( invalid ) {               
                 $('.message-input-posi p').html(val+'<a href="javascript:;">×</a>');
                 $userName.removeClass().parent().find('span').empty();                 
-            }else {
-                tip = 'User '+ val+' is not found';
-                $('.message-input-posi p').empty();
-                showErro (tip)
+            }else{
+                if(val != ''){
+                    tip = 'User '+ val+' is not found';
+                    $('.message-input-posi p').empty();
+                    showErro (tip)
+                }
             } 
         });
     }); 
@@ -92,7 +94,7 @@
         $userName.val('');
     });
 
-    $('[name="content"]').attr('placeholder','Message content');
+    $('[name="content"]').attr('placeholder','Message content')  
     $('.message-send-text').append('<span></span>');
     $('form').submit(function(){
         var self = $('[name="content"]'),
@@ -107,6 +109,12 @@
     $('[name="content"]').focus(function(){
         $(this).removeClass('message-username');
         $('.message-send-text').find('span').empty();
-    })
+    });
+
+
+    var $form = $('.message-js-error').next('form');
+    var $input=$form.find('input[name="username"]');
+    var $tip='User '+ $input.val()+' is not found'
+    $input.addClass('message-username').next('span').html($tip).addClass('message-error');    
 })(jQuery)
 </script>

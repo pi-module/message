@@ -55,11 +55,9 @@ if (!empty($notification)) { ?>
 </div>
 <?php } ?>
 <script>
-    (function($){
-        $('.message-js-delete').click(function() {
-            if(!confirm('确定要删除')) {
-                return false;
-            }
-        });
-    })(jQuery)   
+    $('.message-js-delete').click(function() {
+        if(!confirm('确定要删除')) {
+            return false;
+        }
+    });
 </script>
