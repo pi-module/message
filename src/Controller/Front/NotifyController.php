@@ -102,13 +102,13 @@ class NotifyController extends ActionController
 
             array_walk($notificationList, function (&$v, $k) {
                 //markup content
-                $v['content'] = Pi::service('markup')->render($v['content']);
+                $v['content'] = Pi::service('markup')->render(
+                    $v['content'],
+                    'text',
+                    false,
+                    array('newline' => false)
+                );
             });
-
-            //get admin name TODO
-            $adminName = Pi::user()->getUser(1)->identity;
-            //get admin avatar
-            $adminAvatar = Pi::user()->avatar(1)->get('small');
 
             $paginator = Paginator::factory(intval($count));
             $paginator->setItemCountPerPage($limit);
@@ -131,8 +131,6 @@ class NotifyController extends ActionController
             $notificationList = array();
         }
         $this->view()->assign('notifications', $notificationList);
-        $this->view()->assign('adminName', $adminName);
-        $this->view()->assign('adminAvatar', $adminAvatar);
 
         return;
     }
@@ -163,8 +161,6 @@ class NotifyController extends ActionController
         $detail = $rowset->toArray();
 
         $detail['username'] = Pi::user()->getUser(1)->identity;;//TODO
-        //get admin avatar
-        $detail['avatar'] = Pi::user()->avatar(1)->get('small');
         //markup content
         $detail['content'] = Pi::service('markup')->render($detail['content']);
 
