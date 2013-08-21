@@ -4,10 +4,14 @@
     $this->jQuery();
     $this->bootstrap('js/bootstrap.min.js');
 ?>
-<ul class="nav nav-tabs">
-    <li><a href="<?php echo $this->url('', array('controller' => 'index', 'action' => 'index')); ?>" title="<?php _e('Messages'); ?>"><?php _e('Messages'); ?></a></li>
-    <li class="active"><a href="<?php echo $this->url('', array('controller' => 'notify', 'action' => 'index')); ?>" title="<?php _e('Notification'); ?>"><?php _e('Notification'); ?></a></li>
-    <li><button type="button" class="btn message-nav-btn" onclick="location.href='<?php echo $this->url('', array('controller' => 'index', 'action' => 'send')); ?>'" title="<?php _e('New message'); ?>"><?php _e('New message'); ?></button></li>
+<ul class="nav nav-tabs nav-tabs-1">
+    <li><a href="<?php echo $this->url('', array('controller' => 'index', 'action' => 'index')); ?>" title="<?php _e('Messages'); ?>"><?php echo $messageTitle; ?></a></li>
+    <li class="active"><a href=
+        "<?php echo $this->url('', array('controller' => 'notify', 'action' => 'index')); ?>" 
+        title="<?php _e('Notification'); ?>"><?php echo $notificationTitle; ?></a></li>
+    <li><button type="button" class="btn message-nav-btn" onclick="location.href=
+        '<?php echo $this->url('', array('controller' => 'index', 'action' => 'send')); ?>'" 
+        title="<?php _e('New message'); ?>"><?php _e('New message'); ?></button></li>
 </ul>
 
 <?php
@@ -31,7 +35,13 @@ if (!empty($notification)) { ?>
         <div class="message-detail-head">
             <h5 class="media-heading pull-left message-head">                
                 <?php echo $notification['subject']?>
-                <span class="label label-info message-label-type">Type B</span>
+                <span class="label label-info message-label-type">
+                    <?php
+                        if (!empty($notification['tag'])) {
+                            echo  $notification['tag'];
+                        }
+                    ?>
+                </span>
             </h5>
             <p class="message-time text-right">
                 <span class="muted">
@@ -45,7 +55,9 @@ if (!empty($notification)) { ?>
                 <div class="message-detail-hidden">
                     <p class="message-hidden pull-right">
                         <span>
-                            <a href="<?php echo $this->url('', array('action' => 'delete', 'ids' => $notification['id'])); ?>" class="message-js-delete"><?php _e('Delete'); ?></a>
+                            <a href="<?php echo $this->url('', array('action' => 'delete', 'ids' => $notification['id'])); ?>" class="message-js-delete">
+                                <?php _e('Delete'); ?>
+                            </a>
                         </span>
                     </p>
                 </div>
@@ -54,10 +66,11 @@ if (!empty($notification)) { ?>
     </div>
 </div>
 <?php } ?>
+<script src="<?php echo $this->assetModule('script/notify-index.js'); ?>"></script>
+
 <script>
-    $('.message-js-delete').click(function() {
-        if(!confirm('确定要删除')) {
-            return false;
-        }
-    });
+messageIndex({
+    p: '<?php echo isset($paginator) ? $paginator->getCurrentPageNumber() : ''; ?>',
+    host: '<?php echo $this->url('', array('module' => 'message')); ?>'
+});
 </script>

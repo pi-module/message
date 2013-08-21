@@ -102,31 +102,32 @@ class IndexController extends ActionController
                 //format messages
 //                $v['content'] = Service::messageSummary($v['content']);
 
-                //markup content
-                $v['content'] = Pi::service('markup')->render($v['content']);
+                // markup content
+                $v['content'] = Pi::service('markup')->render(
+                    $v['content'],
+                    'text',
+                    false,
+                    array('newline' => false)
+                );
 
                 if ($userId == $v['uid_from']) {
                     $v['is_new'] = 0;
-                    //get username url
-                    $username    = Pi::user()->getUser($v['uid_to'])
+                    // get username url
+                    $v['username'] = Pi::user()->getUser($v['uid_to'])
                                                ->identity;
-                    //TODO username link, 4 locations
-                    $usernameUrl = Pi::user()->getUrl('profile', $v['uid_to']);
-                    $v['username'] = __('To')
-                                   . ' '
-                                   . $usernameUrl;
+                    // username link, 4 locations
+                    $v['profileUrl'] = Pi::user()->getUrl('profile',
+                                                          $v['uid_to']);
                     //get avatar
                     $v['avatar'] = Pi::user()->avatar($v['uid_to'])
                                              ->get('small');
                 } else {
                     $v['is_new'] = $v['is_new_to'];
                     //get username url
-                    $username    = Pi::user()->getUser($v['uid_from'])
+                    $v['username'] = Pi::user()->getUser($v['uid_from'])
                                                ->identity;
-                    $usernameUrl = Pi::user()->getUrl('profile', $v['uid_to']);
-                    $v['username'] = __('From')
-                                   . ' '
-                                   . $usernameUrl;
+                    $v['profileUrl'] = Pi::user()->getUrl('profile',
+                                                          $v['uid_from']);
                     //get avatar
                     $v['avatar'] = Pi::user()->avatar($v['uid_from'])
                                              ->get('small');
@@ -156,10 +157,11 @@ class IndexController extends ActionController
                 ),
             ));
             $this->view()->assign('paginator', $paginator);
-            $this->renderNav();
+            $this->view()->assign('uid', $userId);
         } else {
             $messageList = array();
         }
+        $this->renderNav();
         $this->view()->assign('messages', $messageList);
 
         return;
@@ -408,23 +410,17 @@ class IndexController extends ActionController
         //get avatar
         $detail['avatar'] = Pi::user()->avatar($detail['uid_from'])
                                       ->get('small');
+        $detail['profileUrl'] = Pi::user()->getUrl('profile',
+                                                   $detail['uid_from']);
 
         if ($userId == $detail['uid_from']) {
             //get username url
-            $username    = Pi::user()->getUser($detail['uid_to'])
-                                       ->identity;
-            $usernameUrl = Pi::user()->getUrl('profile', $detail['uid_to']);
-            $detail['username'] = __('To')
-                                . ' '
-                                . $usernameUrl;
+            $detail['username'] = Pi::user()->getUser($detail['uid_to'])
+                                            ->identity;
         } else {
             //get username url
-            $username    = Pi::user()->getUser($detail['uid_from'])
-                                       ->identity;
-            $usernameUrl = Pi::user()->getUrl('profile', $detail['uid_from']);
-            $detail['username'] = __('From')
-                                . ' '
-                                . $usernameUrl;
+            $detail['username'] = Pi::user()->getUser($detail['uid_from'])
+                                            ->identity;
         }
 
         //markup content
@@ -435,8 +431,8 @@ class IndexController extends ActionController
             $model->update(array('is_new_to' => 0), array('id' => $messageId));
         }
 
-        $this->view()->assign('myAvatar', Pi::user()->avatar()->get('small'));
         $this->view()->assign('message', $detail);
+        $this->view()->assign('uid', $userId);
         $this->renderNav();
 
         return $detail;

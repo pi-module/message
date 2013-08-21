@@ -11,6 +11,10 @@
     display: none;
 }
 
+.nav-tabs-1 li.active a:hover {
+    cursor: pointer;
+}
+
 /* Message */
 .message-item {
     padding: 12px 20px 15px 15px;
@@ -18,6 +22,16 @@
     margin-top: 0;
     height: 46px;    
     cursor: pointer;
+}
+
+.message-hidden .message-mark,
+.message-hidden .message-divider {
+    display: none;
+}
+
+.message-item-read .message-hidden span {
+    display: block;
+    float: right;
 }
 
 .message-head span {
@@ -86,6 +100,7 @@
 
 .message-foot-form {
   margin: 15px 0 0 15px;
+  margin-left: 12px\9;
 }
 
 .message-pagination {
@@ -115,6 +130,14 @@
 .message-form-select,
 .message-batch-action {
     margin-left: 15px;
+}
+
+.message-item-read {
+    background: #eefbff;
+}
+
+.message-item-read .message-content p a {
+    color: #333;
 }
 
 /* detail */
@@ -172,6 +195,10 @@
     margin-left: 90px!important;
 }
 
+.message-input-posi span {
+    margin-left: 12px;
+}
+
 .message-send-text span {
     position: absolute;
     top: 200px;
@@ -222,6 +249,7 @@
     margin-left: 2px;
     color: #fff;
     font-size: 14px;
+    text-decoration: none;
 }
 
 .message-username {
@@ -230,11 +258,10 @@
 }
 
 .message-error {
-    margin-left: 12px;
     color: #b94a48;
 }
 
-.message-js-check {
-    color: #999;
+.message-alert + form {
+    display: none;
 }
 

@@ -1,22 +1,23 @@
 <?php
+    $this->bootstrap();
     $this->css($this->assetModule('script/front.css'));
     $this->jQuery();
     $this->bootstrap('js/bootstrap.min.js');
 ?>
-<ul class="nav nav-tabs">
+<ul class="nav nav-tabs nav-tabs-1">
     <li class="active">
-        <a href="<?php echo $this->url('', array('controller' => 'index', 'action' => 'index')); ?>" title="<?php _e('Private message'); ?>"><?php _e('Private message'); ?></a>
+        <a href="<?php echo $this->url('', array('controller' => 'index', 'action' => 'index')); ?>" title="<?php _e('Private message'); ?>"><?php echo $messageTitle; ?></a>
     </li>
     <li>
-        <a href="<?php echo $this->url('', array('controller' => 'notify', 'action' => 'index')); ?>" title="<?php _e('Notification'); ?>"><?php _e('Notification'); ?></a>
+        <a href="<?php echo $this->url('', array('controller' => 'notify', 'action' => 'index')); ?>" title="<?php _e('Notification'); ?>"><?php echo $notificationTitle; ?></a>
     </li>
     <li>
-        <button type="button" class="btn message-nav-btn" onclick="location.href='<?php echo $this->url('', array('controller' => 'index', 'action' => 'send')); ?>'" title="<?php _e('New message'); ?>"><?php _e('New message'); ?></button>
+        <button type="button" class="btn message-nav-btn" onclick="location.href=
+        '<?php echo $this->url('', array('controller' => 'index', 'action' => 'send')); ?>'" 
+        title="<?php _e('New message'); ?>"><?php _e('New message'); ?></button>
     </li>
 </ul>
-<?php
-    d(options.host + 'index/'+ action + '/ids-' + ids+'/p-' + options.p)
-?>
+
 <?php
     if (!empty($errMessage)) {
         $class = ' alert-error';
@@ -35,14 +36,14 @@ if (!empty($message)) { ?>
         <div class="message-detail-head">
             <h5 class="media-heading pull-left message-head">                
                 <span><?php echo $uid == $message['uid_from']?'To':'From';?></span>
-                <a href="#"><?php echo $message['username'] . ':'; ?></a>
+                <a href="<?php echo $message['profileUrl']; ?>"><?php echo $message['username'] . ':'; ?></a>
             </h5>
             <p class="message-time text-right">
                <span class="muted"><?php echo date('Y/m/d H:i', $message['time_send']); ?></span>
             </p>
         </div>
         <div class="media message-detail-primary">
-            <a href="#" class="pull-left">
+            <a href="<?php echo $message['profileUrl']; ?>" class="pull-left">
                 <?php echo $message['avatar']; ?>
             </a>
             <div class="media-body message-detail-con">
@@ -59,54 +60,37 @@ if (!empty($message)) { ?>
             </div> 
         </div>  
     </div>        
-        <?php 
-            $form->setAttribute('class', 'message-form-posi');
-            echo $this->form()->openTag($form); ?>
-            <?php 
-                $element = $form->get('content');
-                $element->setAttributes(array(
-                    'class' => 'span12 message-textarea',
-                    'rows' => '6'
-                ));
-                echo '<div class="message-send-text message-detail-text">' . $this->formElement($element);
-                echo $this->formElementErrors($element);
-                echo '</div>'
-            ?>
-            <?php
-                echo $this->formElement($form->get('uid_to'));
-                $element = $form->get('submit');
-                $element->setAttributes(array(
-                    'class' => 'btn btn-primary pull-right',
-                ));
-                echo $this->formSubmit($element); 
-                echo $this->form()->closeTag($form); 
-            ?>
+    <?php 
+        $form->setAttribute('class', 'message-form-posi');
+        echo $this->form()->openTag($form); 
+    ?>
+    <?php 
+        $element = $form->get('content');
+        $element->setAttributes(array(
+            'class' => 'span12 message-textarea',
+            'rows' => '6'
+        ));
+        echo '<div class="message-send-text message-detail-text">' . $this->formElement($element);
+        echo $this->formElementErrors($element);
+        echo '</div>'
+    ?>
+    <?php
+        echo $this->formElement($form->get('uid_to'));
+        $element = $form->get('submit');
+        $element->setAttributes(array(
+            'class' => 'btn btn-primary pull-right',
+        ));
+        echo $this->formSubmit($element); 
+        echo $this->form()->closeTag($form); 
+    ?>
 </div>
 <?php } ?>
 
+<script src="<?php echo $this->assetModule('script/index-detail.js'); ?>"></script>
+    
 <script>
-(function($) {
-    $('.message-send-text').append('<span></span>');
-    $('form').submit(function(){
-        var self = $('[name="content"]'),
-            val = self.val();
-        if(val == ''){
-           var $span = $('.message-send-text').find('span');
-           $span.addClass('pull-right message-help-block').html('You can’t send a empty message').css('color','#b94a48');
-           self.addClass('message-username');
-           return false;
-        }  
-    });
-
-    $('[name="content"]').focus(function(){
-        $(this).removeClass('message-username');
-        $('.message-send-text').find('span').empty();
-    })
-
-    $('.message-js-delete').click(function() {
-        if(!confirm('确定要删除')) {
-            return false;
-        }
-    });
-})(jQuery)
-</script>
+messageIndex({
+    p: '<?php echo isset($paginator) ? $paginator->getCurrentPageNumber() : ''; ?>',
+    host: '<?php echo $this->url('', array('module' => 'message')); ?>'
+});
+</script>  
