@@ -18,7 +18,6 @@
             this.$content.focus(this.conFocus);
         },
         submitAction: function() {
-            alert('aa')
             var self = $('[name="content"]'),
                 sendTxt = $('.message-send-text'),
                 val = self.val();
