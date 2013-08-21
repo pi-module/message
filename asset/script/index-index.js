@@ -58,7 +58,7 @@
             window.location = $(this).find(".message-content p a").attr("href")
         },
         deleteAction: function() {
-            if (!confirm('确定要删除')) {
+            if (!confirm('Are you sure to delete the message selected ?')) {
                 return false;
             }
         },
