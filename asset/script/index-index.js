@@ -30,12 +30,12 @@
         },
         batchAction: function() {
             var checked = app.$('.message-js-check:checked');
-            var action = app.$select.val().trim();
+            var action = $.trim(this.$select.val());
             var ids = [];
             if (checked.length) {
                 if (action == "delete") {
                     if (!confirm('Are you sure to delete the message selected ?')) {
-                        event.stopImmediatePropagation();
+                        return;
                     }
                 }
                 checked.each(function() {
