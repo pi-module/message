@@ -49,9 +49,10 @@ class SendForm extends BaseForm
             'name'          => 'username',
             'attributes'    => array(
                 'type'  => 'text',
+                'placeholder'     => 'Type the username',
             ),
             'options'       => array(
-                'label' => __('Sent to'),
+                'label' => __('Recipient'),
             ),
         ));
 
@@ -79,6 +80,7 @@ class SendForm extends BaseForm
             ),
             'attributes'    => array(
                 'type'          => 'editor',
+                'placeholder'     => 'Message content',
             ),
         ));
 
