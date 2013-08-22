@@ -1,93 +1,67 @@
 <?php
+    $this->bootstrap();
+    $this->css($this->assetModule('script/front.css'));
     $this->jQuery();
     $this->bootstrap('js/bootstrap.min.js');
 ?>
-<ul class="nav nav-tabs">
-    <li><a href="<?php echo $this->url('', array('controller' => 'index', 'action' => 'index')); ?>" title="<?php _e('Private message'); ?>"><?php _e('Private message'); ?></a></li>
-    <li><a href="<?php echo $this->url('', array('controller' => 'notify', 'action' => 'index')); ?>" title="<?php _e('Notification'); ?>"><?php _e('Notification'); ?></a></li>
-    <li class="active"><a href="<?php echo $this->url('', array('controller' => 'index', 'action' => 'send')); ?>" title="<?php _e('Send message'); ?>"><?php _e('Send message'); ?></a></li>
+<ul class="nav nav-tabs message-nav-tabs">
+    <li><a href="<?php echo $this->url('', array('controller' => 'index', 'action' => 'index')); ?>" title="<?php _e('Private message'); ?>"><?php echo $messageTitle; ?></a></li>
+    <li><a href="<?php echo $this->url('', array('controller' => 'notify', 'action' => 'index')); ?>" title="<?php _e('Notification'); ?>"><?php echo $notificationTitle; ?></a></li>
+    <li class="active">
+        <a href="<?php echo $this->url('', array('controller' => 'index', 'action' => 'send')); ?>" title="<?php _e('New message'); ?>"><?php _e('New message'); ?></a>
+    </li>
 </ul>
+<div class="messages" id="message-js">
+    <?php
+        if (!empty($errMessage)) {
+            $class = ' alert-error message-js-error';
+    ?>
+    <div class="alert<?php echo $class; ?>">
+        <button data-dismiss="alert" class="close" type="button">
+            ×
+        </button>
+        <?php echo $errMessage; ?>
+    </div>
+    <?php } ?>
 
-<?php
-    if (!empty($errMessage)) {
-        $class = ' alert-error';
-?>
-<div class="alert<?php echo $class; ?>">
-    <button data-dismiss="alert" class="close" type="button">
-        ×
-    </button>
-    <?php echo $errMessage; ?>
+    <?php
+        $form->setAttribute('class', 'form-horizontal message-form-posi');
+        echo $this->form()->openTag($form);
+        $this->FormElementErrors()->setMessageOpenFormat('<span class="help-inline">')->setMessageCloseString('</span>');
+    ?>
+    <?php
+        $element = $form->get('username');
+        echo sprintf('<div class="control-group%s"><label class="control-label message-label-left">%s</label><div class="controls message-input-right message-input-posi">%s%s</div></div>',
+        $element->getMessages() ? ' error' : '',
+        $element->getOption('label'),
+        $this->formElement($element),
+        $this->formElementErrors($element));
+    ?>
+    <?php
+        $element = $form->get('content');
+        $element->setAttributes(array(
+                'class' => 'span7 message-textarea',
+                'rows' => '6'
+        ));
+        echo sprintf('<div class="control-group%s"><label class="control-label text-left message-label-left">%s</label><div class="controls message-input-right message-send-text">%s%s</div></div>',
+        $element->getMessages() ? ' error' : '',
+        $element->getOption('label'),
+        $this->formElement($element),
+        $this->formElementErrors($element));
+    ?>
+    <?php
+        $element = $form->get('submit');
+        $element->setAttribute('class', 'btn btn-primary message-btn-margin');
+        echo sprintf('<div class="controls">%s</div>', $this->formSubmit($element));
+        echo $this->form()->closeTag($form);    
+    ?>
 </div>
 
-<?php } ?>
-
-<?php
-    $form->setAttribute('class', 'form-horizontal');
-    echo $this->form()->openTag($form);
-    $this->FormElementErrors()->setMessageOpenFormat('<span class="help-inline">')->setMessageCloseString('</span>');
-?>
-<legend><?php echo _escape($title); ?></legend>
-<?php
-    $element = $form->get('username');
-    echo sprintf('<div class="control-group%s"><label class="control-label">%s</label><div class="controls">%s%s</div></div>',
-    $element->getMessages() ? ' error' : '',
-    $element->getOption('label'),
-    $this->formElement($element),
-    $this->formElementErrors($element));
-?>
-<?php
-    $element = $form->get('content');
-    $element->setAttributes(array(
-            'class' => 'span7',
-            'rows' => '6'
-    ));
-    echo sprintf('<div class="control-group%s"><label class="control-label">%s</label><div class="controls">%s%s</div></div>',
-    $element->getMessages() ? ' error' : '',
-    $element->getOption('label'),
-    $this->formElement($element),
-    $this->formElementErrors($element));
-?>
-<?php
-    $element = $form->get('submit');
-    $element->setAttribute('class', 'btn btn-primary');
-    echo sprintf('<div class="controls">%s</div>', $this->formSubmit($element));
-    echo $this->form()->closeTag($form); 
-?>
+<script src="<?php echo $this->assetModule('script/index-send.js'); ?>"></script>
 <script>
-(function($) {
-    $("input[name='username']").keyup(function() {
-        var username = $(this).val();
-        $.post('<?php echo $this->url('', array('controller' => 'index', 'action' => 'checkUsername')); ?>', {
-            username: username
-        }).done(function(res) {
-            res = $.parseJSON(res);
-            var alert = $('.alert');
-            if (res.status) {
-                if (alert.length <= 0) {
-                    var ul = $('ul.nav');
-                    alertDom = '<button data-dismiss="alert" class="close" type="button">×</button>';
-                    alertDom = '<div class="alert alert-success">' + alertDom + '<?php _e('Username is correct.'); ?>' + '</div>';
-                    ul.after(alertDom);
-                } else {
-                    alert.removeClass('alert-error');
-                    alert.addClass('alert-success');
-                    alertDom = '<button data-dismiss="alert" class="close" type="button">×</button>';
-                    alertDom = alertDom + '<?php _e('Username is correct.'); ?>';
-                    alert.html(alertDom);
-                }
-            } else if (res.message) {
-                if (alert.length <= 0) {
-                    var ul = $('ul.nav');
-                    alertDom = '<button data-dismiss="alert" class="close" type="button">×</button>';
-                    alertDom = '<div class="alert alert-error">' + alertDom + res.message + '</div>';
-                    ul.after(alertDom);
-                }
-            } else {
-                if (alert.length > 0) {
-                    alert.remove();
-                }
-            }
-        });
+    messageIndex({
+        p: '<?php echo isset($paginator) ? $paginator->getCurrentPageNumber() : ''; ?>',
+        host: '<?php echo $this->url('', array('module' => 'message')); ?>',
+        url: '<?php echo $this->url('', array('controller' => 'index', 'action' => 'checkUsername')); ?>'
     });
-})(jQuery);
-</script>
+</script>     
