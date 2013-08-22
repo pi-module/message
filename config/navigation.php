@@ -22,7 +22,7 @@ return array(
             'action'        => 'index',
         ),
         'send' => array(
-            'label'         => 'Send message',
+            'label'         => 'New message',
             'route'         => 'default',
             'controller'    => 'index',
             'action'        => 'send',

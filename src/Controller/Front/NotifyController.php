@@ -126,10 +126,10 @@ class NotifyController extends ActionController
                 ),
             ));
             $this->view()->assign('paginator', $paginator);
-            $this->renderNav();
         } else {
             $notificationList = array();
         }
+        $this->renderNav();
         $this->view()->assign('notifications', $notificationList);
 
         return;
