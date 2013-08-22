@@ -32,7 +32,7 @@
             if (checked.length) {
                 if (action == "delete") {
                     if (!confirm('Are you sure to delete the message selected ?')) {
-                        event.stopImmediatePropagation();
+                        return;
                     }
                 }
                 checked.each(function() {
