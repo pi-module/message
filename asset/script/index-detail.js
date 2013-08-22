@@ -12,10 +12,12 @@
             this.$el = $('#message-js');
             this.$form = this.$('form');
             this.$content = this.$("[name='content']");
+            this.$delete = this.$('.message-js-delete');
         },
         bindEvents: function() {
             this.$form.submit(this.submitAction);
             this.$content.focus(this.conFocus);
+            this.$delete.click(this.deleteAction);
         },
         submitAction: function() {
             var self = $('[name="content"]'),
@@ -32,6 +34,11 @@
         conFocus: function() {
             $(this).removeClass('message-username');
             $(this).parent().find('span').empty();
+        },
+        deleteAction: function() {
+            if (!confirm('Are you sure to delete the message selected ?')) {
+                return false;
+            }
         },
     };
 
