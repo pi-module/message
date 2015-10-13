@@ -1,26 +1,26 @@
-CREATE TABLE `{private_message}` (
-  `id`                  int(11) UNSIGNED       NOT NULL AUTO_INCREMENT,
-  `uid_from`            int(11) UNSIGNED       NOT NULL DEFAULT 0,
-  `uid_to`              int(11) UNSIGNED       NOT NULL DEFAULT 0,
-  `content`             text                   NOT NULL DEFAULT '',
-  `is_new_from`         tinyint(1) UNSIGNED    NOT NULL DEFAULT 0,
-  `is_new_to`           tinyint(1) UNSIGNED    NOT NULL DEFAULT 1,
-  `time_send`           int(11) UNSIGNED       NOT NULL DEFAULT 0,
-  `delete_status_from`  tinyint(1) UNSIGNED    NOT NULL DEFAULT 0,
-  `delete_status_to`    tinyint(1) UNSIGNED    NOT NULL DEFAULT 0,
+CREATE TABLE `{message}` (
+  `id`              INT(11) UNSIGNED    NOT NULL AUTO_INCREMENT,
+  `uid_from`        INT(11) UNSIGNED    NOT NULL DEFAULT 0,
+  `uid_to`          INT(11) UNSIGNED    NOT NULL DEFAULT 0,
+  `content`         TEXT,
+  `time_send`       INT(11) UNSIGNED    NOT NULL DEFAULT 0,
+  `is_read_from`    TINYINT(1) UNSIGNED NOT NULL DEFAULT 0,
+  `is_read_to`      TINYINT(1) UNSIGNED NOT NULL DEFAULT 0,
+  `is_deleted_from` TINYINT(1) UNSIGNED NOT NULL DEFAULT 0,
+  `is_deleted_to`   TINYINT(1) UNSIGNED NOT NULL DEFAULT 0,
 
-  PRIMARY KEY                  (`id`)
+  PRIMARY KEY (`id`)
 );
 
 CREATE TABLE `{notification}` (
-  `id`                int(11) UNSIGNED       NOT NULL AUTO_INCREMENT,
-  `uid`               int(11) UNSIGNED       NOT NULL DEFAULT 0,
-  `subject`           varchar(64)            NOT NULL DEFAULT '',
-  `content`           text                   NOT NULL DEFAULT '',
-  `tag`               varchar(64)            NOT NULL DEFAULT '',
-  `is_new`            tinyint(1) UNSIGNED    NOT NULL DEFAULT 1,
-  `time_send`         int(11) UNSIGNED       NOT NULL DEFAULT 0,
-  `delete_status`     tinyint(1) UNSIGNED    NOT NULL DEFAULT 0,
+  `id`         INT(11) UNSIGNED    NOT NULL AUTO_INCREMENT,
+  `uid`        INT(11) UNSIGNED    NOT NULL DEFAULT 0,
+  `subject`    VARCHAR(255)        NOT NULL,
+  `content`    TEXT,
+  `tag`        VARCHAR(64)         NOT NULL DEFAULT '',
+  `time_send`  INT(11) UNSIGNED    NOT NULL DEFAULT 0,
+  `is_read`    TINYINT(1) UNSIGNED NOT NULL DEFAULT 0,
+  `is_deleted` TINYINT(1) UNSIGNED NOT NULL DEFAULT 0,
 
-  PRIMARY KEY                  (`id`)
+  PRIMARY KEY (`id`)
 );

@@ -4,7 +4,7 @@
  *
  * @link            http://code.pialog.org for the Pi Engine source repository
  * @copyright       Copyright (c) Pi Engine http://pialog.org
- * @license         http://pialog.org/license.txt New BSD License
+ * @license         http://pialog.org/license.txt BSD 3-Clause License
  */
 
 namespace Module\Message\Controller\Front;
@@ -38,15 +38,14 @@ class NotifyController extends ActionController
         //current user id
         $userId = Pi::user()->getUser()->id;
 
-        $api = Pi::service('api')->message;
-        $messageTitle = __('Private message(')
-                      . $api->getAlert($userId, $api::TYPE_MESSAGE)
-                      . ' '
-                      . __('unread)');
-        $notificationTitle = __('Notification(')
-                           . $api->getAlert($userId, $api::TYPE_NOTIFICATION)
-                           . ' '
-                           . __('unread)');
+        $messageTitle = sprintf(
+            __('Private message(%s unread)'),
+            Service::getUnread($userId, 'message')
+        );
+        $notificationTitle = sprintf(
+            __('Notification(%s unread)'),
+            Service::getUnread($userId, 'notification')
+        );
         $this->view()->assign('messageTitle', $messageTitle);
         $this->view()->assign('notificationTitle', $notificationTitle);
     }
@@ -61,40 +60,45 @@ class NotifyController extends ActionController
         $page = _get('p', 'int');
         $page = $page ?: 1;
         $limit = Pi::config('list_number');
-        $offset = (int) ($page - 1) * $limit;
+        $offset = (int)($page - 1) * $limit;
 
         //current user id
         $userId = Pi::user()->getUser()->id;
 
+        // dismiss alert
+        Pi::user()->message->dismissAlert($userId);
+
         $model = $this->getModel('notification');
         //get notification list count
+        /*
         $select = $model->select()
                         ->columns(array(
                             'count' => new \Zend\Db\Sql\Predicate\Expression(
                                 'count(*)'
                             )
                         ))
-                        ->where(array('uid' => $userId, 'delete_status' => 0));
+                        ->where(array('uid' => $userId, 'is_deleted' => 0));
         $count = $model->selectWith($select)->current()->count;
-
+        */
+        $count = $model->count(array('uid' => $userId, 'is_deleted' => 0));
         if ($count) {
             //get notification list
             $select = $model->select()
-                            ->where(array(
-                                'uid' => $userId,
-                                'delete_status' => 0
-                            ))
-                            ->order('time_send DESC')
-                            ->limit($limit)
-                            ->offset($offset);
+                ->where(array(
+                    'uid' => $userId,
+                    'is_deleted' => 0
+                ))
+                ->order('time_send DESC')
+                ->limit($limit)
+                ->offset($offset);
             $rowset = $model->selectWith($select);
             $notificationList = $rowset->toArray();
             //jump to last page
             if (empty($notificationList) && $page > 1) {
                 $this->redirect()->toRoute('', array(
                     'controller' => 'notify',
-                    'action'     => 'index',
-                    'p'          => ceil($count / $limit),
+                    'action' => 'index',
+                    'p' => ceil($count / $limit),
                 ));
 
                 return;
@@ -102,27 +106,23 @@ class NotifyController extends ActionController
 
             array_walk($notificationList, function (&$v, $k) {
                 //markup content
-                $v['content'] = Pi::service('markup')->render(
+                $v['content'] = Pi::service('markup')->compile(
                     $v['content'],
                     'text',
-                    false,
-                    array('newline' => false)
+                    array('nl2br' => false)
                 );
             });
 
-            $paginator = Paginator::factory(intval($count));
-            $paginator->setItemCountPerPage($limit);
-            $paginator->setCurrentPageNumber($page);
-            $paginator->setUrlOptions(array(
-                'page_param'    => 'p',
-                'router'        => $this->getEvent()->getRouter(),
-                'route'         => $this->getEvent()
-                                        ->getRouteMatch()
-                                        ->getMatchedRouteName(),
-                'params'        => array(
-                    'module'        => $this->getModule(),
-                    'controller'    => 'notify',
-                    'action'        => 'index',
+            $paginator = Paginator::factory(intval($count), array(
+                'page' => $page,
+                'limit' => $limit,
+                'url_options' => array(
+                    'page_param' => 'p',
+                    'params' => array(
+                        'module' => $this->getModule(),
+                        'controller' => 'notify',
+                        'action' => 'index',
+                    ),
                 ),
             ));
             $this->view()->assign('paginator', $paginator);
@@ -147,27 +147,29 @@ class NotifyController extends ActionController
         //current user id
         $userId = Pi::user()->getUser()->id;
 
+        // dismiss alert
+        Pi::user()->message->dismissAlert($userId);
+
         $model = $this->getModel('notification');
         //get notification
         $select = $model->select()
-                        ->where(array(
-                            'id' => $notificationId,
-                            'uid' => $userId
-                        ));
+            ->where(array(
+                'id' => $notificationId,
+                'uid' => $userId
+            ));
         $rowset = $model->selectWith($select)->current();
         if (!$rowset) {
             return;
         }
         $detail = $rowset->toArray();
 
-        $detail['username'] = Pi::user()->getUser(1)->identity;;//TODO
         //markup content
         $detail['content'] = Pi::service('markup')->render($detail['content']);
 
-        if ($detail['is_new']) {
+        if (!$detail['is_read']) {
             //mark the notification as read
-            $model->update(array('is_new' => 0),
-                           array('id' => $notificationId));
+            $model->update(array('is_read' => 1),
+                array('id' => $notificationId));
         }
 
         $this->view()->assign('notification', $detail);
@@ -184,8 +186,8 @@ class NotifyController extends ActionController
     public function markAction()
     {
         $notificationIds = _get('ids',
-                                'regexp',
-                                array('regexp' => '/^[0-9,]+$/'));
+            'regexp',
+            array('regexp' => '/^[0-9,]+$/'));
         $page = _get('p', 'int');
         $page = $page ?: 1;
         //current user id
@@ -193,8 +195,8 @@ class NotifyController extends ActionController
         if (empty($notificationIds)) {
             $this->redirect()->toRoute('', array(
                 'controller' => 'notify',
-                'action'     => 'index',
-                'p'          => $page
+                'action' => 'index',
+                'p' => $page
             ));
         }
 
@@ -203,15 +205,15 @@ class NotifyController extends ActionController
         }
 
         $model = $this->getModel('notification');
-        $model->update(array('is_new' => 0), array(
-            'id'  => $notificationIds,
+        $model->update(array('is_read' => 1), array(
+            'id' => $notificationIds,
             'uid' => $userId
         ));
 
         $this->redirect()->toRoute('', array(
             'controller' => 'notify',
-            'action'     => 'index',
-            'p'          => $page
+            'action' => 'index',
+            'p' => $page
         ));
     }
 
@@ -223,8 +225,8 @@ class NotifyController extends ActionController
     public function deleteAction()
     {
         $notificationIds = _get('ids',
-                                'regexp',
-                                array('regexp' => '/^[0-9,]+$/'));
+            'regexp',
+            array('regexp' => '/^[0-9,]+$/'));
         $page = _get('p', 'int');
         $page = $page ?: 1;
 
@@ -234,21 +236,21 @@ class NotifyController extends ActionController
         if (empty($notificationIds)) {
             $this->redirect()->toRoute('', array(
                 'controller' => 'notify',
-                'action'     => 'index',
-                'p'          => $page
+                'action' => 'index',
+                'p' => $page
             ));
         }
         $userId = Pi::user()->getUser()->id;
         $model = $this->getModel('notification');
-        $model->update(array('delete_status' => 1), array(
-            'id'  => $notificationIds,
+        $model->update(array('is_deleted' => 1), array(
+            'id' => $notificationIds,
             'uid' => $userId
         ));
 
         $this->redirect()->toRoute('', array(
             'controller' => 'notify',
-            'action'     => 'index',
-            'p'          => $page
+            'action' => 'index',
+            'p' => $page
         ));
 
         return;

@@ -4,18 +4,18 @@
  *
  * @link            http://code.pialog.org for the Pi Engine source repository
  * @copyright       Copyright (c) Pi Engine http://pialog.org
- * @license         http://pialog.org/license.txt New BSD License
+ * @license         http://pialog.org/license.txt BSD 3-Clause License
  */
 
 namespace Module\Message\Controller\Front;
 
-use Pi\Mvc\Controller\ActionController;
 use Module\Message\Form\SendForm;
 use Module\Message\Form\SendFilter;
 use Module\Message\Form\ReplyForm;
 use Module\Message\Form\ReplyFilter;
 use Module\Message\Service;
 use Pi\Paginator\Paginator;
+use Pi\Mvc\Controller\ActionController;
 use Pi;
 
 /**
@@ -44,55 +44,59 @@ class IndexController extends ActionController
         $page = _get('p', 'int');
         $page = $page ?: 1;
         $limit = Pi::config('list_number');
-        $offset = (int) ($page - 1) * $limit;
+        $offset = (int)($page - 1) * $limit;
 
         //current user id
-        $userId = Pi::user()->getUser()->id;
+        Pi::service('authentication')->requireLogin();
+        $userId = Pi::user()->getId();
 
-        $model = $this->getModel('private_message');
+        // dismiss alert
+        Pi::user()->message->dismissAlert($userId);
+
+        $model = $this->getModel('message');
         //get private message list count
         $select = $model->select()
-                        ->columns(array(
-                            'count' => new \Zend\Db\Sql\Predicate\Expression(
-                                'count(*)'
-                            )
-                        ))
-                        ->where(function($where) use ($userId) {
-                            $fromWhere = clone $where;
-                            $toWhere = clone $where;
-                            $fromWhere->equalTo('uid_from', $userId);
-                            $fromWhere->equalTo('delete_status_from', 0);
-                            $toWhere->equalTo('uid_to', $userId);
-                            $toWhere->equalTo('delete_status_to', 0);
-                            $where->andPredicate($fromWhere)
-                                  ->orPredicate($toWhere);
-                        });
+            ->columns(array(
+                'count' => new \Zend\Db\Sql\Predicate\Expression(
+                    'count(*)'
+                )
+            ))
+            ->where(function ($where) use ($userId) {
+                $fromWhere = clone $where;
+                $toWhere = clone $where;
+                $fromWhere->equalTo('uid_from', $userId);
+                $fromWhere->equalTo('is_deleted_from', 0);
+                $toWhere->equalTo('uid_to', $userId);
+                $toWhere->equalTo('is_deleted_to', 0);
+                $where->andPredicate($fromWhere)
+                    ->orPredicate($toWhere);
+            });
         $count = $model->selectWith($select)->current()->count;
 
         if ($count) {
             //get private message list group by user
             $select = $model->select()
-                            ->where(function($where) use ($userId) {
-                                $fromWhere = clone $where;
-                                $toWhere = clone $where;
-                                $fromWhere->equalTo('uid_from', $userId);
-                                $fromWhere->equalTo('delete_status_from', 0);
-                                $toWhere->equalTo('uid_to', $userId);
-                                $toWhere->equalTo('delete_status_to', 0);
-                                $where->andPredicate($fromWhere)
-                                      ->orPredicate($toWhere);
-                            })
-                            ->order('time_send DESC')
-                            ->limit($limit)
-                            ->offset($offset);
+                ->where(function ($where) use ($userId) {
+                    $fromWhere = clone $where;
+                    $toWhere = clone $where;
+                    $fromWhere->equalTo('uid_from', $userId);
+                    $fromWhere->equalTo('is_deleted_from', 0);
+                    $toWhere->equalTo('uid_to', $userId);
+                    $toWhere->equalTo('is_deleted_to', 0);
+                    $where->andPredicate($fromWhere)
+                        ->orPredicate($toWhere);
+                })
+                ->order('time_send DESC')
+                ->limit($limit)
+                ->offset($offset);
             $rowset = $model->selectWith($select);
             $messageList = $rowset->toArray();
             //jump to last page
             if (empty($messageList) && $page > 1) {
                 $this->redirect()->toRoute('', array(
                     'controller' => 'index',
-                    'action'     => 'index',
-                    'p'          => ceil($count / $limit),
+                    'action' => 'index',
+                    'p' => ceil($count / $limit),
                 ));
 
                 return;
@@ -103,59 +107,56 @@ class IndexController extends ActionController
 //                $v['content'] = Service::messageSummary($v['content']);
 
                 // markup content
-                $v['content'] = Pi::service('markup')->render(
+                $v['content'] = Pi::service('markup')->compile(
                     $v['content'],
-                    'text',
-                    false,
-                    array('newline' => false)
+                    'html',
+                    array('nl2br' => false)
                 );
 
                 if ($userId == $v['uid_from']) {
-                    $v['is_new'] = 0;
+                    $v['is_read'] = 1;
+                    $user = Pi::user()->getUser($v['uid_to'])
+                        ?: Pi::user()->getUser(0);
                     // get username url
-                    $v['username'] = Pi::user()->getUser($v['uid_to'])
-                                               ->identity;
+                    $v['name'] = $user->name;
                     // username link, 4 locations
                     $v['profileUrl'] = Pi::user()->getUrl('profile',
-                                                          $v['uid_to']);
+                        $v['uid_to']);
                     //get avatar
-                    $v['avatar'] = Pi::user()->avatar($v['uid_to'])
-                                             ->get('small');
+                    $v['avatar'] = Pi::user()->avatar($v['uid_to'], 'small');
                 } else {
-                    $v['is_new'] = $v['is_new_to'];
+                    $v['is_read'] = $v['is_read_to'];
+                    $user = Pi::user()->getUser($v['uid_from'])
+                        ?: Pi::user()->getUser(0);
                     //get username url
-                    $v['username'] = Pi::user()->getUser($v['uid_from'])
-                                               ->identity;
+                    $v['name'] = $user->name;
                     $v['profileUrl'] = Pi::user()->getUrl('profile',
-                                                          $v['uid_from']);
+                        $v['uid_from']);
                     //get avatar
-                    $v['avatar'] = Pi::user()->avatar($v['uid_from'])
-                                             ->get('small');
+                    $v['avatar'] = Pi::user()->avatar($v['uid_from'], 'small');
                 }
 
                 unset(
-                    $v['is_new_from'],
-                    $v['is_new_to'],
+                    $v['is_read_from'],
+                    $v['is_read_to'],
                     $v['delete_status_from'],
                     $v['delete_status_to']
                 );
             });
 
-            $paginator = Paginator::factory(intval($count));
-            $paginator->setItemCountPerPage($limit);
-            $paginator->setCurrentPageNumber($page);
-            $paginator->setUrlOptions(array(
-                'page_param'    => 'p',
-                'router'        => $this->getEvent()->getRouter(),
-                'route'         => $this->getEvent()
-                                        ->getRouteMatch()
-                                        ->getMatchedRouteName(),
-                'params'        => array(
-                    'module'        => $this->getModule(),
-                    'controller'    => 'index',
-                    'action'        => 'index',
+            $paginator = Paginator::factory(intval($count), array(
+                'page' => $page,
+                'limit' => $limit,
+                'url_options' => array(
+                    'page_param' => 'p',
+                    'params' => array(
+                        'module' => $this->getModule(),
+                        'controller' => 'index',
+                        'action' => 'index',
+                    ),
                 ),
             ));
+
             $this->view()->assign('paginator', $paginator);
             $this->view()->assign('uid', $userId);
         } else {
@@ -175,17 +176,17 @@ class IndexController extends ActionController
     protected function renderNav()
     {
         //current user id
+        Pi::service('authentication')->requireLogin();
         $userId = Pi::user()->getUser()->id;
 
-        $api = Pi::service('api')->message;
-        $messageTitle = __('Private message(')
-                      . $api->getAlert($userId, $api::TYPE_MESSAGE)
-                      . ' '
-                      . __('unread)');
-        $notificationTitle = __('Notification(')
-                           . $api->getAlert($userId, $api::TYPE_NOTIFICATION)
-                           . ' '
-                           . __('unread)');
+        $messageTitle = sprintf(
+            __('Private message(%s unread)'),
+            Service::getUnread($userId, 'message')
+        );
+        $notificationTitle = sprintf(
+            __('Notification(%s  unread)'),
+            Service::getUnread($userId, 'notification')
+        );
         $this->view()->assign('messageTitle', $messageTitle);
         $this->view()->assign('notificationTitle', $notificationTitle);
     }
@@ -197,7 +198,12 @@ class IndexController extends ActionController
      */
     public function sendAction()
     {
+        Pi::service('authentication')->requireLogin();
+        $uid = Pi::user()->getId();
+        $toUserId = _get('uid');
+        $name = Pi::user()->get($toUserId, 'name');
         $form = $this->getSendForm('send');
+        $form->setData(array('name' => $name));
         if ($this->request->isPost()) {
             $post = $this->request->getPost();
             $form->setData($post);
@@ -207,31 +213,31 @@ class IndexController extends ActionController
 
                 return;
             }
-            $data   = $form->getData();
-            //check username
-            $toUserId = Pi::user()->getUser($data['username'], 'identity')->id;
+            $data = $form->getData();
+            //check name
+            $toUserId = Pi::user()->getUids(array('name' => $data['name']));
+            $toUserId = array_shift($toUserId);
             if (!$toUserId) {
                 $this->view()->assign(
                     'errMessage',
                     __('Username is invalid, please try again.'
-                ));
+                    ));
                 $this->renderSendForm($form);
 
                 return;
             }
 
             //current user id
-            $userId = Pi::user()->getUser()->id;
-            $result = Pi::service('api')->message->send(
+            $result = Pi::api('api', 'message')->send(
                 $toUserId,
                 $data['content'],
-                $userId
+                $uid
             );
             if (!$result) {
                 $this->view()->assign(
                     'errMessage',
                     __('Send failed, please try again.'
-                ));
+                    ));
                 $this->renderSendForm($form);
 
                 return;
@@ -256,36 +262,37 @@ class IndexController extends ActionController
     {
         try {
             $username = _get('username', 'string');
-            $uid = Pi::user()->getUser($username, 'identity')->id;
+            $user = Pi::user()->getUser($username, 'identity');
+            $uid = $user ? $user->id : 0;
             //current user id
             $selfUid = Pi::user()->getUser()->id;
             //check username
             if (!$uid) {
                 return array(
-                    'status'  => 0,
+                    'status' => 0,
                     'message' => __('User')
-                               . ' '
-                               . $username
-                               . ' '
-                               . __('not found')
+                        . ' '
+                        . $username
+                        . ' '
+                        . __('not found')
                 );
             } elseif ($uid == $selfUid) {
                 return array(
-                    'status'  => 0,
+                    'status' => 0,
                     'message' => __(
-                        __('Sorry, you can\'t send message to yourself')
+                        __('Sorry, you can\'t send message to yourself.')
                     )
                 );
             } else {
                 return array(
-                    'status'   => 1,
+                    'status' => 1,
                     'username' => $username
                 );
             }
         } catch (Exception $e) {
             return array(
-                'status'    => 0,
-                'message'   => __('An error occurred, please try again')
+                'status' => 0,
+                'message' => __('An error occurred, please try again.')
             );
         }
     }
@@ -293,7 +300,7 @@ class IndexController extends ActionController
     /**
      * Initialize send form instance
      *
-     * @param  string   $name
+     * @param  string $name
      * @return SendForm
      */
     protected function getSendForm($name)
@@ -326,6 +333,7 @@ class IndexController extends ActionController
      */
     public function detailAction()
     {
+        Pi::service('authentication')->requireLogin();
         $messageId = _get('mid', 'int');
         $messageId = $messageId ?: 0;
         //current user id
@@ -348,14 +356,16 @@ class IndexController extends ActionController
             }
             $data = $form->getData();
 
-            $result = Pi::service('api')->message->send($data['uid_to'],
-                                                        $data['content'],
-                                                        $userId);
+            $result = Pi::api('api', 'message')->send(
+                $data['uid_to'],
+                $data['content'],
+                $userId
+            );
             if (!$result) {
                 $this->view()->assign(
                     'errMessage',
                     __('Send failed, please try again.'
-                ));
+                    ));
                 $this->view()->assign('form', $form);
                 $this->showDetail($messageId);
 
@@ -383,52 +393,59 @@ class IndexController extends ActionController
     /**
      * Show details of a message
      *
-     * @param  int   $messageId
+     * @param  int $messageId
      * @return array
      */
     protected function showDetail($messageId)
     {
+        Pi::service('authentication')->requireLogin();
         //current user id
         $userId = Pi::user()->getUser()->id;
 
-        $model = $this->getModel('private_message');
+        // dismiss alert
+        Pi::user()->message->dismissAlert($userId);
+
+        $model = $this->getModel('message');
         //get private message
         $select = $model->select()
-                        ->where(function($where) use ($messageId, $userId) {
-                            $subWhere = clone $where;
-                            $subWhere->equalTo('uid_from', $userId);
-                            $subWhere->or;
-                            $subWhere->equalTo('uid_to', $userId);
-                            $where->equalTo('id', $messageId)
-                                  ->andPredicate($subWhere);
-                        });
+            ->where(function ($where) use ($messageId, $userId) {
+                $subWhere = clone $where;
+                $subWhere->equalTo('uid_from', $userId);
+                $subWhere->or;
+                $subWhere->equalTo('uid_to', $userId);
+                $where->equalTo('id', $messageId)
+                    ->andPredicate($subWhere);
+            });
         $rowset = $model->selectWith($select)->current();
         if (!$rowset) {
             return;
         }
         $detail = $rowset->toArray();
         //get avatar
-        $detail['avatar'] = Pi::user()->avatar($detail['uid_from'])
-                                      ->get('small');
-        $detail['profileUrl'] = Pi::user()->getUrl('profile',
-                                                   $detail['uid_from']);
+        $detail['avatar'] = Pi::user()->avatar($detail['uid_from'], 'small');
+        $detail['profileUrl'] = Pi::user()->getUrl(
+            'profile',
+            $detail['uid_from']
+        );
 
         if ($userId == $detail['uid_from']) {
             //get username url
-            $detail['username'] = Pi::user()->getUser($detail['uid_to'])
-                                            ->identity;
+            $user = Pi::user()->getUser($detail['uid_to'])
+                ?: Pi::user()->getUser(0);
+            $detail['name'] = $user->name;
         } else {
             //get username url
-            $detail['username'] = Pi::user()->getUser($detail['uid_from'])
-                                            ->identity;
+            $user = Pi::user()->getUser($detail['uid_from'])
+                ?: Pi::user()->getUser(0);
+            $detail['name'] = $user->name;
         }
 
         //markup content
-        $detail['content'] = Pi::service('markup')->render($detail['content']);
+        $detail['content'] = Pi::service('markup')->render($detail['content'], 'html', 'html');
 
-        if ($detail['is_new_to'] && $userId == $detail['uid_to']) {
+        if (!$detail['is_read_to'] && $userId == $detail['uid_to']) {
             //mark the message as read
-            $model->update(array('is_new_to' => 0), array('id' => $messageId));
+            $model->update(array('is_read_to' => 1), array('id' => $messageId));
         }
 
         $this->view()->assign('message', $detail);
@@ -453,8 +470,8 @@ class IndexController extends ActionController
         if (empty($messageIds)) {
             $this->redirect()->toRoute('', array(
                 'controller' => 'index',
-                'action'     => 'index',
-                'p'          => $page
+                'action' => 'index',
+                'p' => $page
             ));
         }
 
@@ -462,16 +479,16 @@ class IndexController extends ActionController
             $messageIds = explode(',', $messageIds);
         }
 
-        $model = $this->getModel('private_message');
-        $result = $model->update(array('is_new_to' => 0), array(
-            'id'     => $messageIds,
+        $model = $this->getModel('message');
+        $result = $model->update(array('is_read_to' => 1), array(
+            'id' => $messageIds,
             'uid_to' => $userId
         ));
 
         $this->redirect()->toRoute('', array(
             'controller' => 'index',
-            'action'     => 'index',
-            'p'          => $page
+            'action' => 'index',
+            'p' => $page
         ));
     }
 
@@ -493,42 +510,51 @@ class IndexController extends ActionController
         if (empty($messageIds)) {
             $this->redirect()->toRoute('', array(
                 'controller' => 'index',
-                'action'     => 'index',
-                'p'          => $page
+                'action' => 'index',
+                'p' => $page
             ));
         }
         $userId = Pi::user()->getUser()->id;
-        $model = $this->getModel('private_message');
+        $model = $this->getModel('message');
 
         if ($toId) {
             if ($userId == $toId) {
-                $model->update(array('delete_status_to' => 1), array(
-                    'id'     => $messageIds,
+                $model->update(array('is_deleted_to' => 1), array(
+                    'id' => $messageIds,
                     'uid_to' => $userId
                 ));
             } else {
-                $model->update(array('delete_status_from' => 1), array(
-                    'id'       => $messageIds,
+                $model->update(array('is_deleted_from' => 1), array(
+                    'id' => $messageIds,
                     'uid_from' => $userId
                 ));
             }
         } else {
-            $model->update(array('delete_status_from' => 1), array(
+            $model->update(array('is_deleted_from' => 1), array(
                 'uid_from' => $userId,
-                'id'       => $messageIds
+                'id' => $messageIds
             ));
-            $model->update(array('delete_status_to' => 1), array(
+            $model->update(array('is_deleted_to' => 1), array(
                 'uid_to' => $userId,
-                'id'     => $messageIds
+                'id' => $messageIds
             ));
         }
 
         $this->redirect()->toRoute('', array(
             'controller' => 'index',
-            'action'     => 'index',
-            'p'          => $page
+            'action' => 'index',
+            'p' => $page
         ));
 
         return;
+    }
+
+    /*
+     * Archive
+     */
+    public function archiveAction()
+    {
+        Pi::service('authentication')->requireLogin();
+        $this->renderNav();
     }
 }

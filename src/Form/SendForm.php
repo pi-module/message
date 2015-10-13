@@ -4,7 +4,7 @@
  *
  * @link            http://code.pialog.org for the Pi Engine source repository
  * @copyright       Copyright (c) Pi Engine http://pialog.org
- * @license         http://pialog.org/license.txt New BSD License
+ * @license         http://pialog.org/license.txt BSD 3-Clause License
  */
 
 namespace Module\Message\Form;
@@ -31,8 +31,8 @@ class SendForm extends BaseForm
     /**
      * Constructor
      *
-     * @param null|string|int $name   Optional name for the element
-     * @param string          $markup Page type: text, html, markdown
+     * @param null|string|int $name Optional name for the element
+     * @param string $markup Page type: text, html, markdown
      */
     public function __construct($name = null, $markup = null)
     {
@@ -46,12 +46,12 @@ class SendForm extends BaseForm
     public function init()
     {
         $this->add(array(
-            'name'          => 'username',
-            'attributes'    => array(
-                'type'  => 'text',
-                'placeholder'     => 'Type the username',
+            'name' => 'name',
+            'attributes' => array(
+                'type' => 'text',
+                'readonly' => 'true'
             ),
-            'options'       => array(
+            'options' => array(
                 'label' => __('Recipient'),
             ),
         ));
@@ -59,35 +59,37 @@ class SendForm extends BaseForm
         $set = '';
         switch ($this->markup) {
             case 'html':
-                $editor         = 'html';
+                $editor = 'html';
                 break;
             case 'markdown':
-                $editor         = 'markitup';
-                $set            = 'markdown';
+                $editor = 'markitup';
+                $set = 'markdown';
                 break;
             case 'text':
             default:
-                $editor         = 'textarea';
+                $editor = 'textarea';
                 break;
         }
 
         $this->add(array(
-            'name'          => 'content',
-            'options'       => array(
-                'label'     => __('Content'),
-                'editor'    => $editor,
-                'set'       => $set,
+            'name' => 'content',
+            'options' => array(
+                'label' => __('Content'),
+                'editor' => $editor,
+                'set' => $set,
             ),
-            'attributes'    => array(
-                'type'          => 'editor',
-                'placeholder'     => 'Message content',
+            'attributes' => array(
+                'type' => 'editor',
+                'placeholder' => __('Message content'),
+                'rows' => 5
             ),
         ));
 
         $this->add(array(
-            'name'          => 'submit',
-            'attributes'    => array(
-                'type'  => 'submit',
+            'name' => 'submit',
+            'type' => 'submit',
+            'attributes' => array(
+                'class' => 'btn btn-primary',
                 'value' => __('Send'),
             )
         ));

@@ -4,11 +4,15 @@
  *
  * @link            http://code.pialog.org for the Pi Engine source repository
  * @copyright       Copyright (c) Pi Engine http://pialog.org
- * @license         http://pialog.org/license.txt New BSD License
+ * @license         http://pialog.org/license.txt BSD 3-Clause License
  */
 
 namespace Module\Message;
+
 use Pi;
+use Zend\Db\Sql\Predicate\Expression;
+
+trigger_error(sprintf('The class is discouraged, move corresponding methods to relevant APIs - %s', __FILE__), E_USER_WARNING);
 
 /**
  * Public function for message module
@@ -21,7 +25,7 @@ class Service
      * Message summary
      *
      * @param  string $message
-     * @param  int    $length
+     * @param  int $length
      * @return string
      */
     public static function messageSummary($message, $length = 40)
@@ -86,5 +90,64 @@ class Service
         }
 
         return trim($message);
+    }
+
+    /**
+     * Get unread message count
+     *
+     * @param  int $uid
+     * @param  string $type
+     * @return int|false
+     */
+    public static function getUnread($uid, $type = '')
+    {
+        switch ($type) {
+            case 'message':
+            case 'notification':
+                break;
+            default:
+                $type = '';
+                break;
+        }
+        if ('notification' == $type) {
+            $where = array(
+                'uid' => $uid,
+                'is_deleted' => 0,
+                'is_read' => 0,
+            );
+            $model = Pi::model('notification', 'message');
+            /*
+            $select = $model->select();
+            $select->columns(array(
+                'count' => Pi::db()->expression('count(*)'),
+            ));
+            $select->where($where);
+            $row = $model->selectWith($select)->current();
+            $count = (int) $row['count'];
+            */
+            $count = $model->count($where);
+        } elseif ('message' == $type) {
+            $where = array(
+                'uid_to' => $uid,
+                'is_deleted_to' => 0,
+                'is_read_to' => 0,
+            );
+            $model = Pi::model('message', 'message');
+            /*
+            $select = $model->select();
+            $select->columns(array(
+                'count' => Pi::db()->expression('count(*)'),
+            ));
+            $select->where($where);
+            $row = $model->selectWith($select)->current();
+            $count = (int) $row['count'];
+            */
+            $count = $model->count($where);
+        } else {
+            $count = static::getCount($uid, 'message')
+                + static::getCount($uid, 'notification');
+        }
+
+        return $count;
     }
 }

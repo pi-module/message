@@ -4,7 +4,7 @@
  *
  * @link            http://code.pialog.org for the Pi Engine source repository
  * @copyright       Copyright (c) Pi Engine http://pialog.org
- * @license         http://pialog.org/license.txt New BSD License
+ * @license         http://pialog.org/license.txt BSD 3-Clause License
  */
 
 /**
@@ -12,45 +12,43 @@
  */
 return array(
     // Module meta
-    'meta'  => array(
+    'meta' => array(
         // Module title, required
-        'title'         => __('Message'),
+        'title' => _a('Message'),
         // Description, for admin, optional
-        'description'   => __('A module to send message'),
+        'description' => _a('A module to send message'),
         // Version number, required
-        'version'       => '1.0.0',
+        'version' => '1.0.0',
         // Distribution license, required
-        'license'       => 'New BSD',
+        'license' => 'New BSD',
         // Module is ready for clone? Default as false
-        'clonable'      => false,
+        'clonable' => false,
+        'icon' => 'fa-envelope-o',
     ),
     // Author information
-    'author'    => array(
+    'author' => array(
         // Author full name, required
-        'name'      => 'Xingyu Ji',
+        'Dev' => 'Xingyu Ji; Liu Chuang',
         // Email address, optional
-        'email'     => 'xingyu@eefocus.com',
+        'Email' => 'xingyu@eefocus.com',
+        'UI/UE' => '@zhangsimon, @loidco',
+        'QA' => 'Zhang Hua, @lavenderli',
         // Website link, optional
-        'website'   => 'http://www.xoopsengine.org',
+        'Website' => 'http://pialog.org',
         // Credits and aknowledgement, optional
-        'credits'   => 'Zend Framework Team; Pi Engine Team; EEFOCUS Team.'
+        'Credits' => 'Zend Framework Team; Pi Engine Team; EEFOCUS Team.'
     ),
-    // Maintenance actions
-    'maintenance'   => array(
-        // resource
-        'resource' => array(
-            // Database meta
-            'database'  => array(
-                // SQL schema/data file
-                'sqlfile'   => 'sql/mysql.sql',
-                // Tables to be removed during uninstall, optional
-                'schema'    => array(
-                    'private_message'      => 'table',
-                    'notification'         => 'table',
-                ),
-            ),
-            // Navigation definition
-            'navigation'    => 'navigation.php',
+    // resource
+    'resource' => array(
+        // Database meta
+        'database' => array(
+            // SQL schema/data file
+            'sqlfile' => 'sql/mysql.sql',
         ),
+        // Navigation definition
+        'navigation' => 'navigation.php',
+        // User specs
+        'user' => 'user.php',
     ),
+
 );
