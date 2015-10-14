@@ -79,18 +79,7 @@
     color: #005580;
 }
 
-.message-content p {
-    width: 628px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-
-.message-content p.message-body {
-    width: 690px;
-}
-
-.message-content p a {
+.message-content a {
     color: #888;
     text-decoration: none;
 }

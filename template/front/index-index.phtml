@@ -32,55 +32,17 @@
             <div class="messages" id="message-js">
                 <?php if (!empty($messages)) { ?>
                     <?php foreach ($messages as $message) { ?>
-                        <div class="media message-item<?php if (!$message['is_read']) {
-                            echo ' message-item-read';
-                        } ?>">
-                            <div class='pull-left message-media-left'>
-                                <input type="checkbox" class="message-js-check pull-left"
-                                       data-id="<?php echo $message['id']; ?>">
-                                <a href="<?php echo $message['profileUrl']; ?>" class="pull-left">
-                                    <?php echo $message['avatar']; ?>
-                                </a>
-                            </div>
-                            <div class="pull-right text-right">
-                                <p class="message-time">
-                                    <span class="muted"><?php echo _date($message['time_send']); ?></span>
-                                </p>
-
-                                <p class="message-hidden"></p>
-
-                <span>
-                    <a href="<?php if (isset($paginator)) {
-                        echo $this->url('', array(
-                            'action' => 'delete',
-                            'ids' => $message['id'],
-                            'p' => $paginator->getCurrentPageNumber()
-                        ));
-                    } else {
-                        echo $this->url('', array('action' => 'delete', 'ids' => $message['id']));
-                    } ?>" class="message-js-delete"
-                       data-confirm="<?php _e('Once you delete this message, it cannot be undone.'); ?>">
-                        <?php _e('Delete'); ?>
-                    </a>
-                </span>
-                                <span class="message-divider">|</span>
-                <span class="message-mark">
-                    <a href="<?php if (isset($paginator)) {
-                        echo $this->url('', array(
-                            'action' => 'mark',
-                            'ids' => $message['id'],
-                            'p' => $paginator->getCurrentPageNumber()
-                        ));
-                    } else {
-                        echo $this->url('', array('action' => 'mark', 'ids' => $message['id']));
-                    } ?>">
-                        <?php _e('Mark as read'); ?>
-                    </a>
-                </span>
-                                </p>
-                            </div>
-                            <div class="media-body message-content">
-                                <div class="media-heading">
+                        <div class="clearfix message-item<?php if ($message['is_read_to']) { echo ' bg-warning'; } ?>">
+                            <div class="col-md-2">
+                                <div class='message-media-left clearfix'>
+                                    <input type="checkbox" class="message-js-check pull-left"
+                                           data-id="<?php echo $message['id']; ?>">
+                                    <a href="<?php echo $message['profileUrl']; ?>" class="pull-left">
+                                        <?php echo $message['avatar']; ?>
+                                    </a>
+                                </div>
+                                <div class="clearfix">
+                                    <br />
                                     <span class="muted">
                                         <?php echo $uid == $message['uid_from'] ? __('To') : __('From'); ?>
                                     </span>
@@ -88,11 +50,51 @@
                                         <?php echo $message['name']; ?>
                                     </a>
                                 </div>
-                                <p>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="message-content">
                                     <a href="<?php echo $this->url('', array('action' => 'detail', 'mid' => $message['id'])); ?>"
                                        class="message-content-link"><?php echo $message['content']; ?>
                                     </a>
-                                </p>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="pull-right text-right">
+                                    <p class="message-time muted">
+                                        <?php echo _date($message['time_send']); ?>
+                                    </p>
+                                    <p class="message-hidden"></p>
+                                    <ul class="list-inline">
+                                        <li>
+                                            <a href="<?php if (isset($paginator)) {
+                                                echo $this->url('', array(
+                                                    'action' => 'delete',
+                                                    'ids' => $message['id'],
+                                                    'p' => $paginator->getCurrentPageNumber()
+                                                ));
+                                            } else {
+                                                echo $this->url('', array('action' => 'delete', 'ids' => $message['id']));
+                                            } ?>" class="message-js-delete"
+                                               data-confirm="<?php _e('Once you delete this message, it cannot be undone.'); ?>">
+                                                <?php _e('Delete'); ?>
+                                            </a>
+                                        </li>
+                                        <li class="message-divider">|</li>
+                                        <li class="message-mark">
+                                            <a href="<?php if (isset($paginator)) {
+                                                echo $this->url('', array(
+                                                    'action' => 'mark',
+                                                    'ids' => $message['id'],
+                                                    'p' => $paginator->getCurrentPageNumber()
+                                                ));
+                                            } else {
+                                                echo $this->url('', array('action' => 'mark', 'ids' => $message['id']));
+                                            } ?>">
+                                                <?php _e('Mark as read'); ?>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
                             </div>
                         </div>
                     <?php } ?>

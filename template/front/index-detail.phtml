@@ -1,4 +1,5 @@
 <?php $this->css($this->assetModule('script/front.css')); ?>
+<div class="clearfix">
     <div class="col-md-3">
         <?php include $this->templateModule('front/user-profile-sidebar.phtml', 'user'); ?>
     </div>
@@ -55,7 +56,7 @@
                                 <p class="pull-right">
                                     <span>
                                         <a href="<?php echo $this->url('', array('action' => 'delete', 'ids' => $message['id'], 'tid' => $message['uid_to'])); ?>"
-                                            class="js-delete">
+                                           class="js-delete">
                                             <?php _e('Delete'); ?></a>
                                     </span>
                                 </p>
@@ -89,6 +90,7 @@
             </div>
         <?php } ?>
     </div>
+</div>
 <?php
 $paginator = isset($paginator) ? $paginator->getCurrentPageNumber() : '';
 $host = $this->url('', array('module' => 'message'));

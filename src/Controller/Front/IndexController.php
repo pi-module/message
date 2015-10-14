@@ -113,6 +113,8 @@ class IndexController extends ActionController
                     array('nl2br' => false)
                 );
 
+                $v['content'] = mb_substr(strip_tags($v['content']), 0, 200, 'utf-8' ) . "...";
+
                 if ($userId == $v['uid_from']) {
                     $v['is_read'] = 1;
                     $user = Pi::user()->getUser($v['uid_to'])
@@ -137,8 +139,8 @@ class IndexController extends ActionController
                 }
 
                 unset(
-                    $v['is_read_from'],
-                    $v['is_read_to'],
+                    //$v['is_read_from'],
+                    //$v['is_read_to'],
                     $v['delete_status_from'],
                     $v['delete_status_to']
                 );
@@ -180,7 +182,7 @@ class IndexController extends ActionController
         $userId = Pi::user()->getUser()->id;
 
         $messageTitle = sprintf(
-            __('Private message(%s unread)'),
+            __('Private message(<span class="label label-danger">%s</span> unread)'),
             Service::getUnread($userId, 'message')
         );
         $notificationTitle = sprintf(
