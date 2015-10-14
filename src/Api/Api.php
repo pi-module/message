@@ -81,6 +81,9 @@ class Api extends AbstractApi
         // increase message alert
         $this->increaseAlert($to);
 
+        // Send mail
+        $this->sendMail($to, $message, $from);
+
         return $result;
     }
 
@@ -227,19 +230,26 @@ class Api extends AbstractApi
      * @param  int $uid
      * @return bool
      */
-    public function sendMail($uid)
+    public function sendMail($to, $message, $from)
     {
         if (Pi::service('module')->isActive('notification')) {
             // Get user info
-            $user = Pi::user()->get($uid, array(
+            $user = Pi::user()->get($to, array(
+                'id', 'identity', 'name', 'email'
+            ));
+            // Get sender info
+            $sender = Pi::user()->get($from, array(
                 'id', 'identity', 'name', 'email'
             ));
             // Set to user
-            $to = array(
+            $toUser = array(
                 $user['email'] => $user['name'],
             );
             // Set information
-            $information = array();
+            $information = array(
+                'name' => $user['name'],
+                'sender' => $sender['name'],
+            );
             // Send mail
             Pi::api('mail', 'notification')->send(
                 $to,
