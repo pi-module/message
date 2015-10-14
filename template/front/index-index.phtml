@@ -41,17 +41,17 @@
                                         <?php echo $message['avatar']; ?>
                                     </a>
                                 </div>
+                            </div>
+                            <div class="col-md-6">
                                 <div class="clearfix">
-                                    <br />
                                     <span class="muted">
                                         <?php echo $uid == $message['uid_from'] ? __('To') : __('From'); ?>
                                     </span>
                                     <a href="<?php echo $message['profileUrl']; ?>" class="message-user-name">
                                         <?php echo $message['name']; ?>
                                     </a>
+                                    <br />
                                 </div>
-                            </div>
-                            <div class="col-md-6">
                                 <div class="message-content">
                                     <a href="<?php echo $this->url('', array('action' => 'detail', 'mid' => $message['id'])); ?>"
                                        class="message-content-link"><?php echo $message['content']; ?>
