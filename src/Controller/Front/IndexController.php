@@ -125,7 +125,10 @@ class IndexController extends ActionController
                     $v['profileUrl'] = Pi::user()->getUrl('profile',
                         $v['uid_to']);
                     //get avatar
-                    $v['avatar'] = Pi::user()->avatar($v['uid_to'], 'small');
+                    $v['avatar'] = Pi::user()->avatar($v['uid_to'], 'medium', array(
+                        'alt' => $user->name,
+                        'class' => 'img-circle',
+                    ));
                 } else {
                     $v['is_read'] = $v['is_read_to'];
                     $user = Pi::user()->getUser($v['uid_from'])
@@ -135,7 +138,10 @@ class IndexController extends ActionController
                     $v['profileUrl'] = Pi::user()->getUrl('profile',
                         $v['uid_from']);
                     //get avatar
-                    $v['avatar'] = Pi::user()->avatar($v['uid_from'], 'small');
+                    $v['avatar'] = Pi::user()->avatar($v['uid_from'], 'medium', array(
+                        'alt' => $user->name,
+                        'class' => 'img-circle',
+                    ));
                 }
 
                 unset(
@@ -424,7 +430,10 @@ class IndexController extends ActionController
         }
         $detail = $rowset->toArray();
         //get avatar
-        $detail['avatar'] = Pi::user()->avatar($detail['uid_from'], 'small');
+        $detail['avatar'] = Pi::user()->avatar($detail['uid_from'], 'medium', array(
+            'alt' => $user->name,
+            'class' => 'img-circle',
+        ));
         $detail['profileUrl'] = Pi::user()->getUrl(
             'profile',
             $detail['uid_from']
