@@ -32,7 +32,7 @@
             <div class="messages" id="message-js">
                 <?php if (!empty($messages)) { ?>
                     <?php foreach ($messages as $message) { ?>
-                        <div class="clearfix message-item<?php if ($message['is_read_to']) { echo ' bg-warning'; } ?>">
+                        <div class="clearfix message-item<?php if (!$message['is_read']) { echo ' bg-warning'; } ?>">
                             <div class="col-md-2">
                                 <div class='message-media-left clearfix'>
                                     <input type="checkbox" class="message-js-check pull-left"
@@ -53,8 +53,8 @@
                                     <br />
                                 </div>
                                 <div class="message-content">
-                                    <a href="<?php echo $this->url('', array('action' => 'detail', 'mid' => $message['id'])); ?>"
-                                       class="message-content-link"><?php echo $message['content']; ?>
+                                    <?php echo $message['content']; ?> <a href="<?php echo $this->url('', array('action' => 'detail', 'mid' => $message['id'])); ?>"
+                                       class="message-content-link"> <?php _e('More ...'); ?>
                                     </a>
                                 </div>
                             </div>
