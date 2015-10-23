@@ -252,7 +252,7 @@ class Api extends AbstractApi
             );
             // Send mail
             Pi::api('mail', 'notification')->send(
-                $to,
+                $toUser,
                 'notification',
                 $information,
                 'message'
