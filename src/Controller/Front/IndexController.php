@@ -113,7 +113,7 @@ class IndexController extends ActionController
                     array('nl2br' => false)
                 );
 
-                $v['content'] = mb_substr(strip_tags($v['content']), 0, 200, 'utf-8' ) . "...";
+                $v['content'] = (mb_strlen(strip_tags($v['content']), 'utf-8') > 300) ? mb_substr(strip_tags($v['content']), 0, 300, 'utf-8' )  . ' ... ' : strip_tags($v['content']);
 
                 if ($userId == $v['uid_from']) {
                     $v['is_read'] = 1;
@@ -124,11 +124,6 @@ class IndexController extends ActionController
                     // username link, 4 locations
                     $v['profileUrl'] = Pi::user()->getUrl('profile',
                         $v['uid_to']);
-                    //get avatar
-                    $v['avatar'] = Pi::user()->avatar($v['uid_to'], 'medium', array(
-                        'alt' => $user->name,
-                        'class' => 'img-circle',
-                    ));
                 } else {
                     $v['is_read'] = $v['is_read_to'];
                     $user = Pi::user()->getUser($v['uid_from'])
@@ -137,16 +132,17 @@ class IndexController extends ActionController
                     $v['name'] = $user->name;
                     $v['profileUrl'] = Pi::user()->getUrl('profile',
                         $v['uid_from']);
-                    //get avatar
-                    $v['avatar'] = Pi::user()->avatar($v['uid_from'], 'medium', array(
-                        'alt' => $user->name,
-                        'class' => 'img-circle',
-                    ));
                 }
 
+                //get avatar
+                $v['avatar'] = Pi::user()->avatar($v['uid_from'], 'medium', array(
+                    'alt' => $user->name,
+                    'class' => 'img-circle',
+                ));
+
                 unset(
-                    //$v['is_read_from'],
-                    //$v['is_read_to'],
+                    $v['is_read_from'],
+                    $v['is_read_to'],
                     $v['delete_status_from'],
                     $v['delete_status_to']
                 );

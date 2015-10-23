@@ -30,7 +30,7 @@
 
 .message-detail-primary:hover .message-hidden,
 .message-item:hover .message-hidden {
-    display: block;
+    /* display: block; */
 }
 
 .message-hidden {
@@ -79,8 +79,18 @@
 }
 
 .message-content a {
-    color: #888;
+    color: #000;
     text-decoration: none;
+    width: 100%;
+    padding: 8px;
+    display: block;
+}
+
+.message-content a:hover {
+    color: #000;
+    text-decoration: none;
+    background-color: #e0e0e0;
+    border-radius: 4px;
 }
 
 .message-foot-form {

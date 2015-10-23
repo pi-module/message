@@ -33,18 +33,18 @@
                 <?php if (!empty($messages)) { ?>
                     <?php foreach ($messages as $message) { ?>
                         <div class="clearfix message-item<?php if (!$message['is_read']) { echo ' bg-warning'; } ?>">
-                            <div class="col-md-2">
+                            <div class="col-md-1">
                                 <div class='message-media-left clearfix'>
-                                    <input type="checkbox" class="message-js-check pull-left"
-                                           data-id="<?php echo $message['id']; ?>">
-                                    <a href="<?php echo $message['profileUrl']; ?>" class="pull-left">
+                                    <a href="<?php echo $message['profileUrl']; ?>">
                                         <?php echo $message['avatar']; ?>
                                     </a>
                                 </div>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-11">
                                 <div class="clearfix">
                                     <span class="muted">
+                                        <input type="checkbox" class="message-js-check"
+                                               data-id="<?php echo $message['id']; ?>">
                                         <?php echo $uid == $message['uid_from'] ? __('To') : __('From'); ?>
                                     </span>
                                     <a href="<?php echo $message['profileUrl']; ?>" class="message-user-name">
@@ -53,18 +53,15 @@
                                     <br />
                                 </div>
                                 <div class="message-content">
-                                    <?php echo $message['content']; ?> <a href="<?php echo $this->url('', array('action' => 'detail', 'mid' => $message['id'])); ?>"
-                                       class="message-content-link"> <?php _e('More ...'); ?>
+                                     <a href="<?php echo $this->url('', array('action' => 'detail', 'mid' => $message['id'])); ?>"
+                                       class="message-content-link"> <?php echo $message['content']; ?>
                                     </a>
                                 </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="pull-right text-right">
-                                    <p class="message-time muted">
-                                        <?php echo _date($message['time_send']); ?>
-                                    </p>
-                                    <p class="message-hidden"></p>
+                                <div class="clearfix">
+                                       <p class="message-hidden"></p>
                                     <ul class="list-inline">
+                                        <li class="message-time muted"><?php echo _date($message['time_send']); ?></li>
+                                        <li class="message-divider">|</li>
                                         <li>
                                             <a href="<?php if (isset($paginator)) {
                                                 echo $this->url('', array(
