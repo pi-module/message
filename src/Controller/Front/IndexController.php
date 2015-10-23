@@ -184,8 +184,8 @@ class IndexController extends ActionController
         $userId = Pi::user()->getUser()->id;
 
         $messageTitle = sprintf(
-            __('Private message(<span class="label label-danger">%s</span> unread)'),
-            Service::getUnread($userId, 'message')
+            __('Private message ( <span class="label label-danger">%s</span> unread )'),
+            _number(Service::getUnread($userId, 'message'))
         );
         $notificationTitle = sprintf(
             __('Notification(%s  unread)'),
