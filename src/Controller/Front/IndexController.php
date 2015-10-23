@@ -103,16 +103,12 @@ class IndexController extends ActionController
             }
 
             array_walk($messageList, function (&$v, $k) use ($userId) {
-                //format messages
-//                $v['content'] = Service::messageSummary($v['content']);
-
                 // markup content
                 $v['content'] = Pi::service('markup')->compile(
                     $v['content'],
                     'html',
                     array('nl2br' => false)
                 );
-
                 $v['content'] = (mb_strlen(strip_tags($v['content']), 'utf-8') > 300) ? mb_substr(strip_tags($v['content']), 0, 300, 'utf-8' )  . ' ... ' : strip_tags($v['content']);
 
                 if ($userId == $v['uid_from']) {
@@ -185,11 +181,11 @@ class IndexController extends ActionController
 
         $messageTitle = sprintf(
             __('Private message ( <span class="label label-danger">%s</span> unread )'),
-            _number(Service::getUnread($userId, 'message'))
+            _number(Pi::api('api', 'message')->getUnread($userId, 'message'))
         );
         $notificationTitle = sprintf(
-            __('Notification(%s  unread)'),
-            Service::getUnread($userId, 'notification')
+            __('Notification ( <span class="label label-danger">%s</span> unread )'),
+            _number(Pi::api('api', 'message')->getUnread($userId, 'notification'))
         );
         $this->view()->assign('messageTitle', $messageTitle);
         $this->view()->assign('notificationTitle', $notificationTitle);

@@ -39,12 +39,12 @@ class NotifyController extends ActionController
         $userId = Pi::user()->getUser()->id;
 
         $messageTitle = sprintf(
-            __('Private message(%s unread)'),
-            Service::getUnread($userId, 'message')
+            __('Private message ( <span class="label label-danger">%s</span> unread )'),
+            _number(Pi::api('api', 'message')->getUnread($userId, 'message'))
         );
         $notificationTitle = sprintf(
-            __('Notification(%s unread)'),
-            Service::getUnread($userId, 'notification')
+            __('Notification ( <span class="label label-danger">%s</span> unread )'),
+            _number(Pi::api('api', 'message')->getUnread($userId, 'notification'))
         );
         $this->view()->assign('messageTitle', $messageTitle);
         $this->view()->assign('notificationTitle', $notificationTitle);

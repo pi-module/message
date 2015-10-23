@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Pi-message\n"
-"POT-Creation-Date: 2015-10-23 10:16+0330\n"
-"PO-Revision-Date: 2015-10-23 10:18+0330\n"
+"POT-Creation-Date: 2015-10-23 10:25+0330\n"
+"PO-Revision-Date: 2015-10-23 10:25+0330\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: fa\n"
@@ -24,55 +24,47 @@ msgstr "آرشیو"
 msgid "Message detail"
 msgstr "جزئیات پیام"
 
-#: src/Api/Breadcrumbs.php:59 src/Controller/Front/IndexController.php:328
+#: src/Api/Breadcrumbs.php:59 src/Controller/Front/IndexController.php:324
 msgid "Send message"
 msgstr "ارسال پیام"
 
-#: src/Controller/Front/IndexController.php:187
+#: src/Controller/Front/IndexController.php:183
+#: src/Controller/Front/NotifyController.php:42
 #, php-format
 msgid "Private message ( <span class=\"label label-danger\">%s</span> unread )"
-msgstr ""
-"پیام شخصی ( <span class=\"label label-danger\">%s</span> پیام خوانده نشده )"
+msgstr "پیام شخصی ( <span class=\"label label-danger\">%s</span> خوانده نشده )"
 
-#: src/Controller/Front/IndexController.php:191
+#: src/Controller/Front/IndexController.php:187
+#: src/Controller/Front/NotifyController.php:46
 #, php-format
-msgid "Notification(%s  unread)"
-msgstr "آگاهی رسانی (%s خوانده نشده)"
+msgid "Notification ( <span class=\"label label-danger\">%s</span> unread )"
+msgstr ""
+"آگاهی رسانی ( <span class=\"label label-danger\">%s</span> خوانده نشده )"
 
-#: src/Controller/Front/IndexController.php:227
+#: src/Controller/Front/IndexController.php:223
 msgid "Username is invalid, please try again."
 msgstr "نام کاربری صحیح نیست ، دوباره امتحان کنید."
 
-#: src/Controller/Front/IndexController.php:243
-#: src/Controller/Front/IndexController.php:371
+#: src/Controller/Front/IndexController.php:239
+#: src/Controller/Front/IndexController.php:367
 msgid "Send failed, please try again."
 msgstr "ارسال موفقیت آمیز نبود ، دوباره امتحان کنید."
 
-#: src/Controller/Front/IndexController.php:277
+#: src/Controller/Front/IndexController.php:273
 msgid "User"
 msgstr "کاربر"
 
-#: src/Controller/Front/IndexController.php:281
+#: src/Controller/Front/IndexController.php:277
 msgid "not found"
 msgstr "یافت نشد"
 
-#: src/Controller/Front/IndexController.php:287
+#: src/Controller/Front/IndexController.php:283
 msgid "Sorry, you can't send message to yourself."
 msgstr "متاسفانه شما نمیتوانید به خودتان پیام بفرستید."
 
-#: src/Controller/Front/IndexController.php:299
+#: src/Controller/Front/IndexController.php:295
 msgid "An error occurred, please try again."
 msgstr "یک خطا روی داده است ، لطفا دوباره امتحان کنید."
-
-#: src/Controller/Front/NotifyController.php:42
-#, php-format
-msgid "Private message(%s unread)"
-msgstr "پایام خصوصی (%s خوانده نشده)"
-
-#: src/Controller/Front/NotifyController.php:46
-#, php-format
-msgid "Notification(%s unread)"
-msgstr "آگاهی رسانی (%s خوانده نشده)"
 
 #: src/Form/ReplyForm.php:66 src/Form/SendForm.php:77
 msgid "Content"
@@ -183,6 +175,15 @@ msgid ""
 msgstr ""
 "<div class=\"alert alert-info message-alert\">هیچ آگاهی رسانی برای شما نیست !"
 "</div>"
+
+#~ msgid "Notification(%s  unread)"
+#~ msgstr "آگاهی رسانی (%s خوانده نشده)"
+
+#~ msgid "Private message(%s unread)"
+#~ msgstr "پایام خصوصی (%s خوانده نشده)"
+
+#~ msgid "Notification(%s unread)"
+#~ msgstr "آگاهی رسانی (%s خوانده نشده)"
 
 #~ msgid "Need login"
 #~ msgstr "برای استفاده وارد شوید"
