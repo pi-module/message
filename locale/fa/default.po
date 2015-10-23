@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Pi-message\n"
-"POT-Creation-Date: 2015-10-23 10:25+0330\n"
-"PO-Revision-Date: 2015-10-23 10:25+0330\n"
+"POT-Creation-Date: 2015-10-23 12:44+0330\n"
+"PO-Revision-Date: 2015-10-23 12:45+0330\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: fa\n"
@@ -82,6 +82,76 @@ msgstr "دریافت کننده"
 msgid "Message content"
 msgstr "متن پیام"
 
+#: template/admin/list-index.phtml:4
+msgid "List of messages"
+msgstr "فهرست پیام ها"
+
+#: template/admin/list-index.phtml:19 template/admin/list-index.phtml:40
+#: template/admin/list-index.phtml:48 template/front/index-detail.phtml:40
+#: template/front/index-index.phtml:48
+msgid "From"
+msgstr "از"
+
+#: template/admin/list-index.phtml:21 template/admin/list-index.phtml:41
+#: template/admin/list-index.phtml:60 template/front/index-detail.phtml:40
+#: template/front/index-index.phtml:48
+msgid "To"
+msgstr "به"
+
+#: template/admin/list-index.phtml:23 template/admin/list-index.phtml:42
+msgid "Send on"
+msgstr "ارسال شده در تاریخ"
+
+#: template/admin/list-index.phtml:25
+msgid "ID"
+msgstr "شناسه"
+
+#: template/admin/list-index.phtml:31
+msgid "Full details"
+msgstr "اطلاعات کامل"
+
+#: template/admin/list-index.phtml:38
+msgid "Close"
+msgstr "بستن"
+
+#: template/admin/list-index.phtml:50 template/admin/list-index.phtml:62
+msgid "Name"
+msgstr "نام"
+
+#: template/admin/list-index.phtml:51 template/admin/list-index.phtml:63
+msgid "Identity"
+msgstr "هویت"
+
+#: template/admin/list-index.phtml:52 template/admin/list-index.phtml:64
+msgid "Email"
+msgstr "ایمیل"
+
+#: template/admin/list-index.phtml:53 template/admin/list-index.phtml:65
+msgid "Is read ?"
+msgstr "خوانده شده ؟"
+
+#: template/admin/list-index.phtml:53 template/admin/list-index.phtml:54
+#: template/admin/list-index.phtml:65 template/admin/list-index.phtml:66
+msgid "Yes"
+msgstr "بله"
+
+#: template/admin/list-index.phtml:53 template/admin/list-index.phtml:54
+#: template/admin/list-index.phtml:65 template/admin/list-index.phtml:66
+msgid "No"
+msgstr "خیر"
+
+#: template/admin/list-index.phtml:54 template/admin/list-index.phtml:66
+msgid "Is deleted ?"
+msgstr "حذف شده ؟"
+
+#: template/admin/list-index.phtml:85
+msgid "Message list is empty !"
+msgstr "فهرست پیام ها خالی است !"
+
+#: template/admin/prune-index.phtml:3 template/admin/send-index.phtml:3
+msgid "This part not finished now !"
+msgstr "این بخش هنوز تکمیل نشده است !"
+
 #: template/front/_confirm-modal.phtml:4
 msgid "Delete this message?"
 msgstr "این پیام حذف شود؟"
@@ -116,14 +186,6 @@ msgstr "آرشیو پیام ها"
 #: template/front/index-index.phtml:13 template/front/notify-index.phtml:11
 msgid "Private message"
 msgstr "پیام شخصی"
-
-#: template/front/index-detail.phtml:40 template/front/index-index.phtml:48
-msgid "To"
-msgstr "به"
-
-#: template/front/index-detail.phtml:40 template/front/index-index.phtml:48
-msgid "From"
-msgstr "از"
 
 #: template/front/index-detail.phtml:60 template/front/index-index.phtml:76
 #: template/front/index-index.phtml:113 template/front/notify-detail.phtml:66
