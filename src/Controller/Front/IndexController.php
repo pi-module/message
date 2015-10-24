@@ -260,6 +260,7 @@ class IndexController extends ActionController
      */
     public function checkUsernameAction()
     {
+        Pi::service('authentication')->requireLogin();
         try {
             $username = _get('username', 'string');
             $user = Pi::user()->getUser($username, 'identity');
@@ -421,16 +422,8 @@ class IndexController extends ActionController
             return;
         }
         $detail = $rowset->toArray();
-        //get avatar
-        $detail['avatar'] = Pi::user()->avatar($detail['uid_from'], 'medium', array(
-            'alt' => $user->name,
-            'class' => 'img-circle',
-        ));
-        $detail['profileUrl'] = Pi::user()->getUrl(
-            'profile',
-            $detail['uid_from']
-        );
 
+        // Get user
         if ($userId == $detail['uid_from']) {
             //get username url
             $user = Pi::user()->getUser($detail['uid_to'])
@@ -442,6 +435,18 @@ class IndexController extends ActionController
                 ?: Pi::user()->getUser(0);
             $detail['name'] = $user->name;
         }
+
+        // Get avatar
+        $detail['avatar'] = Pi::user()->avatar($detail['uid_from'], 'medium', array(
+            'alt' => $user->name,
+            'class' => 'img-circle',
+        ));
+
+        // Set profile Url
+        $detail['profileUrl'] = Pi::user()->getUrl(
+            'profile',
+            $detail['uid_from']
+        );
 
         //markup content
         $detail['content'] = Pi::service('markup')->render($detail['content'], 'html', 'html');
@@ -465,6 +470,7 @@ class IndexController extends ActionController
      */
     public function markAction()
     {
+        Pi::service('authentication')->requireLogin();
         $messageIds = _get('ids', 'regexp', array('regexp' => '/^[0-9,]+$/'));
         $page = _get('p', 'int');
         $page = $page ?: 1;
@@ -502,6 +508,7 @@ class IndexController extends ActionController
      */
     public function deleteAction()
     {
+        Pi::service('authentication')->requireLogin();
         $messageIds = _get('ids', 'regexp', array('regexp' => '/^[0-9,]+$/'));
         $toId = _get('tid', 'int');
         $page = _get('p', 'int');
