@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Pi-message\n"
 "POT-Creation-Date: 2015-10-24 20:11+0100\n"
-"PO-Revision-Date: 2015-10-24 20:18+0100\n"
+"PO-Revision-Date: 2015-10-24 20:34+0100\n"
 "Last-Translator: Marc Desrousseaux\n"
 "Language-Team: Marc Desrousseaux\n"
 "Language: fr\n"
@@ -36,7 +36,7 @@ msgid ""
 msgstr ""
 "Vous pouvez purger les anciens messages, sélectionnez la date avant laquelle "
 "les messages seront supprimés. Vous pouvez également filtrer la liste des "
-"messages à supprimer en sélectionnant l'un des options de sélection"
+"messages à supprimer en sélectionnant l'une des options de sélection."
 
 #: src/Controller/Admin/PruneController.php:41
 #, php-format
@@ -47,7 +47,7 @@ msgstr "%s anciens messages ont été supprimés définitement"
 msgid "No messages removed ! check your selected filter and try again"
 msgstr ""
 "Aucun message supprimé ! Vérifiez vos filtres de sélection et essayez de "
-"nouveau"
+"nouveau."
 
 #: src/Controller/Admin/PruneController.php:48
 msgid "Prune old messages"
@@ -133,7 +133,7 @@ msgstr "Contenu du message"
 
 #: template/admin/list-index.phtml:4
 msgid "List of messages"
-msgstr "Liste de messages"
+msgstr "Liste des messages"
 
 #: template/admin/list-index.phtml:19 template/admin/list-index.phtml:40
 #: template/admin/list-index.phtml:48 template/front/index-detail.phtml:40
