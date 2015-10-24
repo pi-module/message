@@ -53,12 +53,12 @@
                                     <br />
                                 </div>
                                 <div class="message-content">
-                                     <a href="<?php echo $this->url('', array('action' => 'detail', 'mid' => $message['id'])); ?>"
+                                    <a href="<?php echo $this->url('', array('action' => 'detail', 'mid' => $message['id'])); ?>"
                                        class="message-content-link"> <?php echo $message['content']; ?>
                                     </a>
                                 </div>
                                 <div class="clearfix">
-                                       <p class="message-hidden"></p>
+                                    <p class="message-hidden"></p>
                                     <ul class="list-inline">
                                         <li class="message-time muted"><?php echo _date($message['time_send']); ?></li>
                                         <li class="message-divider">|</li>
