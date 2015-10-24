@@ -45,7 +45,7 @@ class PruneController extends ActionController
         }
         $this->view()->setTemplate('prune-index');
         $this->view()->assign('form', $form);
-        $this->view()->assign('title', __('Tools'));
+        $this->view()->assign('title', __('Prune old messages'));
         $this->view()->assign('message', $message);
     }
 }

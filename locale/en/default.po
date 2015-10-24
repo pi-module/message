@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Pi-message\n"
-"POT-Creation-Date: 2015-10-23 10:13+0330\n"
-"PO-Revision-Date: 2015-10-23 10:13+0330\n"
+"POT-Creation-Date: 2015-10-24 16:24+0330\n"
+"PO-Revision-Date: 2015-10-24 16:24+0330\n"
 "Last-Translator: Taiwen Jiang <taiwenjiang@tsinghua.org.cn>\n"
 "Language-Team: \n"
 "Language: en\n"
@@ -24,53 +24,88 @@ msgstr ""
 msgid "Message detail"
 msgstr ""
 
-#: src/Api/Breadcrumbs.php:59 src/Controller/Front/IndexController.php:328
+#: src/Api/Breadcrumbs.php:59 src/Controller/Front/IndexController.php:324
 msgid "Send message"
 msgstr ""
 
+#: src/Controller/Admin/PruneController.php:24
+msgid ""
+"You can prune all old message, select time to remove messages before that "
+"time and you can filter list  of removed messages by this from option."
+msgstr ""
+
+#: src/Controller/Admin/PruneController.php:41
+#, php-format
+msgid "%s old messages removed"
+msgstr ""
+
+#: src/Controller/Admin/PruneController.php:43
+msgid "No messages removed ! check your selected filter and try again"
+msgstr ""
+
+#: src/Controller/Admin/PruneController.php:48
+msgid "Prune old messages"
+msgstr ""
+
+#: src/Controller/Front/IndexController.php:183
+#: src/Controller/Front/NotifyController.php:42
+#, php-format
+msgid "Private message ( <span class=\"label label-danger\">%s</span> unread )"
+msgstr ""
+
 #: src/Controller/Front/IndexController.php:187
+#: src/Controller/Front/NotifyController.php:46
 #, php-format
-msgid "Private message(<span class=\"label label-danger\">%s</span> unread)"
+msgid "Notification ( <span class=\"label label-danger\">%s</span> unread )"
 msgstr ""
 
-#: src/Controller/Front/IndexController.php:191
-#, php-format
-msgid "Notification(%s  unread)"
-msgstr ""
-
-#: src/Controller/Front/IndexController.php:227
+#: src/Controller/Front/IndexController.php:223
 msgid "Username is invalid, please try again."
 msgstr ""
 
-#: src/Controller/Front/IndexController.php:243
-#: src/Controller/Front/IndexController.php:371
+#: src/Controller/Front/IndexController.php:239
+#: src/Controller/Front/IndexController.php:367
 msgid "Send failed, please try again."
 msgstr ""
 
-#: src/Controller/Front/IndexController.php:277
+#: src/Controller/Front/IndexController.php:273
 msgid "User"
 msgstr ""
 
-#: src/Controller/Front/IndexController.php:281
+#: src/Controller/Front/IndexController.php:277
 msgid "not found"
 msgstr ""
 
-#: src/Controller/Front/IndexController.php:287
+#: src/Controller/Front/IndexController.php:283
 msgid "Sorry, you can't send message to yourself."
 msgstr ""
 
-#: src/Controller/Front/IndexController.php:299
+#: src/Controller/Front/IndexController.php:295
 msgid "An error occurred, please try again."
 msgstr ""
 
-#: src/Controller/Front/NotifyController.php:42
-#, php-format
-msgid "Private message(%s unread)"
+#: src/Form/PruneForm.php:34
+msgid "All messages Before"
 msgstr ""
 
-#: src/Controller/Front/NotifyController.php:46
-#, php-format
-msgid "Notification(%s unread)"
+#: src/Form/PruneForm.php:50
+msgid "Just read messages by user"
+msgstr ""
+
+#: src/Form/PruneForm.php:54
+msgid "Remove read messages by user before selected time"
+msgstr ""
+
+#: src/Form/PruneForm.php:62
+msgid "Just deleted messages by user"
+msgstr ""
+
+#: src/Form/PruneForm.php:66
+msgid "Remove deleted messages by user before selected time"
+msgstr ""
+
+#: src/Form/PruneForm.php:74
+msgid "Prune"
 msgstr ""
 
 #: src/Form/ReplyForm.php:66 src/Form/SendForm.php:77
@@ -87,6 +122,76 @@ msgstr ""
 
 #: src/Form/SendForm.php:83
 msgid "Message content"
+msgstr ""
+
+#: template/admin/list-index.phtml:4
+msgid "List of messages"
+msgstr ""
+
+#: template/admin/list-index.phtml:19 template/admin/list-index.phtml:40
+#: template/admin/list-index.phtml:48 template/front/index-detail.phtml:40
+#: template/front/index-index.phtml:48
+msgid "From"
+msgstr ""
+
+#: template/admin/list-index.phtml:21 template/admin/list-index.phtml:41
+#: template/admin/list-index.phtml:60 template/front/index-detail.phtml:40
+#: template/front/index-index.phtml:48
+msgid "To"
+msgstr ""
+
+#: template/admin/list-index.phtml:23 template/admin/list-index.phtml:42
+msgid "Send on"
+msgstr ""
+
+#: template/admin/list-index.phtml:25
+msgid "ID"
+msgstr ""
+
+#: template/admin/list-index.phtml:31
+msgid "Full details"
+msgstr ""
+
+#: template/admin/list-index.phtml:38
+msgid "Close"
+msgstr ""
+
+#: template/admin/list-index.phtml:50 template/admin/list-index.phtml:62
+msgid "Name"
+msgstr ""
+
+#: template/admin/list-index.phtml:51 template/admin/list-index.phtml:63
+msgid "Identity"
+msgstr ""
+
+#: template/admin/list-index.phtml:52 template/admin/list-index.phtml:64
+msgid "Email"
+msgstr ""
+
+#: template/admin/list-index.phtml:53 template/admin/list-index.phtml:65
+msgid "Is read ?"
+msgstr ""
+
+#: template/admin/list-index.phtml:53 template/admin/list-index.phtml:54
+#: template/admin/list-index.phtml:65 template/admin/list-index.phtml:66
+msgid "Yes"
+msgstr ""
+
+#: template/admin/list-index.phtml:53 template/admin/list-index.phtml:54
+#: template/admin/list-index.phtml:65 template/admin/list-index.phtml:66
+msgid "No"
+msgstr ""
+
+#: template/admin/list-index.phtml:54 template/admin/list-index.phtml:66
+msgid "Is deleted ?"
+msgstr ""
+
+#: template/admin/list-index.phtml:85
+msgid "Message list is empty !"
+msgstr ""
+
+#: template/admin/send-index.phtml:3
+msgid "This part not finished now !"
 msgstr ""
 
 #: template/front/_confirm-modal.phtml:4
@@ -122,14 +227,6 @@ msgstr ""
 #: template/front/index-archive.phtml:13 template/front/index-detail.phtml:10
 #: template/front/index-index.phtml:13 template/front/notify-index.phtml:11
 msgid "Private message"
-msgstr ""
-
-#: template/front/index-detail.phtml:40 template/front/index-index.phtml:48
-msgid "To"
-msgstr ""
-
-#: template/front/index-detail.phtml:40 template/front/index-index.phtml:48
-msgid "From"
 msgstr ""
 
 #: template/front/index-detail.phtml:60 template/front/index-index.phtml:76
@@ -176,5 +273,6 @@ msgid "Messages"
 msgstr ""
 
 #: template/front/notify-index.phtml:95
-msgid "<div class=\"alert alert-info message-alert\">No notification for you!</div>"
+msgid ""
+"<div class=\"alert alert-info message-alert\">No notification for you!</div>"
 msgstr ""

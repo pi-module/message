@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Pi-message\n"
-"POT-Creation-Date: 2015-10-23 12:44+0330\n"
-"PO-Revision-Date: 2015-10-23 12:45+0330\n"
+"POT-Creation-Date: 2015-10-24 16:21+0330\n"
+"PO-Revision-Date: 2015-10-24 16:24+0330\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: fa\n"
@@ -27,6 +27,29 @@ msgstr "جزئیات پیام"
 #: src/Api/Breadcrumbs.php:59 src/Controller/Front/IndexController.php:324
 msgid "Send message"
 msgstr "ارسال پیام"
+
+#: src/Controller/Admin/PruneController.php:24
+msgid ""
+"You can prune all old message, select time to remove messages before that "
+"time and you can filter list  of removed messages by this from option."
+msgstr ""
+"شما میتوانید تمام پیام های قدیمی را پاکسازی کنید ، تاریخی که تمام پیام ها "
+"قبل از آن حذف خواهد شد را انتخاب کنید ، همچنین شما میتوانید از فیلتر های "
+"موجود در فرم هم استفاده فرمایید. لازم به ذکر است این فرایند برگشت پذیر نیست"
+
+#: src/Controller/Admin/PruneController.php:41
+#, php-format
+msgid "%s old messages removed"
+msgstr "%s پیام قدیمی پاکسازی شد"
+
+#: src/Controller/Admin/PruneController.php:43
+msgid "No messages removed ! check your selected filter and try again"
+msgstr ""
+"هیپ پیامی حذف نشد ! لطفا تنظیمات خود را مجددا بررسی کرده و تلاش نمایید."
+
+#: src/Controller/Admin/PruneController.php:48
+msgid "Prune old messages"
+msgstr "پاکسازی پیام های قدیمی"
 
 #: src/Controller/Front/IndexController.php:183
 #: src/Controller/Front/NotifyController.php:42
@@ -65,6 +88,30 @@ msgstr "متاسفانه شما نمیتوانید به خودتان پیام ب
 #: src/Controller/Front/IndexController.php:295
 msgid "An error occurred, please try again."
 msgstr "یک خطا روی داده است ، لطفا دوباره امتحان کنید."
+
+#: src/Form/PruneForm.php:34
+msgid "All messages Before"
+msgstr "تمام پیام های قبل از"
+
+#: src/Form/PruneForm.php:50
+msgid "Just read messages by user"
+msgstr "فقط پیام های خوانده شده توسط مخاطب"
+
+#: src/Form/PruneForm.php:54
+msgid "Remove read messages by user before selected time"
+msgstr "فقط پاکسازی پیام های خوانده شده توسط کاربر قبل از تاریخ انتخابی"
+
+#: src/Form/PruneForm.php:62
+msgid "Just deleted messages by user"
+msgstr "فقط پیام های حذف شده توسط مخاطب"
+
+#: src/Form/PruneForm.php:66
+msgid "Remove deleted messages by user before selected time"
+msgstr "فقط پاکسازی پیام های حذف شده توسط کاربر قبل از تاریخ انتخابی"
+
+#: src/Form/PruneForm.php:74
+msgid "Prune"
+msgstr "پاکسازی"
 
 #: src/Form/ReplyForm.php:66 src/Form/SendForm.php:77
 msgid "Content"
@@ -148,7 +195,7 @@ msgstr "حذف شده ؟"
 msgid "Message list is empty !"
 msgstr "فهرست پیام ها خالی است !"
 
-#: template/admin/prune-index.phtml:3 template/admin/send-index.phtml:3
+#: template/admin/send-index.phtml:3
 msgid "This part not finished now !"
 msgstr "این بخش هنوز تکمیل نشده است !"
 
