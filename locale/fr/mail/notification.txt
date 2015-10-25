@@ -1,15 +1,15 @@
-[comment]Get new message[/comment]
+ï»¿[comment]Get new message[/comment]
 
 [format]html[/format]
 
-[subject]Nouveau message reçu sur %site_name%[/subject]
+[subject]Nouveau message reÃ§u sur %site_name%[/subject]
 
 [body]
 <div style="padding: 1px; direction: ltr;">
-	<h3 style="font-size: 1.1em;">Dear %name%</h3>
-	<div style="padding: 3px; margin: 2px;">Tu as reçu un nouveau message de la part de %sender% sur le site %site_name% .</div>
+	<h3 style="font-size: 1.1em;">Dear %name%,</h3>
+	<div style="padding: 3px; margin: 2px;">Tu as reÃ§u un nouveau message de la part de %sender% sur le site %site_name% .</div>
 	<div style="padding: 3px; margin: 2px;">Connecte-toi sur le site pour lire tes messages.</div>
-	<div style="padding: 3px; margin: 2px;">Merci de ne pas répondre à ce mail !</div>
+	<div style="padding: 3px; margin: 2px;">Merci de ne pas rÃ©pondre Ã  ce mail !</div>
 	<div style="margin-top: 10px">
         <a href="%site_url%" title="%site_name%">%site_name%</a>
     </divp>
