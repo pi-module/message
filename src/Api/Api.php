@@ -391,4 +391,10 @@ class Api extends AbstractApi
 
         return $count;
     }
+
+    public function setConversation($time = '')
+    {
+        $time = !empty($time) ? $time : time();
+        return md5($time);
+    }
 }
