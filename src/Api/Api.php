@@ -401,4 +401,9 @@ class Api extends AbstractApi
         $time = !empty($time) ? $time : time();
         return md5($time);
     }
+
+    public function canonizeMessage($message)
+    {
+        return $message->toArray();
+    }
 }

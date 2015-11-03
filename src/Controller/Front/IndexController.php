@@ -352,6 +352,7 @@ class IndexController extends ActionController
             'action' => 'detail',
             'mid' => $messageId,
         )));
+        // Manage post reply
         if ($this->request->isPost()) {
             $post = $this->request->getPost();
             $form->setData($post);
@@ -387,10 +388,25 @@ class IndexController extends ActionController
 
             return;
         }
+        // Set to form
+        $form->setData(array('uid_to' => $toId));
+        // Get list of conversations
+        $list = array();
+        $where = array(
+            'conversation' => $detail['conversation'],
+            'is_deleted_from' => 0,
+            'is_deleted_to' => 0
+        );
+        $order = array('time_send DESC', 'id DESC');
+        $model = $this->getModel('message');
+        $select = $model->select()->where($where)->order($order);
+        $rowset = $model->selectWith($select);
+        foreach ($rowset as $row) {
+            $list[$row->id] = Pi::api('api', 'message')->canonizeMessage($row);
+        }
 
-            $form->setData(array('uid_to' => $toId));
-            $this->view()->assign('form', $form);
-
+        // Set view
+        $this->view()->assign('form', $form);
     }
 
     /**
