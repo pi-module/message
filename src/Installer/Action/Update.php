@@ -137,6 +137,18 @@ class Update extends BasicUpdate
             }
         }
 
+        // Update to version 1.0.4
+        if (version_compare($moduleVersion, '1.0.4', '<')) {
+            // Update value
+            $select = $messageModel->select();
+            $rowset = $messageModel->selectWith($select);
+            foreach ($rowset as $row) {
+                $conversation = Pi::api('api', 'message')->setConversation($row->time_send);
+                $row->conversation = $conversation;
+                $row->save();
+            }
+        }
+
         return true;
     }
 }

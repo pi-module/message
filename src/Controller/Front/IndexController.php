@@ -337,9 +337,16 @@ class IndexController extends ActionController
         Pi::service('authentication')->requireLogin();
         $messageId = _get('mid', 'int');
         $messageId = $messageId ?: 0;
-        //current user id
+        // Current user id
         $userId = Pi::user()->getUser()->id;
-
+        // Get message detail
+        $detail = $this->showDetail($messageId);
+        if ($userId == $detail['uid_from']) {
+            $toId = $detail['uid_to'];
+        } else {
+            $toId = $detail['uid_from'];
+        }
+        // Set form
         $form = new ReplyForm('reply');
         $form->setAttribute('action', $this->url('', array(
             'action' => 'detail',
@@ -356,11 +363,11 @@ class IndexController extends ActionController
                 return;
             }
             $data = $form->getData();
-
             $result = Pi::api('api', 'message')->send(
                 $data['uid_to'],
                 $data['content'],
-                $userId
+                $userId,
+                $detail['conversation']
             );
             if (!$result) {
                 $this->view()->assign(
@@ -379,16 +386,11 @@ class IndexController extends ActionController
             ));
 
             return;
-        } else {
-            $detail = $this->showDetail($messageId);
-            if ($userId == $detail['uid_from']) {
-                $toId = $detail['uid_to'];
-            } else {
-                $toId = $detail['uid_from'];
-            }
+        }
+
             $form->setData(array('uid_to' => $toId));
             $this->view()->assign('form', $form);
-        }
+
     }
 
     /**

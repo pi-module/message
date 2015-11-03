@@ -43,7 +43,8 @@ use Zend\Db\Sql\Predicate\Expression;
  *  Pi::api('api', 'message')->getAlert(1);
  *  // get Unread
  *  Pi::api('api', 'message')->getUnread($uid, $type);
- *
+ *  //
+ *  Pi::api('api', 'message')->setConversation();
  *
  * @author Xingyu Ji <xingyu@eefocus.com>
  */
@@ -57,10 +58,12 @@ class Api extends AbstractApi
      * @param  int $from
      * @return bool
      */
-    public function send($to, $message, $from)
+    public function send($to, $message, $from, $conversation = '')
     {
         $result = true;
         $model = Pi::model('message', $this->getModule());
+
+        $conversation = empty($conversation) ? $this->setConversation() : $conversation;
         $messageData = array(
             'uid_from' => $from,
             'uid_to' => $to,
@@ -68,6 +71,7 @@ class Api extends AbstractApi
             'is_read_from' => 1,
             'content' => $message,
             'time_send' => time(),
+            'conversation' => $conversation,
         );
         $row = $model->createRow($messageData);
         try {

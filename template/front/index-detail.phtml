@@ -64,29 +64,10 @@
                         </div>
                     </div>
                 </div>
-                <?php
-                $form->setAttribute('class', 'message-form-posi');
-                echo $this->form()->openTag($form);
-                ?>
-                <?php
-                $element = $form->get('content');
-                $element->setAttributes(array(
-                    'class' => 'form-control message-textarea',
-                    'rows' => '6'
-                ));
-                echo '<div class="message-send-text message-detail-text">' . $this->formElement($element);
-                echo $this->formElementErrors($element);
-                echo '</div>'
-                ?>
-                <?php
-                echo $this->formElement($form->get('uid_to'));
-                $element = $form->get('submit');
-                $element->setAttributes(array(
-                    'class' => 'btn btn-primary pull-right',
-                ));
-                echo $this->formSubmit($element);
-                echo $this->form()->closeTag($form);
-                ?>
+
+                <?php echo $this->form($form); ?>
+
+
             </div>
         <?php } ?>
     </div>
