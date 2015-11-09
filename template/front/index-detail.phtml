@@ -25,15 +25,48 @@
             <!--        title="--><?php //_e('New message'); ?><!--">--><?php //_e('New message'); ?><!--</button>-->
             <!--    </li>-->
         </ul>
-
         <?php if (!empty($errMessage)) { $class = ' alert-error'; ?>
             <div class="alert<?php echo $class; ?>">
                 <button data-dismiss="alert" class="close" type="button"> × </button>
                 <?php echo $errMessage; ?>
             </div>
         <?php } ?>
-        <?php if (!empty($message)) { ?>
-            <div class="messages" id="message-js">
+        <?php if (!empty($list)) { ?>
+            <?php foreach($list as $singleMessage) { ?>
+                <div class="messages" id="message-js">
+                <div class="media message-detail">
+                    <div class="message-detail-head">
+                        <h5 class="media-heading pull-left message-head">
+                            <span><?php echo $uid == $singleMessage['uid_from'] ? __('To') : __('From'); ?></span>
+                            <a href="<?php echo $singleMessage['profileUrl']; ?>"><?php echo $singleMessage['name'] . ':'; ?></a>
+                        </h5>
+                        <p class="message-time text-right">
+                            <span class="muted"><?php echo _date($singleMessage['time_send']); ?></span>
+                        </p>
+                    </div>
+                    <div class="media message-detail-primary">
+                        <a href="<?php echo $singleMessage['profileUrl']; ?>" class="pull-left">
+                            <?php echo $singleMessage['avatar']; ?>
+                        </a>
+                        <div class="media-body message-detail-con">
+                            <p>
+                                <?php echo $singleMessage['content']; ?>
+                            </p>
+                            <div class="message-detail-hidden">
+                                <p class="pull-right">
+                                    <span>
+                                        <a href="<?php echo $this->url('', array('action' => 'delete', 'ids' => $singleMessage['id'], 'tid' => $singleMessage['uid_to'])); ?>"
+                                           class="js-delete">
+                                            <?php _e('Delete'); ?></a>
+                                    </span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <hr />
+            <?php } ?>
+            <!-- <div class="messages" id="message-js">
                 <div class="media message-detail">
                     <div class="message-detail-head">
                         <h5 class="media-heading pull-left message-head">
@@ -63,11 +96,8 @@
                             </div>
                         </div>
                     </div>
-                </div>
-
+                </div> -->
                 <?php echo $this->form($form); ?>
-
-
             </div>
         <?php } ?>
     </div>

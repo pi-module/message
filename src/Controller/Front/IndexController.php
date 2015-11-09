@@ -86,6 +86,7 @@ class IndexController extends ActionController
                     $where->andPredicate($fromWhere)
                         ->orPredicate($toWhere);
                 })
+                ->group(new \Zend\Db\Sql\Predicate\Expression('conversation DESC'))
                 ->order('time_send DESC')
                 ->limit($limit)
                 ->offset($offset);
@@ -397,7 +398,7 @@ class IndexController extends ActionController
             'is_deleted_from' => 0,
             'is_deleted_to' => 0
         );
-        $order = array('time_send DESC', 'id DESC');
+        $order = array('time_send ASC', 'id ASC');
         $model = $this->getModel('message');
         $select = $model->select()->where($where)->order($order);
         $rowset = $model->selectWith($select);
@@ -407,6 +408,7 @@ class IndexController extends ActionController
 
         // Set view
         $this->view()->assign('form', $form);
+        $this->view()->assign('list', $list);
     }
 
     /**

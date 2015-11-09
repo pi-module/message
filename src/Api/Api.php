@@ -404,6 +404,45 @@ class Api extends AbstractApi
 
     public function canonizeMessage($message)
     {
-        return $message->toArray();
+        // Set message to array
+        $message = $message->toArray();
+        //current user id
+        $userId = Pi::user()->getUser()->id;
+        // Set modle
+        $model = Pi::model('message', $this->getModule());
+        // Get user
+        if ($userId == $message['uid_from']) {
+            //get username url
+            $user = Pi::user()->getUser($message['uid_to'])
+                ?: Pi::user()->getUser(0);
+            $message['name'] = $user->name;
+        } else {
+            //get username url
+            $user = Pi::user()->getUser($message['uid_from'])
+                ?: Pi::user()->getUser(0);
+            $message['name'] = $user->name;
+        }
+
+        // Get avatar
+        $message['avatar'] = Pi::user()->avatar($message['uid_from'], 'medium', array(
+            'alt' => $user->name,
+            'class' => 'img-circle',
+        ));
+
+        // Set profile Url
+        $message['profileUrl'] = Pi::user()->getUrl(
+            'profile',
+            $message['uid_from']
+        );
+
+        //markup content
+        $message['content'] = Pi::service('markup')->render($message['content'], 'html', 'html');
+
+        if (!$message['is_read_to'] && $userId == $message['uid_to']) {
+            //mark the message as read
+            $model->update(array('is_read_to' => 1), array('id' => $message['id']));
+        }
+
+        return $message;
     }
 }
