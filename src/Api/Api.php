@@ -56,6 +56,7 @@ class Api extends AbstractApi
      * @param  int $to
      * @param  string $message
      * @param  int $from
+     * @param  string $conversation
      * @return bool
      */
     public function send($to, $message, $from, $conversation = '')
