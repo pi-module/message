@@ -65,7 +65,7 @@
                     </div>
                 </div>
             <?php } ?>
-            <!-- <div class="messages" id="message-js">
+            <?php /* <div class="messages" id="message-js">
                 <div class="media message-detail">
                     <div class="message-detail-head">
                         <h5 class="media-heading pull-left message-head">
@@ -95,8 +95,10 @@
                             </div>
                         </div>
                     </div>
-                </div> -->
-                <?php echo $this->form($form); ?>
+                </div> */ ?>
+                <div class="clearfix well">
+                    <?php echo $this->form($form, 'horizontal'); ?>
+                </div>
             </div>
         <?php } ?>
     </div>

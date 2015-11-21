@@ -270,3 +270,6 @@
     font-weight: bold;
 }
 
+.form-group label.col-md-12 {
+    text-align: left;
+}
