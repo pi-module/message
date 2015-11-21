@@ -436,8 +436,11 @@ class Api extends AbstractApi
             $message['uid_from']
         );
 
+        // Set content type
+        $type = ($this->is_html($message['content'])) ? 'html' : 'text';
+
         //markup content
-        $message['content'] = Pi::service('markup')->render($message['content'], 'html', 'html');
+        $message['content'] = Pi::service('markup')->render($message['content'], 'html', $type);
 
         if (!$message['is_read_to'] && $userId == $message['uid_to']) {
             //mark the message as read
@@ -445,5 +448,11 @@ class Api extends AbstractApi
         }
 
         return $message;
+    }
+
+    public function is_html($message)
+    {
+        // return $string != strip_tags($string) ? true:false;
+        return preg_match("/<[^<]+>/",$message,$m) != 0;
     }
 }
