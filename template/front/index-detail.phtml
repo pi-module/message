@@ -9,21 +9,10 @@
                 <a href="<?php echo $this->url('', array('controller' => 'index', 'action' => 'index')); ?>"
                    title="<?php _e('Private message'); ?>"><?php echo $messageTitle; ?></a>
             </li>
-            <li class="">
-                <a href="<?php echo $this->url('', array('controller' => 'index', 'action' => 'archive')); ?>"
-                   title="<?php _e('Archive'); ?>"><?php _e('Archive'); ?></a>
+            <li>
+                <a href="<?php echo $this->url('', array('controller' => 'notify', 'action' => 'index')); ?>"
+                   title="<?php _e('Notification'); ?>"><?php echo $notificationTitle; ?></a>
             </li>
-            <!--    <li>-->
-            <!--        <a href="-->
-            <?php //echo $this->url('', array('controller' => 'notify', 'action' => 'index')); ?><!--" title="-->
-            <?php //_e('Notification'); ?><!--">--><?php //echo $notificationTitle; ?><!--</a>-->
-            <!--    </li>-->
-            <!--    <li>-->
-            <!--        <button type="button" class="btn message-nav-btn" onclick="location.href=-->
-            <!--        '-->
-            <?php //echo $this->url('', array('controller' => 'index', 'action' => 'send')); ?><!--'" -->
-            <!--        title="--><?php //_e('New message'); ?><!--">--><?php //_e('New message'); ?><!--</button>-->
-            <!--    </li>-->
         </ul>
         <?php if (!empty($errMessage)) { $class = ' alert-error'; ?>
             <div class="alert<?php echo $class; ?>">

@@ -36,6 +36,7 @@ class NotifyController extends ActionController
     protected function renderNav()
     {
         //current user id
+        Pi::service('authentication')->requireLogin();
         $userId = Pi::user()->getUser()->id;
 
         $messageTitle = sprintf(
@@ -131,8 +132,6 @@ class NotifyController extends ActionController
         }
         $this->renderNav();
         $this->view()->assign('notifications', $notificationList);
-
-        return;
     }
 
     /**
@@ -164,7 +163,7 @@ class NotifyController extends ActionController
         $detail = $rowset->toArray();
 
         //markup content
-        $detail['content'] = Pi::service('markup')->render($detail['content']);
+        $detail['content'] = Pi::service('markup')->render($detail['content'], 'html', 'html');
 
         if (!$detail['is_read']) {
             //mark the notification as read

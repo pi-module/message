@@ -390,8 +390,8 @@ class Api extends AbstractApi
             */
             $count = $model->count($where);
         } else {
-            $count = static::getCount($uid, 'message')
-                + static::getCount($uid, 'notification');
+            $count = static::getUnread($uid, 'message')
+                + static::getUnread($uid, 'notification');
         }
 
         return $count;
