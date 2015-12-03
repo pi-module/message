@@ -19,7 +19,7 @@
         bindEvents: function () {
             this.$batch.click(this.checkedAll);
             this.$select.change($.proxy(this.batchAction, this));
-            this.$items.bind('click', this.itemsBind);
+            //this.$items.bind('click', this.itemsBind);
             this.$delete.click(this.deleteAction);
             this.$confirm.on('click', $.proxy(this.confirmAction, this));
         },

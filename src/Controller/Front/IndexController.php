@@ -578,13 +578,4 @@ class IndexController extends ActionController
 
         return;
     }
-
-    /*
-     * Archive
-     */
-    public function archiveAction()
-    {
-        Pi::service('authentication')->requireLogin();
-        $this->renderNav();
-    }
 }

@@ -38,58 +38,25 @@
                             <?php echo $singleMessage['avatar']; ?>
                         </a>
                         <div class="media-body message-detail-con">
-                            <p>
-                                <?php echo $singleMessage['content']; ?>
-                            </p>
+                            <p><?php echo $singleMessage['content']; ?></p>
                             <div class="message-detail-hidden">
                                 <p class="pull-right">
-                                    <span>
-                                        <a href="<?php echo $this->url('', array('action' => 'delete', 'ids' => $singleMessage['id'], 'tid' => $singleMessage['uid_to'])); ?>"
-                                           class="js-delete">
-                                            <?php _e('Delete'); ?></a>
-                                    </span>
+                                    <a href="<?php echo $this->url('', array('action' => 'delete', 'ids' => $singleMessage['id'], 'tid' => $singleMessage['uid_to'])); ?>"
+                                       class="js-delete">
+                                        <?php _e('Delete'); ?>
+                                    </a>
                                 </p>
                             </div>
                         </div>
                     </div>
                 </div>
             <?php } ?>
-            <?php /* <div class="messages" id="message-js">
-                <div class="media message-detail">
-                    <div class="message-detail-head">
-                        <h5 class="media-heading pull-left message-head">
-                            <span><?php echo $uid == $message['uid_from'] ? __('To') : __('From'); ?></span>
-                            <a href="<?php echo $message['profileUrl']; ?>"><?php echo $message['name'] . ':'; ?></a>
-                        </h5>
-                        <p class="message-time text-right">
-                            <span class="muted"><?php echo _date($message['time_send']); ?></span>
-                        </p>
-                    </div>
-                    <div class="media message-detail-primary">
-                        <a href="<?php echo $message['profileUrl']; ?>" class="pull-left">
-                            <?php echo $message['avatar']; ?>
-                        </a>
-                        <div class="media-body message-detail-con">
-                            <p>
-                                <?php echo $message['content']; ?>
-                            </p>
-                            <div class="message-detail-hidden">
-                                <p class="pull-right">
-                                    <span>
-                                        <a href="<?php echo $this->url('', array('action' => 'delete', 'ids' => $message['id'], 'tid' => $message['uid_to'])); ?>"
-                                           class="js-delete">
-                                            <?php _e('Delete'); ?></a>
-                                    </span>
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                </div> */ ?>
                 <div class="clearfix well">
                     <?php echo $this->form($form, 'horizontal'); ?>
                 </div>
             </div>
         <?php } ?>
+        <?php include $this->template('./_confirm-modal.phtml'); ?>
     </div>
 </div>
 <?php

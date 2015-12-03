@@ -21,19 +21,17 @@
                 <?php if (!empty($messages)) { ?>
                     <?php foreach ($messages as $message) { ?>
                         <div class="clearfix message-item<?php if (!$message['is_read']) { echo ' bg-warning'; } ?>">
-                            <div class="col-md-1">
-                                <input type="checkbox" class="message-js-check"
-                                       data-id="<?php echo $message['id']; ?>">
-                            </div>
-                            <div class="col-md-1 text-center">
-                                <div class="clearfix">
+                            <div class="col-md-2 text-center">
+                                <div class="pull-left message-checkbox">
+                                    <input type="checkbox" class="message-js-check" data-id="<?php echo $message['id']; ?>">
+                                </div>
+                                <div class="pull-left">
                                     <a href="<?php echo $message['profileUrl']; ?>">
                                         <?php echo $message['avatar']; ?>
                                     </a>
                                 </div>
                             </div>
                             <div class="col-md-10">
-                                <p class="message-hidden"></p>
                                 <ul class="list-inline">
                                     <li class="message-time muted"><?php echo $uid == $message['uid_from'] ? __('To') : __('From'); ?></li>
                                     <li>
@@ -84,13 +82,11 @@
                 <?php } else {
                     _e('<div class="alert alert-info message-alert">No message for you!</div>');
                 } ?>
-                <?php
-                if (isset($paginator)) {
+                <?php if (isset($paginator)) {
                     echo $this->paginationControl($paginator, 'Sliding', 'paginator.phtml', array(
                         'class' => 'pagination-right pull-right message-pagination'
                     ));
-                }
-                ?>
+                } ?>
                 <form class="form-inline pull-left message-foot-form" action="">
                     <!-- <input type="checkbox" class="message-js-batch" title="<?php _e('Checked all'); ?>"> -->
                     <select class="message-batch-action">
