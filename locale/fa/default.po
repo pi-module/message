@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Pi-message\n"
-"POT-Creation-Date: 2015-10-24 16:21+0330\n"
-"PO-Revision-Date: 2015-10-24 16:24+0330\n"
+"POT-Creation-Date: 2016-01-08 17:11+0330\n"
+"PO-Revision-Date: 2016-01-08 17:12+0330\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: fa\n"
@@ -14,9 +14,7 @@ msgstr ""
 "X-Poedit-Basepath: ../..\n"
 "X-Poedit-SearchPath-0: .\n"
 
-#: src/Api/Breadcrumbs.php:47 template/front/index-archive.phtml:17
-#: template/front/index-detail.phtml:14 template/front/index-index.phtml:17
-#: template/front/notify-detail.phtml:13 template/front/notify-index.phtml:15
+#: src/Api/Breadcrumbs.php:47
 msgid "Archive"
 msgstr "آرشیو"
 
@@ -24,7 +22,7 @@ msgstr "آرشیو"
 msgid "Message detail"
 msgstr "جزئیات پیام"
 
-#: src/Api/Breadcrumbs.php:59 src/Controller/Front/IndexController.php:324
+#: src/Api/Breadcrumbs.php:59 src/Controller/Front/IndexController.php:326
 msgid "Send message"
 msgstr "ارسال پیام"
 
@@ -51,41 +49,41 @@ msgstr ""
 msgid "Prune old messages"
 msgstr "پاکسازی پیام های قدیمی"
 
-#: src/Controller/Front/IndexController.php:183
-#: src/Controller/Front/NotifyController.php:42
+#: src/Controller/Front/IndexController.php:184
+#: src/Controller/Front/NotifyController.php:43
 #, php-format
 msgid "Private message ( <span class=\"label label-danger\">%s</span> unread )"
 msgstr "پیام شخصی ( <span class=\"label label-danger\">%s</span> خوانده نشده )"
 
-#: src/Controller/Front/IndexController.php:187
-#: src/Controller/Front/NotifyController.php:46
+#: src/Controller/Front/IndexController.php:188
+#: src/Controller/Front/NotifyController.php:47
 #, php-format
 msgid "Notification ( <span class=\"label label-danger\">%s</span> unread )"
 msgstr ""
 "آگاهی رسانی ( <span class=\"label label-danger\">%s</span> خوانده نشده )"
 
-#: src/Controller/Front/IndexController.php:223
+#: src/Controller/Front/IndexController.php:224
 msgid "Username is invalid, please try again."
 msgstr "نام کاربری صحیح نیست ، دوباره امتحان کنید."
 
-#: src/Controller/Front/IndexController.php:239
-#: src/Controller/Front/IndexController.php:367
+#: src/Controller/Front/IndexController.php:240
+#: src/Controller/Front/IndexController.php:377
 msgid "Send failed, please try again."
 msgstr "ارسال موفقیت آمیز نبود ، دوباره امتحان کنید."
 
-#: src/Controller/Front/IndexController.php:273
+#: src/Controller/Front/IndexController.php:275
 msgid "User"
 msgstr "کاربر"
 
-#: src/Controller/Front/IndexController.php:277
+#: src/Controller/Front/IndexController.php:279
 msgid "not found"
 msgstr "یافت نشد"
 
-#: src/Controller/Front/IndexController.php:283
+#: src/Controller/Front/IndexController.php:285
 msgid "Sorry, you can't send message to yourself."
 msgstr "متاسفانه شما نمیتوانید به خودتان پیام بفرستید."
 
-#: src/Controller/Front/IndexController.php:295
+#: src/Controller/Front/IndexController.php:297
 msgid "An error occurred, please try again."
 msgstr "یک خطا روی داده است ، لطفا دوباره امتحان کنید."
 
@@ -117,7 +115,7 @@ msgstr "پاکسازی"
 msgid "Content"
 msgstr "تماس"
 
-#: src/Form/ReplyForm.php:86 src/Form/SendForm.php:93
+#: src/Form/ReplyForm.php:88 src/Form/SendForm.php:93
 msgid "Send"
 msgstr "ارسال"
 
@@ -134,14 +132,14 @@ msgid "List of messages"
 msgstr "فهرست پیام ها"
 
 #: template/admin/list-index.phtml:19 template/admin/list-index.phtml:40
-#: template/admin/list-index.phtml:48 template/front/index-detail.phtml:40
-#: template/front/index-index.phtml:48
+#: template/admin/list-index.phtml:48 template/front/index-detail.phtml:29
+#: template/front/index-index.phtml:36
 msgid "From"
 msgstr "از"
 
 #: template/admin/list-index.phtml:21 template/admin/list-index.phtml:41
-#: template/admin/list-index.phtml:60 template/front/index-detail.phtml:40
-#: template/front/index-index.phtml:48
+#: template/admin/list-index.phtml:60 template/front/index-detail.phtml:29
+#: template/front/index-index.phtml:36
 msgid "To"
 msgstr "به"
 
@@ -199,44 +197,37 @@ msgstr "فهرست پیام ها خالی است !"
 msgid "This part not finished now !"
 msgstr "این بخش هنوز تکمیل نشده است !"
 
-#: template/front/_confirm-modal.phtml:4
+#: template/front/_confirm-modal.phtml:5
 msgid "Delete this message?"
 msgstr "این پیام حذف شود؟"
 
-#: template/front/_confirm-modal.phtml:7 template/front/index-detail.phtml:97
-#: template/front/index-index.phtml:75 template/front/notify-detail.phtml:65
-#: template/front/notify-index.phtml:51
+#: template/front/_confirm-modal.phtml:8 template/front/index-detail.phtml:65
+#: template/front/index-index.phtml:55 template/front/notify-detail.phtml:52
 msgid "Once you delete this message, it cannot be undone."
 msgstr "شما این پیام را حذف کردید ، این فرایند برگشت پذیر نیست."
 
-#: template/front/_confirm-modal.phtml:11
+#: template/front/_confirm-modal.phtml:12
 msgid "Delete message"
 msgstr "حذف پیام"
 
-#: template/front/_confirm-modal.phtml:20
-msgid "Delete these messages?"
-msgstr "این پیام ها حذف شوند؟"
+#: template/front/_confirm-modal.phtml:14
+msgid "Cancel"
+msgstr "لغو"
 
-#: template/front/_confirm-modal.phtml:23
-msgid "Once you delete these messages, they cannot be undone."
-msgstr "شما این پیام ها را حذف کردید ، این فرایند برگشت پذیر نیست."
-
-#: template/front/_confirm-modal.phtml:27
-msgid "Delete messages"
-msgstr "حذف پیام ها"
-
-#: template/front/index-archive.phtml:8
-msgid "Message archive"
-msgstr "آرشیو پیام ها"
-
-#: template/front/index-archive.phtml:13 template/front/index-detail.phtml:10
-#: template/front/index-index.phtml:13 template/front/notify-index.phtml:11
+#: template/front/index-detail.phtml:10 template/front/index-index.phtml:13
+#: template/front/notify-detail.phtml:10 template/front/notify-index.phtml:13
 msgid "Private message"
 msgstr "پیام شخصی"
 
-#: template/front/index-detail.phtml:60 template/front/index-index.phtml:76
-#: template/front/index-index.phtml:113 template/front/notify-detail.phtml:66
-#: template/front/notify-index.phtml:52 template/front/notify-index.phtml:110
+#: template/front/index-detail.phtml:14 template/front/index-index.phtml:17
+#: template/front/notify-detail.phtml:14 template/front/notify-index.phtml:8
+#: template/front/notify-index.phtml:17
+msgid "Notification"
+msgstr "آگاهی رسانی"
+
+#: template/front/index-detail.phtml:46 template/front/index-index.phtml:56
+#: template/front/index-index.phtml:101 template/front/notify-detail.phtml:53
+#: template/front/notify-index.phtml:50
 msgid "Delete"
 msgstr "حذف"
 
@@ -244,25 +235,28 @@ msgstr "حذف"
 msgid "Message"
 msgstr "پیام"
 
-#: template/front/index-index.phtml:90 template/front/index-index.phtml:112
-#: template/front/notify-index.phtml:68 template/front/notify-index.phtml:109
+#: template/front/index-index.phtml:70 template/front/index-index.phtml:100
+#: template/front/notify-index.phtml:49
 msgid "Mark as read"
 msgstr "به عنوان خوانده شده نشان کن"
 
-#: template/front/index-index.phtml:99
-msgid "<div class=\"alert alert-info message-alert\">No message for you!</div>"
-msgstr ""
-"<div class=\"alert alert-info message-alert\">هیچ پیامی برای شما نیست !</div>"
+#: template/front/index-index.phtml:76
+msgid "Read"
+msgstr "مشاهده"
 
-#: template/front/index-index.phtml:109 template/front/notify-index.phtml:106
+#: template/front/index-index.phtml:89
+msgid "No message for you!"
+msgstr "هیچ پیامی برای شما وجود ندارد !"
+
+#: template/front/index-index.phtml:97 template/front/notify-index.phtml:46
 msgid "Checked all"
 msgstr "All Categories"
 
-#: template/front/index-index.phtml:111 template/front/notify-index.phtml:108
+#: template/front/index-index.phtml:99 template/front/notify-index.phtml:48
 msgid "Massive operation"
 msgstr "عملکرد های پیام"
 
-#: template/front/index-index.phtml:122
+#: template/front/index-index.phtml:111
 msgid "Once you delete those message, it cannot be undone."
 msgstr "شما این پیام را حذف کردید ، این فرایند برگشت پذیر نیست."
 
@@ -274,16 +268,37 @@ msgstr "بازگشت به صفحه فهرست پیام ها"
 msgid "Write message"
 msgstr "نوشتن پیام"
 
-#: template/front/notify-detail.phtml:9
-msgid "Messages"
-msgstr "پیام ها"
+#: template/front/notify-index.phtml:36
+msgid "No notification for you!"
+msgstr "هیچ اطلاع رسانی برای شما وجود ندارد !"
 
-#: template/front/notify-index.phtml:95
-msgid ""
-"<div class=\"alert alert-info message-alert\">No notification for you!</div>"
-msgstr ""
-"<div class=\"alert alert-info message-alert\">هیچ آگاهی رسانی برای شما نیست !"
-"</div>"
+#~ msgid "Delete these messages?"
+#~ msgstr "این پیام ها حذف شوند؟"
+
+#~ msgid "Once you delete these messages, they cannot be undone."
+#~ msgstr "شما این پیام ها را حذف کردید ، این فرایند برگشت پذیر نیست."
+
+#~ msgid "Delete messages"
+#~ msgstr "حذف پیام ها"
+
+#~ msgid "Message archive"
+#~ msgstr "آرشیو پیام ها"
+
+#~ msgid ""
+#~ "<div class=\"alert alert-info message-alert\">No message for you!</div>"
+#~ msgstr ""
+#~ "<div class=\"alert alert-info message-alert\">هیچ پیامی برای شما نیست !</"
+#~ "div>"
+
+#~ msgid "Messages"
+#~ msgstr "پیام ها"
+
+#~ msgid ""
+#~ "<div class=\"alert alert-info message-alert\">No notification for you!</"
+#~ "div>"
+#~ msgstr ""
+#~ "<div class=\"alert alert-info message-alert\">هیچ آگاهی رسانی برای شما "
+#~ "نیست !</div>"
 
 #~ msgid "Notification(%s  unread)"
 #~ msgstr "آگاهی رسانی (%s خوانده نشده)"
@@ -296,9 +311,6 @@ msgstr ""
 
 #~ msgid "Need login"
 #~ msgstr "برای استفاده وارد شوید"
-
-#~ msgid "Notification"
-#~ msgstr "آگاهی رسانی"
 
 #~ msgid "New message"
 #~ msgstr "پیام جدید"
