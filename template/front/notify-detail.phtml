@@ -30,14 +30,14 @@
                 <div class="messages" id="message-js">
                     <div class="media message-detail">
                         <div class="message-detail-head">
-                            <h5 class="media-heading pull-left message-head">
+                            <h4 class="media-heading pull-left message-head">
                                 <?php echo $notification['subject'] ?>
                                 <?php if (!empty($notification['tag'])) { ?>
                                     <span class="label label-info message-label-type">
                                     <?php echo $notification['tag']; ?>
                                     </span>
                                 <?php } ?>
-                            </h5>
+                            </h4>
                             <p class="message-time text-right">
                             <span class="muted">
                                 <?php echo _date($notification['time_send']); ?>

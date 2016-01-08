@@ -16,7 +16,6 @@
         </ul>
         <?php if (!empty($errMessage)) { $class = ' alert-error'; ?>
             <div class="alert<?php echo $class; ?>">
-                <button data-dismiss="alert" class="close" type="button"> × </button>
                 <?php echo $errMessage; ?>
             </div>
         <?php } ?>
@@ -25,10 +24,10 @@
                 <div class="messages" id="message-js">
                 <div class="media message-detail">
                     <div class="message-detail-head">
-                        <h5 class="media-heading pull-left message-head">
+                        <h4 class="media-heading pull-left message-head">
                             <span><?php echo $uid == $singleMessage['uid_from'] ? __('To') : __('From'); ?></span>
-                            <a href="<?php echo $singleMessage['profileUrl']; ?>"><?php echo $singleMessage['name'] . ':'; ?></a>
-                        </h5>
+                            <a href="<?php echo $singleMessage['profileUrl']; ?>"><?php echo $singleMessage['name']; ?></a>
+                        </h4>
                         <p class="message-time text-right">
                             <span class="muted"><?php echo _date($singleMessage['time_send']); ?></span>
                         </p>

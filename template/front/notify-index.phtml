@@ -23,7 +23,9 @@
                         <div class="media message-item<?php if (!$notification['is_read']) { echo ' message-item-read';} ?>">
                             <div class='pull-left'>
                                 <input type="checkbox" class="message-js-check" data-id="<?php echo $notification['id']; ?>">
-                                <a href="<?php echo $this->url('', array('action' => 'detail', 'mid' => $notification['id'])); ?>"><?php echo _escape($notification['subject']); ?></a>
+                                <a class="message-content-link" href="<?php echo $this->url('', array('action' => 'detail', 'mid' => $notification['id'])); ?>">
+                                    <?php echo _escape($notification['subject']); ?>
+                                </a>
                             </div>
                             <div class="pull-right text-right message-media-right">
                                 <p class="message-time">
