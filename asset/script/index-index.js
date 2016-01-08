@@ -12,14 +12,14 @@
             this.$el = $('#message-js');
             this.$delete = this.$('a[data-confirm]');
             this.$select = this.$('.message-batch-action');
-            this.$items = this.$('.message-item');
+            // this.$items = this.$('.message-item');
             this.$batch = this.$('.message-js-batch');
             this.$confirm = this.$('.confirm-ok');
         },
         bindEvents: function () {
             this.$batch.click(this.checkedAll);
             this.$select.change($.proxy(this.batchAction, this));
-            //this.$items.bind('click', this.itemsBind);
+            // this.$items.bind('click', this.itemsBind);
             this.$delete.click(this.deleteAction);
             this.$confirm.on('click', $.proxy(this.confirmAction, this));
         },
@@ -38,18 +38,18 @@
             }
         },
         batchAction: function () {
-            var checked = app.$('.message-js-check:checked');
+            var checked = this.$('.message-js-check:checked');
             var action = $.trim(this.$select.val());
             var ids = [];
-
             if (checked.length) {
                 if (action == "delete") {
-                    if (!confirm(options.confirms)) {
-                        app.$select.attr('value', '');
-                        return;
+                    if (checked.length > 1) {
+                        $('#confirm-modal').modal('show');
+                    } else {
+                        $('#confirm-modal').modal('show');
                     }
+                    return false;
                 }
-
                 checked.each(function () {
                     ids.push($(this).attr('data-id'));
                 });
@@ -60,21 +60,21 @@
                     location.href = url;
                 }
             } else {
-                app.$select.attr('value', '');
+                this.$select.attr('value', '');
             }
         },
         itemsBind: function (c) {
             if (c.target.tagName === "A" || c.target.tagName === "INPUT" || c.target.tagName === "IMG") {
                 return;
             }
-            window.location = $(this).find(".message-content p a").attr("href")
+            window.location = $(this).find(".message-content-link").attr("href")
         },
-        deleteAction: function (e) {
-            var target = $(e.target);
-            var msg = target.data('confirm')
-            if (!confirm(msg)) {
-                e.preventDefault();
-            }
+        deleteAction: function () {
+            var href = $(this).attr('href');
+            $('#confirm-modal').find('.modal-body').text($(this).attr('data-confirm'));
+            $('.confirm-ok').attr('href', href);
+            $('#confirm-modal').modal('show');
+            return false;
         },
     };
 

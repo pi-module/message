@@ -20,12 +20,12 @@
             <div class="messages" id="message-js">
                 <?php if (!empty($messages)) { ?>
                     <?php foreach ($messages as $message) { ?>
-                        <div class="clearfix message-item<?php if (!$message['is_read']) { echo ' bg-warning'; } ?>">
-                            <div class="col-md-2 text-center">
+                        <div class="clearfix message-item<?php if (!$message['is_read']) { echo ' message-item-read'; } ?>">
+                            <div class="pull-left text-center">
                                 <div class="pull-left message-checkbox">
                                     <input type="checkbox" class="message-js-check" data-id="<?php echo $message['id']; ?>">
                                 </div>
-                                <div class="pull-left">
+                                <div class="pull-left message-avatar">
                                     <a href="<?php echo $message['profileUrl']; ?>">
                                         <?php echo $message['avatar']; ?>
                                     </a>
@@ -70,6 +70,12 @@
                                             <?php _e('Mark as read'); ?>
                                         </a>
                                     </li>
+                                    <li class="message-divider">|</li>
+                                    <li class="message-mark">
+                                        <a href="<?php echo $this->url('', array('action' => 'detail', 'mid' => $message['id'])); ?>">
+                                            <?php _e('Read'); ?>
+                                        </a>
+                                    </li>
                                 </ul>
                                 <div class="message-content">
                                     <a href="<?php echo $this->url('', array('action' => 'detail', 'mid' => $message['id'])); ?>"
@@ -79,22 +85,23 @@
                             </div>
                         </div>
                     <?php } ?>
-                <?php } else {
-                    _e('<div class="alert alert-info message-alert">No message for you!</div>');
-                } ?>
+                <?php } else { ?>
+                    <div class="alert alert-info message-alert"><?php _e('No message for you!'); ?></div>
+                <?php } ?>
                 <?php if (isset($paginator)) {
                     echo $this->paginationControl($paginator, 'Sliding', 'paginator.phtml', array(
                         'class' => 'pagination-right pull-right message-pagination'
                     ));
                 } ?>
                 <form class="form-inline pull-left message-foot-form" action="">
-                    <!-- <input type="checkbox" class="message-js-batch" title="<?php _e('Checked all'); ?>"> -->
+                    <input type="checkbox" class="message-js-batch" title="<?php _e('Checked all'); ?>">
                     <select class="message-batch-action">
                         <option value=""><?php _e('Massive operation'); ?></option>
                         <option value="mark"><?php _e('Mark as read'); ?></option>
                         <option value="delete"><?php _e('Delete'); ?></option>
                     </select>
                 </form>
+                <?php include $this->template('./_confirm-modal.phtml'); ?>
             </div>
         </div>
     </div>
@@ -104,7 +111,6 @@ $host = $this->url('', array('module' => 'message'));
 $confirm = __('Once you delete those message, it cannot be undone.');
 $script = "messageIndex({p: '%s', host: '%s', confirm: '%s'});";
 $script = sprintf($script, $paginator, $host, $confirm);
-
 $this->footScript()->appendFile($this->assetModule('script/index-index.js'));
 $this->footScript()->appendScript($script);
 ?>

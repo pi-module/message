@@ -39,8 +39,7 @@
 }
 
 .message-media-right {
-    width: 160px;
-    margin-left: 60px;
+    width: 200px;
 }
 
 .message-time {
@@ -84,6 +83,7 @@
     width: 100%;
     padding: 8px;
     display: block;
+    margin: 0 -8px;
 }
 
 .message-content a:hover {
@@ -276,6 +276,8 @@
 
 .message-checkbox {
     margin-top: 10px;
-    margin-left: 5px;
-    margin-right: 5px;
+}
+
+.message-avatar {
+    margin: 0 20px;
 }
