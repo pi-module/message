@@ -23,10 +23,5 @@ return array(
             'controller' => 'prune',
             'permission' => 'prune',
         ),
-        array(
-            'title' => _a('Send'),
-            'controller' => 'send',
-            'permission' => 'send',
-        ),
     ),
 );

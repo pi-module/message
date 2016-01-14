@@ -21,9 +21,5 @@ return array(
             'title' => _a('Prune'),
             'access' => array(),
         ),
-        'send' => array(
-            'title' => _a('Send'),
-            'access' => array(),
-        ),
     ),
 );

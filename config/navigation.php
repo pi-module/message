@@ -32,15 +32,5 @@ return array(
             'controller' => 'prune',
             'action' => 'index',
         ),
-        'send' => array(
-            'label' => _a('Send'),
-            'permission' => array(
-                'resource' => 'send',
-            ),
-            'route' => 'admin',
-            'module' => 'message',
-            'controller' => 'send',
-            'action' => 'index',
-        ),
     ),
 );
