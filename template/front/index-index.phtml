@@ -73,13 +73,13 @@
                                     </li>
                                     <li class="message-divider">|</li>
                                     <li class="message-mark">
-                                        <a href="<?php echo $this->url('', array('action' => 'detail', 'mid' => $message['id'])); ?>">
+                                        <a href="<?php echo $this->url('', array('action' => 'detail', 'mid' => $message['conversation'])); ?>">
                                             <?php _e('Read'); ?>
                                         </a>
                                     </li>
                                 </ul>
                                 <div class="message-content">
-                                    <a href="<?php echo $this->url('', array('action' => 'detail', 'mid' => $message['id'])); ?>"
+                                    <a href="<?php echo $this->url('', array('action' => 'detail', 'mid' => $message['conversation'])); ?>"
                                        class="message-content-link"> <?php echo $message['content']; ?>
                                     </a>
                                 </div>
