@@ -397,6 +397,35 @@ class Api extends AbstractApi
         return $count;
     }
 
+    /**
+     * Get unread conversation
+     *
+     * @param  int $uid
+     * @param  string $type
+     * @return int|false
+     */
+    public function getUnreadConversation($uid)
+    {
+        
+        $where = array(
+            'uid_to' => $uid,
+            'is_deleted_to' => 0,
+            'is_read_to' => 0,
+        );
+        
+        $select = Pi::model('message', $this->getModule())->select()->columns(array('conversation'))->where($where)->group('conversation');
+        $rowset = Pi::model('message', $this->getModule())->selectWith($select);
+        
+        // Retrieve data
+        $data = array();
+        foreach ($rowset as $row) {
+            $data[]  = $row['conversation'];
+        }
+
+        return $data;
+    }
+
+
     public function setConversation($time = '')
     {
         $time = !empty($time) ? $time : time();

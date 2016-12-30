@@ -336,12 +336,13 @@ class IndexController extends ActionController
     public function detailAction()
     {
         Pi::service('authentication')->requireLogin();
-        $messageId = _get('mid', 'int');
-        $messageId = $messageId ?: 0;
+        $conversation = _get('mid', 'string');
+        $conversation = $conversation ?: 0;
+        
         // Current user id
         $userId = Pi::user()->getUser()->id;
         // Get message detail
-        $detail = $this->showDetail($messageId);
+        $detail = $this->showDetail($conversation);
         if ($userId == $detail['uid_from']) {
             $toId = $detail['uid_to'];
         } else {
@@ -351,7 +352,7 @@ class IndexController extends ActionController
         $form = new ReplyForm('reply');
         $form->setAttribute('action', $this->url('', array(
             'action' => 'detail',
-            'mid' => $messageId,
+            'mid' => $conversation,
         )));
         // Manage post reply
         if ($this->request->isPost()) {
@@ -360,7 +361,7 @@ class IndexController extends ActionController
             $form->setInputFilter(new ReplyFilter);
             if (!$form->isValid()) {
                 $this->view()->assign('form', $form);
-                $this->showDetail($messageId);
+                $this->showDetail($conversation);
 
                 return;
             }
@@ -377,7 +378,7 @@ class IndexController extends ActionController
                     __('Send failed, please try again.'
                     ));
                 $this->view()->assign('form', $form);
-                $this->showDetail($messageId);
+                $this->showDetail($conversation);
 
                 return;
             }
@@ -417,7 +418,7 @@ class IndexController extends ActionController
      * @param  int $messageId
      * @return array
      */
-    protected function showDetail($messageId)
+    protected function showDetail($conversation)
     {
         Pi::service('authentication')->requireLogin();
         //current user id
@@ -429,12 +430,12 @@ class IndexController extends ActionController
         $model = $this->getModel('message');
         //get private message
         $select = $model->select()
-            ->where(function ($where) use ($messageId, $userId) {
+            ->where(function ($where) use ($conversation, $userId) {
                 $subWhere = clone $where;
                 $subWhere->equalTo('uid_from', $userId);
                 $subWhere->or;
                 $subWhere->equalTo('uid_to', $userId);
-                $where->equalTo('id', $messageId)
+                $where->like('conversation', $conversation)
                     ->andPredicate($subWhere);
             });
         $rowset = $model->selectWith($select)->current();
@@ -473,7 +474,7 @@ class IndexController extends ActionController
 
         if (!$detail['is_read_to'] && $userId == $detail['uid_to']) {
             //mark the message as read
-            $model->update(array('is_read_to' => 1), array('id' => $messageId));
+            $model->update(array('is_read_to' => 1), array('conversation' => $conversation));
         }
 
         $this->view()->assign('message', $detail);
