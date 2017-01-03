@@ -63,7 +63,7 @@ class ReplyForm extends BaseForm
         $this->add(array(
             'name' => 'content',
             'options' => array(
-                'label' => __('Content'),
+                'label' => __('Answer'),
                 'editor' => $editor,
                 'set' => $set,
             ),
