@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Pi-message\n"
-"POT-Creation-Date: 2017-01-03 14:53+0100\n"
-"PO-Revision-Date: 2017-01-03 15:15+0100\n"
+"POT-Creation-Date: 2017-01-03 20:45+0100\n"
+"PO-Revision-Date: 2017-01-03 20:45+0100\n"
 "Last-Translator: Marc Desrousseaux\n"
 "Language-Team: Marc Desrousseaux\n"
 "Language: fr\n"
@@ -32,9 +32,9 @@ msgid ""
 "You can prune all old message, select time to remove messages before that "
 "time and you can filter list  of removed messages by this from option."
 msgstr ""
-"Tu peux purger les anciens messages, sélectionne la date avant laquelle les "
-"messages seront supprimés. Tu peux également filtrer la liste des messages à "
-"supprimer en sélectionnant l'une des options de sélection."
+"Vous pouvez purger les anciens messages, sélectionnez la date avant laquelle "
+"les messages seront supprimés. Vous pouvez également filtrer la liste des "
+"messages à supprimer en sélectionnant l'une des options de sélection."
 
 #: src/Controller/Admin/PruneController.php:41
 #, php-format
@@ -44,7 +44,7 @@ msgstr "%s anciens messages ont été supprimés définitivement"
 #: src/Controller/Admin/PruneController.php:43
 msgid "No messages removed ! check your selected filter and try again"
 msgstr ""
-"Aucun message supprimé ! Vérifie tes filtres de sélection et essaye de "
+"Aucun message supprimé ! Vérifiez les filtres de sélection et essayez de "
 "nouveau."
 
 #: src/Controller/Admin/PruneController.php:48
@@ -82,7 +82,7 @@ msgstr "non trouvé"
 
 #: src/Controller/Front/IndexController.php:285
 msgid "Sorry, you can't send message to yourself."
-msgstr "Désolé, tu ne peux pas t'envoyer un message à toi-même."
+msgstr "Désolé, vous ne pouvez pas vous envoyer un message à vous-même."
 
 #: src/Controller/Front/IndexController.php:297
 msgid "An error occurred, please try again."
@@ -207,7 +207,8 @@ msgstr "Supprimer ce message?"
 #: template/front/index-index.phtml:56 template/front/notify-detail.phtml:53
 msgid "Once you delete this message, it cannot be undone."
 msgstr ""
-"Une fois la suppression de ce message effectuée, tu ne peux pas l'annuler."
+"Une fois la suppression de ce message effectuée, vous ne pourrez pas "
+"l'annuler."
 
 #: template/front/_confirm-modal.phtml:12
 msgid "Delete message"
@@ -249,7 +250,7 @@ msgstr "Lire"
 
 #: template/front/index-index.phtml:90
 msgid "No message for you!"
-msgstr "Il n'y a aucun message pour toi !"
+msgstr "Il n'y a aucun message pour vous !"
 
 #: template/front/index-index.phtml:99 template/front/notify-index.phtml:50
 msgid "Checked all"
@@ -262,7 +263,8 @@ msgstr "Opération de masse"
 #: template/front/index-index.phtml:114
 msgid "Once you delete those message, it cannot be undone."
 msgstr ""
-"Une fois la suppression du message effectuée, tu ne peux pas l'annuler."
+"Une fois la suppression de ces messages effectuée, vous ne pourrez pas "
+"l'annuler."
 
 #: template/front/index-send.phtml:10
 msgid "Return message list page"
@@ -274,7 +276,7 @@ msgstr "Ecrire un message"
 
 #: template/front/notify-index.phtml:39
 msgid "No notification for you!"
-msgstr "Il n'y a aucune notification pour toi !"
+msgstr "Il n'y a aucune notification pour vous !"
 
 #~ msgid "This part not finished now !"
 #~ msgstr "Cette fonctionnalité n'est pas encore finalisée !"
