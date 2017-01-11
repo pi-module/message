@@ -53,6 +53,5 @@ return array(
         'navigation' => 'navigation.php',
         // User specs
         'user' => 'user.php',
-		'route' => 'route.php',
     ),
 );
