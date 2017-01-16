@@ -38,7 +38,7 @@
                             <?php echo $singleMessage['avatar']; ?>
                         </a>
                         <div class="media-body message-detail-con">
-                            <p><?php echo $singleMessage['content']; ?></p>
+                            <p><?php echo htmlspecialchars($singleMessage['content']); ?></p>
                             <div class="message-detail-hidden">
                                 <p class="pull-right">
                                     <a href="<?php echo $this->url('', array('action' => 'delete', 'ids' => $singleMessage['id'], 'tid' => $singleMessage['uid_to'])); ?>"
