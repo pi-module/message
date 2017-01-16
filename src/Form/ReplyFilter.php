@@ -29,6 +29,9 @@ class ReplyFilter extends InputFilter
             'filters' => array(
                 array(
                     'name' => 'StringTrim',
+                ), 
+                 array(
+                    'name' => 'StripTags'
                 ),
             ),
         ));
