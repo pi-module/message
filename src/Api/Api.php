@@ -59,7 +59,7 @@ class Api extends AbstractApi
      * @param  string $conversation
      * @return bool
      */
-    public function send($to, $message, $from, $conversation = '')
+    public function send($to, $message, $from, $conversation = '', $mailNotification = true)
     {
         $result = true;
         $model = Pi::model('message', $this->getModule());
@@ -89,7 +89,9 @@ class Api extends AbstractApi
         $this->increaseAlert($to);
 
         // Send mail
+        if ($mailNotification)  {
         $this->sendMail($to, $message, $from);
+        }
 
         return $result;
     }

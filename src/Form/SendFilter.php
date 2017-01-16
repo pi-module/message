@@ -40,6 +40,9 @@ class SendFilter extends InputFilter
                 array(
                     'name' => 'StringTrim',
                 ),
+                array(
+                    'name' => 'StripTags',
+                ),
             ),
         ));
     }
