@@ -281,3 +281,10 @@
 .message-avatar {
     margin: 0 20px;
 }
+
+@media (min-width: 1200px) {
+    #pi-message.userSection .container {
+        max-width: 1600px;
+        width: auto;
+    }
+}
