@@ -260,7 +260,7 @@ class Api extends AbstractApi
                 'sender' => $sender['name'],
             );
             // Send mail
-            Pi::api('mail', 'notification')->send(
+            Pi::service('notification')->send(
                 $toUser,
                 'notification',
                 $information,
