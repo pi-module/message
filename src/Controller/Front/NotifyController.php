@@ -171,7 +171,7 @@ class NotifyController extends ActionController
                 array('id' => $notificationId));
         }
 
-        $this->view()->assign('notification', $detail);
+        $this->view()->assign('notificationDetail', $detail);
         $this->renderNav();
 
         return;

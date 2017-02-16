@@ -27,27 +27,27 @@
                 $this->footScript()->appendScript($script);
                 ?>
             <?php } ?>
-            <?php if (!empty($notification)) { ?>
+            <?php if (!empty($notificationDetail)) { ?>
                 <div class="messages" id="message-js">
                     <div class="media message-detail">
                         <div class="message-detail-head">
                             <h4 class="media-heading pull-left message-head">
-                                <?php echo $notification['subject'] ?>
-                                <?php if (!empty($notification['tag'])) { ?>
+                                <?php echo $notificationDetail['subject'] ?>
+                                <?php if (!empty($notificationDetail['tag'])) { ?>
                                     <span class="label label-info message-label-type">
-                                    <?php echo $notification['tag']; ?>
+                                    <?php echo $notificationDetail['tag']; ?>
                                     </span>
                                 <?php } ?>
                             </h4>
                             <p class="message-time text-right">
                             <span class="muted">
-                                <?php echo _date($notification['time_send']); ?>
+                                <?php echo _date($notificationDetail['time_send']); ?>
                             </span>
                             </p>
                         </div>
                         <div class="media message-detail-primary">
                             <div class="media-body">
-                                <p class="message-body"><?php echo $notification['content']; ?></p>
+                                <p class="message-body"><?php echo $notificationDetail['content']; ?></p>
                                 <p class="pull-right">
                                     <a href="<?php echo $this->url('', array('action' => 'delete', 'ids' => $notification['id'])); ?>"
                                        data-confirm="<?php _e('Once you delete this message, it cannot be undone.'); ?>">
