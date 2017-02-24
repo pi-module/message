@@ -17,5 +17,12 @@ use Pi\Mvc\Router\Http\Standard;
 
 class Message extends Standard
 {
-   
+   public function assemble(array $params = array(), array $options = array())
+   {
+       $url = parent::assemble($params, $options);
+
+       $finalUrl = rtrim($url, '/');
+
+       return $finalUrl;
+   }
 }
