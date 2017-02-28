@@ -17,5 +17,4 @@ use Pi\Mvc\Router\Http\Standard;
 
 class Message extends Standard
 {
-   
 }
