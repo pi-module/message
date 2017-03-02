@@ -2,7 +2,7 @@
 
 [format]html[/format]
 
-[subject]New message[/subject]
+[subject]%site_name% - New message received[/subject]
 
 [body]
 <div style="padding: 1px; direction: ltr;">
