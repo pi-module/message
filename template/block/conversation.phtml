@@ -1,0 +1,30 @@
+<div>
+    <?php if (!empty($block['list'] )) { ?>
+        <h3><strong><?php _e('Message list') ?></strong></h3>
+        <hr/>
+        <?php foreach($block['list']  as $singleMessage) { ?>
+            <div class="messages" id="message-js">
+                <div class="media message-detail">
+                    <div class="message-detail-head">
+                        <h4 class="media-heading pull-left message-head">
+                            <span><?php echo $block['uid'] == $singleMessage['uid_from'] ? __('To') : __('From'); ?></span>
+                            <a href="<?php echo $singleMessage['profileUrl']; ?>"><?php echo $singleMessage['name']; ?></a>
+                        </h4>
+                        <p class="message-time text-right">
+                            <span class="muted"><?php echo _date($singleMessage['time_send']); ?></span>
+                        </p>
+                    </div>
+                    <div class="media message-detail-primary">
+                        <a href="<?php echo $singleMessage['profileUrl']; ?>" class="pull-left">
+                            <?php echo $singleMessage['avatar']; ?>
+                        </a>
+                        <div class="media-body message-detail-con">
+                            <p><?php echo $singleMessage['content']; ?></p>
+                        </div>
+                    </div>
+                </div>
+                <hr />
+            </div>
+        <?php } ?>
+    <?php } ?>
+</div>

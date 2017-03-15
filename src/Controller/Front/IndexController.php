@@ -354,6 +354,24 @@ class IndexController extends ActionController
             'action' => 'detail',
             'mid' => $conversation,
         )));
+        // Get list of conversations	
+        $list = array();
+        $where = array(
+            'conversation' => $detail['conversation'],
+            'is_deleted_from' => 0,
+            'is_deleted_to' => 0
+        );
+        $order = array('time_send ASC', 'id ASC');
+        $model = $this->getModel('message');
+        $select = $model->select()->where($where)->order($order);
+        $rowset = $model->selectWith($select);
+        foreach ($rowset as $row) {
+            $list[$row->id] = Pi::api('api', 'message')->canonizeMessage($row);
+        }
+
+        // Set view
+        $this->view()->assign('list', $list);
+        
         // Manage post reply
         if ($this->request->isPost()) {
             $post = $this->request->getPost();
@@ -392,24 +410,7 @@ class IndexController extends ActionController
         }
         // Set to form
         $form->setData(array('uid_to' => $toId));
-        // Get list of conversations
-        $list = array();
-        $where = array(
-            'conversation' => $detail['conversation'],
-            'is_deleted_from' => 0,
-            'is_deleted_to' => 0
-        );
-        $order = array('time_send ASC', 'id ASC');
-        $model = $this->getModel('message');
-        $select = $model->select()->where($where)->order($order);
-        $rowset = $model->selectWith($select);
-        foreach ($rowset as $row) {
-            $list[$row->id] = Pi::api('api', 'message')->canonizeMessage($row);
-        }
-
-        // Set view
         $this->view()->assign('form', $form);
-        $this->view()->assign('list', $list);
     }
 
     /**
@@ -423,60 +424,7 @@ class IndexController extends ActionController
         Pi::service('authentication')->requireLogin();
         //current user id
         $userId = Pi::user()->getUser()->id;
-
-        // dismiss alert
-        Pi::user()->message->dismissAlert($userId);
-
-        $model = $this->getModel('message');
-        //get private message
-        $select = $model->select()
-            ->where(function ($where) use ($conversation, $userId) {
-                $subWhere = clone $where;
-                $subWhere->equalTo('uid_from', $userId);
-                $subWhere->or;
-                $subWhere->equalTo('uid_to', $userId);
-                $where->like('conversation', $conversation)
-                    ->andPredicate($subWhere);
-            });
-        $rowset = $model->selectWith($select)->current();
-        if (!$rowset) {
-            return;
-        }
-        $detail = $rowset->toArray();
-
-        // Get user
-        if ($userId == $detail['uid_from']) {
-            //get username url
-            $user = Pi::user()->getUser($detail['uid_to'])
-                ?: Pi::user()->getUser(0);
-            $detail['name'] = $user->name;
-        } else {
-            //get username url
-            $user = Pi::user()->getUser($detail['uid_from'])
-                ?: Pi::user()->getUser(0);
-            $detail['name'] = $user->name;
-        }
-
-        // Get avatar
-        $detail['avatar'] = Pi::user()->avatar($detail['uid_from'], 'medium', array(
-            'alt' => $user->name,
-            'class' => 'img-circle',
-        ));
-
-        // Set profile Url
-        $detail['profileUrl'] = Pi::user()->getUrl(
-            'profile',
-            $detail['uid_from']
-        );
-
-        //markup content
-        $detail['content'] = Pi::service('markup')->render($detail['content'], 'html', 'html');
-
-        if (!$detail['is_read_to'] && $userId == $detail['uid_to']) {
-            //mark the message as read
-            $model->update(array('is_read_to' => 1), array('conversation' => $conversation));
-        }
-
+        $detail = Pi::api('message', 'message')->showDetail($conversation, $userId);
         $this->view()->assign('message', $detail);
         $this->view()->assign('uid', $userId);
         $this->renderNav();
