@@ -262,3 +262,8 @@ msgstr ""
 #: template/front/notify-index.phtml:39
 msgid "No notification for you!"
 msgstr ""
+
+#: template/front/index-detail.phtml:59
+msgid "This conversation is no longer available"
+msgstr ""
+

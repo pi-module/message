@@ -55,6 +55,11 @@
                     <?php echo $this->form($form, 'horizontal'); ?>
                 </div>
             </div>
+        <?php } else { ?>
+            <p class>
+                <br/>
+            <?php _e('This conversation is no longer available') ?>
+            </p>
         <?php } ?>
         <?php include $this->template('./_confirm-modal.phtml'); ?>
     </div>
