@@ -7,9 +7,15 @@
                 <div class="media message-detail">
                     <div class="message-detail-head">
                         <h4 class="media-heading pull-left message-head">
-                            <span><?php echo $block['uid'] == $singleMessage['uid_from'] ? __('To') : __('From'); ?></span>
+                            <span><?php echo $block['uid'] == $singleMessage['uid_from'] ? __('Message To') : __('Message From'); ?></span>
                             <a href="<?php echo $singleMessage['profileUrl']; ?>"><?php echo $singleMessage['name']; ?></a>
                         </h4>
+                        <?php if ($singleMessage['is_deleted_from']) { ?>
+                             &nbsp;<span class="label label-danger"><?php _e('deleted by emitter') ?></span>
+                        <?php } ?>     
+                        <?php if ($singleMessage['is_deleted_to']) { ?>
+                             &nbsp;<span class="label label-danger"><?php _e('deleted by recipient') ?></span>
+                        <?php } ?>     
                         <p class="message-time text-right">
                             <span class="muted"><?php echo _date($singleMessage['time_send']); ?></span>
                         </p>

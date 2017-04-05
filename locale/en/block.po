@@ -16,3 +16,14 @@ msgstr ""
 
 #~ msgid "Checked all"
 #~ msgstr "All Categories"
+
+
+#: template/block/conversation.phtml:17
+msgid "deleted by emitter"
+msgstr ""
+
+#: template/block/conversation.phtml:14
+msgid "deleted by recipient"
+msgstr ""
+
+

@@ -44,9 +44,11 @@ class Block
         if ($conversation) {
             $where = array(
                 'conversation' => $conversation,
-                'is_deleted_from' => 0,
-                'is_deleted_to' => 0
             );
+            if (!isset($options['admin']) || (isset($options['admin']) && !$options['admin'])) {
+                $where['is_deleted_from'] = 0;
+                $where['is_deleted_to'] = 0;
+            }
             $order = array('time_send ASC', 'id ASC');
             $model = Pi::model('message', 'message');
             $select = $model->select()->where($where)->order($order);
