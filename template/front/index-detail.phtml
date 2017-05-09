@@ -58,7 +58,7 @@
         <?php } else { ?>
             <p class>
                 <br/>
-            <?php _e('This conversation is no longer available') ?>
+                <?php _e('This conversation is no longer available') ?>
             </p>
         <?php } ?>
         <?php include $this->template('./_confirm-modal.phtml'); ?>
@@ -67,7 +67,7 @@
 <?php
 $paginator = isset($paginator) ? $paginator->getCurrentPageNumber() : '';
 $host = $this->url('', array('module' => 'message'));
-$confirm = __('Once you delete this message, it cannot be undone.');
+$confirm = addslashes(__('Once you delete this message, it cannot be undone.'));
 $script = "messageIndex({p: '%s', host: '%s', confirm: '%s'});";
 $script = sprintf($script, $paginator, $host, $confirm);
 

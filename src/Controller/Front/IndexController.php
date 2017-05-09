@@ -358,8 +358,7 @@ class IndexController extends ActionController
         $list = array();
         $where = array(
             'conversation' => $detail['conversation'],
-            'is_deleted_from' => 0,
-            'is_deleted_to' => 0
+            '((uid_from = ' . $userId . ' AND is_deleted_from = 0) OR (uid_to = ' . $userId . ' AND is_deleted_to = 0))',
         );
         $order = array('time_send ASC', 'id ASC');
         $model = $this->getModel('message');
