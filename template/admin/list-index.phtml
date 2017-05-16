@@ -50,7 +50,7 @@
                                                         <li><?php _e('Identity'); ?> : <?php echo $message['userFrom']['identity']; ?></li>
                                                         <li><?php _e('Email'); ?> : <?php echo $message['userFrom']['email']; ?></li>
                                                         <li><?php _e('Is read ?'); ?> : <?php $message['is_read_from'] ? $text = __('Yes') : $text = __('No'); ?><?php echo $text; ?></li>
-                                                        <li><?php _e('Is deleted ?'); ?> : <?php (isset($message['is_delete_from']) && $message['is_delete_from']) ? $text = __('Yes') : $text = __('No'); ?><?php echo $text; ?></li>
+                                                        <li><?php _e('Is deleted ?'); ?> : <?php (isset($message['is_deleted_from']) && $message['is_deleted_from']) ? $text = __('Yes') : $text = __('No'); ?><?php echo $text; ?></li>
                                                     </ul>
                                                 </div>
                                             </div>
@@ -62,7 +62,7 @@
                                                         <li><?php _e('Identity'); ?> : <?php echo $message['userTo']['identity']; ?></li>
                                                         <li><?php _e('Email'); ?> : <?php echo $message['userTo']['email']; ?></li>
                                                         <li><?php _e('Is read ?'); ?> : <?php $message['is_read_to'] ? $text = __('Yes') : $text = __('No'); ?><?php echo $text; ?></li>
-                                                        <li><?php _e('Is deleted ?'); ?> : <?php (isset($message['is_delete_to']) && $message['is_delete_to']) ? $text = __('Yes') : $text = __('No'); ?><?php echo $text; ?></li>
+                                                        <li><?php _e('Is deleted ?'); ?> : <?php (isset($message['is_deleted_to']) && $message['is_deleted_to']) ? $text = __('Yes') : $text = __('No'); ?><?php echo $text; ?></li>
                                                     </ul>
                                                 </div>
                                             </div>
