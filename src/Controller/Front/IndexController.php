@@ -41,6 +41,11 @@ class IndexController extends ActionController
      */
     public function indexAction()
     {
+        $bookingConversationsToDisable = array();
+        if (Pi::service('module')->isActive('guide')) {
+            $bookingConversationsToDisable = Pi::api('booking', 'guide')->getConversationsToDisable();
+        }        
+        
         $page = _get('p', 'int');
         $page = $page ?: 1;
         $limit = Pi::config('list_number');
@@ -165,6 +170,8 @@ class IndexController extends ActionController
         }
         $this->renderNav();
         $this->view()->assign('messages', $messageList);
+        $this->view()->assign('bookingConversationsToDisable', $bookingConversationsToDisable);
+        
 
         return;
     }
@@ -338,7 +345,14 @@ class IndexController extends ActionController
         Pi::service('authentication')->requireLogin();
         $conversation = _get('mid', 'string');
         $conversation = $conversation ?: 0;
-        
+     
+        $bookingConversationsToDisable = array();
+        if (Pi::service('module')->isActive('guide')) {
+            $bookingConversationsToDisable = Pi::api('booking', 'guide')->getConversationsToDisable();
+        }   
+       if (in_array($conversation, $bookingConversationsToDisable)) {
+            $this->jump(array('action' => 'index'));
+        }
         // Current user id
         $userId = Pi::user()->getUser()->id;
         // Get message detail
