@@ -21,7 +21,7 @@
             <div class="messages" id="message-js">
                 <?php if (!empty($messages)) { ?>
                     <?php foreach ($messages as $message) { ?>
-                        <?php if (in_array($message['conversation'], $bookingConversationsToDisable)) { ?> 
+                        <?php if (in_array($message['conversation'], $messagesToDisable)) { ?> 
                             <div class="clearfix message-item<?php if (!$message['is_read']) { echo ' message-item-read'; } ?>">
                                 <div class="pull-left text-center">
                                     <div class="pull-left message-checkbox">
