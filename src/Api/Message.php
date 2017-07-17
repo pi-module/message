@@ -21,13 +21,14 @@ class Message extends AbstractApi
      * @param  int $messageId
      * @return array
      */
-    public function showDetail($conversation, $userId)
+    public function showDetail($conversation, $userId, $checkAuth = true)
     {
-        
-        Pi::service('authentication')->requireLogin();
-        
-        // dismiss alert
-        Pi::user()->message->dismissAlert($userId);
+        if($checkAuth){
+            Pi::service('authentication')->requireLogin();
+
+            // dismiss alert
+            Pi::user()->message->dismissAlert($userId);
+        }
 
         $model = Pi::model('message', 'message');
         //get private message
