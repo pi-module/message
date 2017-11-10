@@ -43,13 +43,20 @@ class ListController extends ActionController
             // content Short
             $list[$row->id]['contentShort'] = (mb_strlen(strip_tags($row->content), 'utf-8') > 300) ? mb_substr(strip_tags($row->content), 0, 300, 'utf-8' )  . ' ... ' : strip_tags($row->content);
             // user from
-            $list[$row->id]['userFrom'] = Pi::user()->getUser($row->uid_from)->toArray();
+            $list[$row->id]['userFrom'] = Pi::user()->getUser($row->uid_from);
+            if ($list[$row->id]['userFrom']) {
+                $list[$row->id]['userFrom'] = $list[$row->id]['userFrom']->toArray();
+            }
             $list[$row->id]['userFrom']['avatar'] = Pi::user()->avatar($row->uid_from, 'medium', array(
                 'alt' => $list[$row->id]['userFrom']['name'],
                 'class' => 'img-circle',
             ));
             // user to
-            $list[$row->id]['userTo'] = Pi::user()->getUser($row->uid_to)->toArray();
+            $list[$row->id]['userTo'] = Pi::user()->getUser($row->uid_to);
+            if ($list[$row->id]['userTo']) {
+                $list[$row->id]['userTo'] = Pi::user()->getUser($row->uid_to)->toArray();
+            }
+            
             $list[$row->id]['userTo']['avatar'] = Pi::user()->avatar($row->uid_to, 'medium', array(
                 'alt' => $list[$row->id]['userTo']['name'],
                 'class' => 'img-circle',

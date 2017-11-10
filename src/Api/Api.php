@@ -77,6 +77,10 @@ class Api extends AbstractApi
         $row = $model->createRow($messageData);
         try {
             $row->save();
+
+            if($conversation){
+                $result = $conversation;
+            }
         } catch (\Exception $e) {
             $result = false;
         }
