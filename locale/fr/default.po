@@ -1,15 +1,15 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Pi-message\n"
-"POT-Creation-Date: 2017-01-03 20:45+0100\n"
-"PO-Revision-Date: 2017-01-03 20:45+0100\n"
+"POT-Creation-Date: 2017-11-10 10:06+0100\n"
+"PO-Revision-Date: 2017-11-10 10:06+0100\n"
 "Last-Translator: Marc Desrousseaux\n"
 "Language-Team: Marc Desrousseaux\n"
 "Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 1.8.11\n"
+"X-Generator: Poedit 2.0.4\n"
 "X-Poedit-KeywordsList: __;_e\n"
 "X-Poedit-Basepath: ../..\n"
 "X-Poedit-SourceCharset: UTF-8\n"
@@ -23,7 +23,7 @@ msgstr "Archive"
 msgid "Message detail"
 msgstr "Détail du message"
 
-#: src/Api/Breadcrumbs.php:59 src/Controller/Front/IndexController.php:326
+#: src/Api/Breadcrumbs.php:59 src/Controller/Front/IndexController.php:333
 msgid "Send message"
 msgstr "Envoyer le message"
 
@@ -51,40 +51,40 @@ msgstr ""
 msgid "Prune old messages"
 msgstr "Purger les anciens messages"
 
-#: src/Controller/Front/IndexController.php:184
+#: src/Controller/Front/IndexController.php:191
 #: src/Controller/Front/NotifyController.php:43
 #, php-format
 msgid "Private message ( <span class=\"label label-danger\">%s</span> unread )"
 msgstr "Message Privé ( <span class=\"label label-danger\">%s</span> non lu )"
 
-#: src/Controller/Front/IndexController.php:188
+#: src/Controller/Front/IndexController.php:195
 #: src/Controller/Front/NotifyController.php:47
 #, php-format
 msgid "Notification ( <span class=\"label label-danger\">%s</span> unread )"
 msgstr "Notification ( <span class=\"label label-danger\">%s</span> non lu)"
 
-#: src/Controller/Front/IndexController.php:224
+#: src/Controller/Front/IndexController.php:231
 msgid "Username is invalid, please try again."
 msgstr "Le nom de compte utilisateur est invalide, merci d'essayer de nouveau."
 
-#: src/Controller/Front/IndexController.php:240
-#: src/Controller/Front/IndexController.php:378
+#: src/Controller/Front/IndexController.php:247
+#: src/Controller/Front/IndexController.php:409
 msgid "Send failed, please try again."
 msgstr "Envoi non effectué, merci d'essayer de nouveau"
 
-#: src/Controller/Front/IndexController.php:275
+#: src/Controller/Front/IndexController.php:282
 msgid "User"
 msgstr "Utilisateur"
 
-#: src/Controller/Front/IndexController.php:279
+#: src/Controller/Front/IndexController.php:286
 msgid "not found"
 msgstr "non trouvé"
 
-#: src/Controller/Front/IndexController.php:285
+#: src/Controller/Front/IndexController.php:292
 msgid "Sorry, you can't send message to yourself."
 msgstr "Désolé, vous ne pouvez pas vous envoyer un message à vous-même."
 
-#: src/Controller/Front/IndexController.php:297
+#: src/Controller/Front/IndexController.php:304
 msgid "An error occurred, please try again."
 msgstr "Une erreur est survenue, merci d'essayer de nouveau."
 
@@ -139,13 +139,13 @@ msgstr "Liste des messages"
 
 #: template/admin/list-index.phtml:19 template/admin/list-index.phtml:40
 #: template/admin/list-index.phtml:47 template/front/index-detail.phtml:29
-#: template/front/index-index.phtml:37
+#: template/front/index-index.phtml:59
 msgid "From"
 msgstr "De"
 
 #: template/admin/list-index.phtml:21 template/admin/list-index.phtml:41
 #: template/admin/list-index.phtml:59 template/front/index-detail.phtml:29
-#: template/front/index-index.phtml:37
+#: template/front/index-index.phtml:59
 msgid "To"
 msgstr "A"
 
@@ -199,12 +199,28 @@ msgstr "Supprimé?"
 msgid "Message list is empty !"
 msgstr "La liste de message est vide !"
 
+#: template/block/conversation.phtml:8
+msgid "Message To"
+msgstr "Message à"
+
+#: template/block/conversation.phtml:8
+msgid "Message From"
+msgstr "Message de"
+
+#: template/block/conversation.phtml:12
+msgid "deleted by emitter"
+msgstr "supprimé par l'émetteur"
+
+#: template/block/conversation.phtml:15
+msgid "deleted by recipient"
+msgstr "supprimé par destinataire"
+
 #: template/front/_confirm-modal.phtml:5
 msgid "Delete this message?"
 msgstr "Supprimer ce message?"
 
-#: template/front/_confirm-modal.phtml:8 template/front/index-detail.phtml:65
-#: template/front/index-index.phtml:56 template/front/notify-detail.phtml:53
+#: template/front/_confirm-modal.phtml:8 template/front/index-detail.phtml:70
+#: template/front/index-index.phtml:78 template/front/notify-detail.phtml:53
 msgid "Once you delete this message, it cannot be undone."
 msgstr ""
 "Une fois la suppression de ce message effectuée, vous ne pourrez pas "
@@ -229,38 +245,50 @@ msgstr "Message privé"
 msgid "Notification"
 msgstr "Notification"
 
-#: template/front/index-detail.phtml:46 template/front/index-index.phtml:57
-#: template/front/index-index.phtml:103 template/front/notify-detail.phtml:54
+#: template/front/index-detail.phtml:46 template/front/index-index.phtml:79
+#: template/front/index-index.phtml:126 template/front/notify-detail.phtml:54
 #: template/front/notify-index.phtml:54
 msgid "Delete"
 msgstr "Supprimer"
+
+#: template/front/index-detail.phtml:61
+msgid "This conversation is no longer available"
+msgstr "Cette conversation n'est plus disponible"
 
 #: template/front/index-index.phtml:9
 msgid "Message"
 msgstr "Message"
 
-#: template/front/index-index.phtml:71 template/front/index-index.phtml:102
+#: template/front/index-index.phtml:41
+msgid ""
+"The reading of messages is not included in your offer. To access it, please "
+"upgrade your subscription package !"
+msgstr ""
+"La lecture des messages n'est pas incluse dans votre offre. Upgradez votre "
+"abonnement pour y avoir accès !"
+
+#: template/front/index-index.phtml:93 template/front/index-index.phtml:125
 #: template/front/notify-index.phtml:53
 msgid "Mark as read"
 msgstr "Marquer comme lu"
 
-#: template/front/index-index.phtml:77
+#: template/front/index-index.phtml:99
 msgid "Read"
 msgstr "Lire"
 
-#: template/front/index-index.phtml:90
+#: template/front/index-index.phtml:113
 msgid "No message for you!"
 msgstr "Il n'y a aucun message pour vous !"
 
-#: template/front/index-index.phtml:99 template/front/notify-index.phtml:50
+#: template/front/index-index.phtml:122 template/front/notify-index.phtml:50
 msgid "Checked all"
 msgstr "Sélectionner Tout"
 
-#: template/front/index-index.phtml:101 template/front/notify-index.phtml:52
+#: template/front/index-index.phtml:124 template/front/notify-index.phtml:52
 msgid "Massive operation"
 msgstr "Opération de masse"
 
-#: template/front/index-index.phtml:114
+#: template/front/index-index.phtml:137
 msgid "Once you delete those message, it cannot be undone."
 msgstr ""
 "Une fois la suppression de ces messages effectuée, vous ne pourrez pas "
@@ -277,6 +305,9 @@ msgstr "Ecrire un message"
 #: template/front/notify-index.phtml:39
 msgid "No notification for you!"
 msgstr "Il n'y a aucune notification pour vous !"
+
+#~ msgid "This message is unavailable. Please upgrade your package."
+#~ msgstr "Ce message n'est pas disponible"
 
 #~ msgid "This part not finished now !"
 #~ msgstr "Cette fonctionnalité n'est pas encore finalisée !"
