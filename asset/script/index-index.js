@@ -64,7 +64,7 @@
             }
         },
         itemsBind: function (c) {
-            if (c.target.tagName === "A" || c.target.tagName === "INPUT" || c.target.tagName === "IMG") {
+            if (c.target.tagName === "A" || c.target.tagName === "INPUT" || c.target.tagName === "IMG" || c.target.tagName === "DIV") {
                 return;
             }
             window.location = $(this).find(".message-content-link").attr("href")
