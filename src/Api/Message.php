@@ -81,4 +81,13 @@ class Message extends AbstractApi
         }
         return $detail;
     }
+
+    public function changeUid($oldId, $newId, $conversation)
+    {
+        $model = Pi::model('message', 'message');
+        $model->update(array('uid_from' => $newId), array('uid_from' => $oldId, 'conversation' => $conversation));
+        $model->update(array('uid_to' => $newId), array('uid_to' => $oldId, 'conversation' => $conversation));
+        
+        
+    }
 }
