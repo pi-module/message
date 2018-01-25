@@ -135,7 +135,7 @@
 $paginator = isset($paginator) ? $paginator->getCurrentPageNumber() : '';
 $host = $this->url('', array('module' => 'message'));
 $confirm = __('Once you delete those message, it cannot be undone.');
-$script = "messageIndex({p: '%s', host: '%s', confirm: '%s'});";
+$script = "messageIndex({p: '%s', host: '%s', confirm: \"%s\"});";
 $script = sprintf($script, $paginator, $host, $confirm);
 $this->footScript()->appendFile($this->assetModule('script/index-index.js'));
 $this->footScript()->appendScript($script);
