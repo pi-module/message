@@ -9,7 +9,26 @@
                     $class = 'bg-danger';
                 } elseif ($message['is_read_to'] == 0) {
                     $class = 'bg-warning';
-                } ?>
+                } 
+                if (!isset($message['userFrom']['name'])) {
+                    $message['userFrom']['name'] = '';
+                }
+                if (!isset($message['userFrom']['identity'])) {
+                    $message['userFrom']['identity'] = '';
+                }
+                if (!isset($message['userFrom']['email'])) {
+                    $message['userFrom']['email'] = '';
+                }
+                if (!isset($message['userTo']['name'])) {
+                    $message['userTo']['name'] = '';
+                }
+                if (!isset($message['userTo']['identity'])) {
+                    $message['userTo']['identity'] = '';
+                }
+                if (!isset($message['userTo']['email'])) {
+                    $message['userTo']['email'] = '';
+                }
+                ?>
                 <div class="message-single clearfix <?php echo $class; ?>">
                     <div class="col-md-1">
                         <?php echo $message['userFrom']['avatar']; ?>
