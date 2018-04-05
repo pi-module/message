@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Pi-message\n"
-"POT-Creation-Date: 2018-04-05 13:20+0200\n"
-"PO-Revision-Date: 2018-04-05 13:22+0200\n"
+"POT-Creation-Date: 2018-04-05 13:35+0200\n"
+"PO-Revision-Date: 2018-04-05 13:35+0200\n"
 "Last-Translator: Marc Desrousseaux\n"
 "Language-Team: Marc Desrousseaux\n"
 "Language: fr\n"
@@ -262,10 +262,10 @@ msgstr "Message"
 #: template/front/index-index.phtml:48
 #, php-format
 msgid ""
-"To read this message for this item, you need to <a href='%s'>update your "
+"<a href='%s'>To read this message for this item, you need to update your "
 "subscription package level !</a>"
 msgstr ""
-"Pour lire ce message pour cet élément, vous devez <a href='%s'>mettre à jour "
+"<a href='%s'>Pour lire ce message pour cet élément, vous devez mettre à jour "
 "votre niveau d'abonnement  !</a>"
 
 #: template/front/index-index.phtml:100 template/front/index-index.phtml:132
