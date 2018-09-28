@@ -1,10 +1,10 @@
 <?php
 /**
- * Pi Engine (http://pialog.org)
+ * Pi Engine (http://piengine.org)
  *
- * @link            http://code.pialog.org for the Pi Engine source repository
- * @copyright       Copyright (c) Pi Engine http://pialog.org
- * @license         http://pialog.org/license.txt New BSD License
+ * @link            http://code.piengine.org for the Pi Engine source repository
+ * @copyright       Copyright (c) Pi Engine http://piengine.org
+ * @license         http://piengine.org/license.txt New BSD License
  */
 
 /**
@@ -49,7 +49,7 @@ class ListController extends ActionController
             }
             $list[$row->id]['userFrom']['avatar'] = Pi::user()->avatar($row->uid_from, 'medium', array(
                 'alt' => $list[$row->id]['userFrom']['name'],
-                'class' => 'img-circle',
+                'class' => 'rounded-circle',
             ));
             // user to
             $list[$row->id]['userTo'] = Pi::user()->getUser($row->uid_to);
@@ -59,7 +59,7 @@ class ListController extends ActionController
             
             $list[$row->id]['userTo']['avatar'] = Pi::user()->avatar($row->uid_to, 'medium', array(
                 'alt' => $list[$row->id]['userTo']['name'],
-                'class' => 'img-circle',
+                'class' => 'rounded-circle',
             ));
             // Tiem send view
             $list[$row->id]['time_send_view'] = _date($row->time_send);

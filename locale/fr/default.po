@@ -54,14 +54,14 @@ msgstr "Purger les anciens messages"
 #: src/Controller/Front/IndexController.php:191
 #: src/Controller/Front/NotifyController.php:43
 #, php-format
-msgid "Private message ( <span class=\"label label-danger\">%s</span> unread )"
-msgstr "Message Privé ( <span class=\"label label-danger\">%s</span> non lu )"
+msgid "Private message ( <span class=\"badge badge-danger\">%s</span> unread )"
+msgstr "Message Privé ( <span class=\"badge badge-danger\">%s</span> non lu )"
 
 #: src/Controller/Front/IndexController.php:195
 #: src/Controller/Front/NotifyController.php:47
 #, php-format
-msgid "Notification ( <span class=\"label label-danger\">%s</span> unread )"
-msgstr "Notification ( <span class=\"label label-danger\">%s</span> non lu)"
+msgid "Notification ( <span class=\"badge badge-danger\">%s</span> unread )"
+msgstr "Notification ( <span class=\"badge badge-danger\">%s</span> non lu)"
 
 #: src/Controller/Front/IndexController.php:231
 msgid "Username is invalid, please try again."
