@@ -48,13 +48,13 @@ msgstr ""
 #: src/Controller/Front/IndexController.php:184
 #: src/Controller/Front/NotifyController.php:43
 #, php-format
-msgid "Private message ( <span class=\"label label-danger\">%s</span> unread )"
+msgid "Private message ( <span class=\"badge badge-danger\">%s</span> unread )"
 msgstr ""
 
 #: src/Controller/Front/IndexController.php:188
 #: src/Controller/Front/NotifyController.php:47
 #, php-format
-msgid "Notification ( <span class=\"label label-danger\">%s</span> unread )"
+msgid "Notification ( <span class=\"badge badge-danger\">%s</span> unread )"
 msgstr ""
 
 #: src/Controller/Front/IndexController.php:224
