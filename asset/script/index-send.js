@@ -71,7 +71,7 @@
                 app.$posi.find('span').html(tip).addClass('message-error');
                 app.$username.addClass('message-username');
                 sendTxt.append('<span></span>');
-                sendTxt.find('span').addClass('help-block message-error').html('You can’t send a empty message');
+                sendTxt.find('span').addClass('form-text message-error').html('You can’t send a empty message');
                 self.addClass('message-username');
                 return false;
             }
@@ -85,7 +85,7 @@
             }
             if (val == '') {
                 sendTxt.append('<span></span>');
-                sendTxt.find('span').addClass('help-block message-error').html('You can’t send a empty message');
+                sendTxt.find('span').addClass('form-text message-error').html('You can’t send a empty message');
                 self.addClass('message-username');
                 return false;
             }

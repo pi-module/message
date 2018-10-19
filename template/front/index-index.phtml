@@ -42,7 +42,7 @@ $guideOfferUrl = Pi::url($this->url('', array(
                                 </div>
                                 <div class="col-md-10">
                                      <ul class="list-inline small">
-                                        <li class="message-time muted">&nbsp;</li>
+                                        <li class="list-inline-item message-time muted">&nbsp;</li>
                                     </ul>
                                     <div class="message-content">
                                         <?php echo sprintf(__("<a href='%s'>To read this message for this item, you need to update your subscription package level !</a>"), $guideOfferUrl) ?>
@@ -63,16 +63,16 @@ $guideOfferUrl = Pi::url($this->url('', array(
                                 </div>
                                 <div class="col-md-10">
                                     <ul class="list-inline small">
-                                        <li class="message-time muted"><?php echo $uid == $message['uid_from'] ? __('To') : __('From'); ?></li>
-                                        <li>
+                                        <li class="list-inline-item message-time muted"><?php echo $uid == $message['uid_from'] ? __('To') : __('From'); ?></li>
+                                        <li class="list-inline-item">
                                             <a href="<?php echo $message['profileUrl']; ?>" class="message-user-name">
                                                 <?php echo $message['name']; ?>
                                             </a>
                                         </li>
-                                        <li class="message-divider">|</li>
-                                        <li class="message-time muted"><?php echo _date($message['time_send']); ?></li>
-                                        <li class="message-divider">|</li>
-                                        <li>
+                                        <li class="list-inline-item message-divider">|</li>
+                                        <li class="list-inline-item message-time muted"><?php echo _date($message['time_send']); ?></li>
+                                        <li class="list-inline-item message-divider">|</li>
+                                        <li class="list-inline-item">
                                             <a href="<?php if (isset($paginator)) {
                                                 echo $this->url('', array(
                                                     'action' => 'delete',
@@ -86,8 +86,8 @@ $guideOfferUrl = Pi::url($this->url('', array(
                                                 <?php _e('Delete'); ?>
                                             </a>
                                         </li>
-                                        <li class="message-divider">|</li>
-                                        <li class="message-mark">
+                                        <li class="list-inline-item message-divider">|</li>
+                                        <li class="list-inline-item message-mark">
                                             <a href="<?php if (isset($paginator)) {
                                                 echo $this->url('', array(
                                                     'action' => 'mark',
@@ -100,8 +100,8 @@ $guideOfferUrl = Pi::url($this->url('', array(
                                                 <?php _e('Mark as read'); ?>
                                             </a>
                                         </li>
-                                        <li class="message-divider">|</li>
-                                        <li class="message-mark">
+                                        <li class="list-inline-item message-divider">|</li>
+                                        <li class="list-inline-item message-mark">
                                             <a href="<?php echo $this->url('', array('action' => 'detail', 'mid' => $message['conversation'])); ?>">
                                                 <?php _e('Read'); ?>
                                             </a>

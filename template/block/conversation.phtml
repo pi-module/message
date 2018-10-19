@@ -11,10 +11,10 @@
                             <a href="<?php echo $singleMessage['profileUrl']; ?>"><?php echo $singleMessage['name']; ?></a>
                         </h4>
                         <?php if ($singleMessage['is_deleted_from']) { ?>
-                             &nbsp;<span class="label label-danger"><?php _e('deleted by emitter') ?></span>
+                             &nbsp;<span class="badge badge-danger"><?php _e('deleted by emitter') ?></span>
                         <?php } ?>     
                         <?php if ($singleMessage['is_deleted_to']) { ?>
-                             &nbsp;<span class="label label-danger"><?php _e('deleted by recipient') ?></span>
+                             &nbsp;<span class="badge badge-danger"><?php _e('deleted by recipient') ?></span>
                         <?php } ?>     
                         <p class="message-time text-right">
                             <span class="muted"><?php echo _date($singleMessage['time_send']); ?></span>
