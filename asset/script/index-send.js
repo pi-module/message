@@ -34,7 +34,7 @@
 
                 if (res.status) {
                     app.$posi.append('<p class="label message-user-suc"></p>');
-                    app.$posi.find('p').html('<a href="javascript:;" class="pull-right">×</a>' + val);
+                    app.$posi.find('p').html('<a href="javascript:;" class="float-right">×</a>' + val);
                     app.$username.removeClass().parent().find('span').empty();
                 } else {
                     if (val != '') {

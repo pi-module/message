@@ -6,7 +6,7 @@
             <div class="messages" id="message-js">
                 <div class="media message-detail">
                     <div class="message-detail-head">
-                        <h4 class="media-heading pull-left message-head">
+                        <h4 class="media-heading float-left message-head">
                             <span><?php echo $block['uid'] == $singleMessage['uid_from'] ? __('Message To') : __('Message From'); ?></span>
                             <a href="<?php echo $singleMessage['profileUrl']; ?>"><?php echo $singleMessage['name']; ?></a>
                         </h4>
@@ -21,7 +21,7 @@
                         </p>
                     </div>
                     <div class="media message-detail-primary">
-                        <a href="<?php echo $singleMessage['profileUrl']; ?>" class="pull-left">
+                        <a href="<?php echo $singleMessage['profileUrl']; ?>" class="float-left">
                             <?php echo $singleMessage['avatar']; ?>
                         </a>
                         <div class="media-body message-detail-con">

@@ -25,7 +25,7 @@
             app.$form.find('span').remove();
             if (val == '') {
                 app.$form.append('<span></span>');
-                app.$form.find('span').addClass('pull-right message-error').html('You can’t send a empty message');
+                app.$form.find('span').addClass('float-right message-error').html('You can’t send a empty message');
                 self.addClass('message-username');
                 return false;
             }

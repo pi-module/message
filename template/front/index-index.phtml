@@ -30,11 +30,11 @@ $guideOfferUrl = Pi::url($this->url('', array(
                     <?php foreach ($messages as $message) { ?>
                         <?php if (in_array($message['conversation'], $messagesToDisable)) { ?> 
                             <div class="clearfix message-item<?php if (!$message['is_read']) { echo ' message-item-read'; } ?>">
-                                <div class="pull-left text-center">
-                                    <div class="pull-left message-checkbox">
+                                <div class="float-left text-center">
+                                    <div class="float-left message-checkbox">
                                         <input type="checkbox" class="message-js-check" DISABLED=DISABLED>
                                     </div>
-                                    <div class="pull-left message-avatar">
+                                    <div class="float-left message-avatar">
                                         <div >
                                             <?php echo $message['avatar']; ?>
                                         </div>
@@ -51,11 +51,11 @@ $guideOfferUrl = Pi::url($this->url('', array(
                             </div>
                         <?php } else { ?> 
                             <div class="clearfix message-item<?php if (!$message['is_read']) { echo ' message-item-read'; } ?>">
-                                <div class="pull-left text-center">
-                                    <div class="pull-left message-checkbox">
+                                <div class="float-left text-center">
+                                    <div class="float-left message-checkbox">
                                         <input type="checkbox" class="message-js-check" data-id="<?php echo $message['id']; ?>">
                                     </div>
-                                    <div class="pull-left message-avatar">
+                                    <div class="float-left message-avatar">
                                         <a href="<?php echo $message['profileUrl']; ?>">
                                             <?php echo $message['avatar']; ?>
                                         </a>
@@ -121,11 +121,11 @@ $guideOfferUrl = Pi::url($this->url('', array(
                 <?php } ?>
                 <?php if (isset($paginator)) {
                     echo $this->paginationControl($paginator, 'Sliding', 'paginator.phtml', array(
-                        'class' => 'pagination-right pull-right message-pagination'
+                        'class' => 'pagination-right float-right message-pagination'
                     ));
                 } ?>
                 <div class="clearfix">
-                    <form class="form-inline pull-left message-foot-form col-md-12" action="#">
+                    <form class="form-inline float-left message-foot-form col-md-12" action="#">
                         <input type="checkbox" class="message-js-batch" title="<?php _e('Checked all'); ?>">
                         <select class="message-batch-action">
                             <option value=""><?php _e('Massive operation'); ?></option>
