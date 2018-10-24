@@ -9,12 +9,12 @@
                 <h1><?php _e('Notification'); ?></h1>
             </div>
             <ul class="nav nav-tabs message-nav-tabs">
-                <li>
-                    <a href="<?php echo $this->url('', array('controller' => 'index', 'action' => 'index')); ?>"
+                <li class="nav-item">
+                    <a class="nav-link" href="<?php echo $this->url('', array('controller' => 'index', 'action' => 'index')); ?>"
                        title="<?php _e('Private message'); ?>"><?php echo $messageTitle; ?></a>
                 </li>
-                <li class="active">
-                    <a href="<?php echo $this->url('', array('controller' => 'notify', 'action' => 'index')); ?>"
+                <li class="nav-item">
+                    <a class="nav-link active" href="<?php echo $this->url('', array('controller' => 'notify', 'action' => 'index')); ?>"
                        title="<?php _e('Notification'); ?>"><?php echo $notificationTitle; ?></a>
                 </li>
             </ul>

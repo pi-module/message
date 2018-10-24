@@ -3,7 +3,7 @@
     min-height: 450px;
 }
 
-.message-nav-tabs li.active a:hover {
+.message-nav-tabs li a.active:hover {
     cursor: pointer;
 }
 
