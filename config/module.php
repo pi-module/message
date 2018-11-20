@@ -23,7 +23,7 @@ return array(
         'license' => 'New BSD',
         // Module is ready for clone? Default as false
         'clonable' => false,
-        'icon' => 'fa-envelope-o',
+        'icon' => 'fa-envelope',
     ),
     // Author information
     'author' => array(
