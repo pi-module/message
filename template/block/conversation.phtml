@@ -1,14 +1,14 @@
 <?php Pi::service('i18n')->load(array('module/message', 'default')); ?>
 
-<div class="row">
+<div>
     <?php if (!empty($block['list'] )) { ?>
         <?php foreach($block['list']  as $singleMessage) { ?>
             <div class="messages col-md-12" id="message-js">
                 <div class="row justify-content-between">
-                    <h4 class="float-left">
+                    <h5 class="float-left">
                         <span><?php echo $block['uid'] == $singleMessage['uid_from'] ? __('Message To') : __('Message From'); ?></span>
                         <a href="<?php echo $singleMessage['profileUrl']; ?>"><?php echo $singleMessage['name']; ?></a>
-                    </h4>
+                    </h5>
                     <?php if ($singleMessage['is_deleted_from']) { ?>
                         &nbsp;<span class="badge badge-danger"><?php _e('deleted by emitter') ?></span>
                     <?php } ?>
