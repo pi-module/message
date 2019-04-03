@@ -29,7 +29,7 @@ $guideOfferUrl = Pi::url($this->url('', array(
                 <?php if (!empty($messages)) { ?>
                     <?php foreach ($messages as $message) { ?>
                         <?php if (in_array($message['conversation'], $messagesToDisable)) { ?> 
-                            <div class="clearfix message-item<?php if (!$message['is_read']) { echo ' message-item-read'; } ?>">
+                            <div class="clearfix message-item row <?php if (!$message['is_read']) { echo ' message-item-read'; } ?>">
                                 <div class="float-left text-center">
                                     <div class="float-left message-checkbox">
                                         <input type="checkbox" class="message-js-check" DISABLED=DISABLED>
@@ -50,7 +50,7 @@ $guideOfferUrl = Pi::url($this->url('', array(
                                 </div>
                             </div>
                         <?php } else { ?> 
-                            <div class="clearfix message-item<?php if (!$message['is_read']) { echo ' message-item-read'; } ?>">
+                            <div class="clearfix message-item row <?php if (!$message['is_read']) { echo ' message-item-read'; } ?>">
                                 <div class="float-left text-center">
                                     <div class="float-left message-checkbox">
                                         <input type="checkbox" class="message-js-check" data-id="<?php echo $message['id']; ?>">
