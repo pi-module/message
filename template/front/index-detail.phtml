@@ -29,18 +29,18 @@
                             <span><?php echo $uid == $singleMessage['uid_from'] ? __('To') : __('From'); ?></span>
                             <a href="<?php echo $singleMessage['profileUrl']; ?>"><?php echo $singleMessage['name']; ?></a>
                         </h4>
-                        <p class="message-time text-right">
+                        <p class="message-time text-right mb-2">
                             <span class="muted"><?php echo _date($singleMessage['time_send']); ?></span>
                         </p>
                     </div>
-                    <div class="media message-detail-primary">
+                    <div class="media message-detail-primary mt-3 d-flex">
                         <a href="<?php echo $singleMessage['profileUrl']; ?>" class="float-left">
                             <?php echo $singleMessage['avatar']; ?>
                         </a>
                         <div class="media-body message-detail-con">
                             <p><?php echo $singleMessage['content']; ?></p>
                             <div class="message-detail-hidden">
-                                <p class="float-right">
+                                <p class="float-right mb-2">
                                     <a href="<?php echo $this->url('', array('action' => 'delete', 'ids' => $singleMessage['id'], 'tid' => $singleMessage['uid_to'])); ?>"
                                        class="js-delete">
                                         <?php _e('Delete'); ?>
