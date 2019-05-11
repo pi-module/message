@@ -16,12 +16,12 @@ $guideOfferUrl = Pi::url($this->url('', array(
                 <h1><?php _e('Message'); ?></h1>
             </div>
             <ul class="nav nav-tabs message-nav-tabs">
-                <li class="active">
-                    <a href="<?php echo $this->url('', array('controller' => 'index', 'action' => 'index')); ?>"
+                <li class="nav-item">
+                    <a class="nav-link active" href="<?php echo $this->url('', array('controller' => 'index', 'action' => 'index')); ?>"
                        title="<?php _e('Private message'); ?>"><?php echo $messageTitle; ?></a>
                 </li>
-                <li>
-                    <a href="<?php echo $this->url('', array('controller' => 'notify', 'action' => 'index')); ?>"
+                <li class="nav-item">
+                    <a class="nav-link" href="<?php echo $this->url('', array('controller' => 'notify', 'action' => 'index')); ?>"
                        title="<?php _e('Notification'); ?>"><?php echo $notificationTitle; ?></a>
                 </li>
             </ul>
@@ -29,12 +29,12 @@ $guideOfferUrl = Pi::url($this->url('', array(
                 <?php if (!empty($messages)) { ?>
                     <?php foreach ($messages as $message) { ?>
                         <?php if (in_array($message['conversation'], $messagesToDisable)) { ?> 
-                            <div class="clearfix message-item<?php if (!$message['is_read']) { echo ' message-item-read'; } ?>">
-                                <div class="pull-left text-center">
-                                    <div class="pull-left message-checkbox">
+                            <div class="clearfix message-item row <?php if (!$message['is_read']) { echo ' message-item-read'; } ?>">
+                                <div class="float-left text-center">
+                                    <div class="float-left message-checkbox">
                                         <input type="checkbox" class="message-js-check" DISABLED=DISABLED>
                                     </div>
-                                    <div class="pull-left message-avatar">
+                                    <div class="float-left message-avatar">
                                         <div >
                                             <?php echo $message['avatar']; ?>
                                         </div>
@@ -42,7 +42,7 @@ $guideOfferUrl = Pi::url($this->url('', array(
                                 </div>
                                 <div class="col-md-10">
                                      <ul class="list-inline small">
-                                        <li class="message-time muted">&nbsp;</li>
+                                        <li class="list-inline-item message-time muted">&nbsp;</li>
                                     </ul>
                                     <div class="message-content">
                                         <?php echo sprintf(__("<a href='%s'>To read this message for this item, you need to update your subscription package level !</a>"), $guideOfferUrl) ?>
@@ -50,12 +50,12 @@ $guideOfferUrl = Pi::url($this->url('', array(
                                 </div>
                             </div>
                         <?php } else { ?> 
-                            <div class="clearfix message-item<?php if (!$message['is_read']) { echo ' message-item-read'; } ?>">
-                                <div class="pull-left text-center">
-                                    <div class="pull-left message-checkbox">
+                            <div class="clearfix message-item row <?php if (!$message['is_read']) { echo ' message-item-read'; } ?>">
+                                <div class="float-left text-center">
+                                    <div class="float-left message-checkbox">
                                         <input type="checkbox" class="message-js-check" data-id="<?php echo $message['id']; ?>">
                                     </div>
-                                    <div class="pull-left message-avatar">
+                                    <div class="float-left message-avatar">
                                         <a href="<?php echo $message['profileUrl']; ?>">
                                             <?php echo $message['avatar']; ?>
                                         </a>
@@ -63,16 +63,16 @@ $guideOfferUrl = Pi::url($this->url('', array(
                                 </div>
                                 <div class="col-md-10">
                                     <ul class="list-inline small">
-                                        <li class="message-time muted"><?php echo $uid == $message['uid_from'] ? __('To') : __('From'); ?></li>
-                                        <li>
+                                        <li class="list-inline-item message-time muted"><?php echo $uid == $message['uid_from'] ? __('To') : __('From'); ?></li>
+                                        <li class="list-inline-item">
                                             <a href="<?php echo $message['profileUrl']; ?>" class="message-user-name">
                                                 <?php echo $message['name']; ?>
                                             </a>
                                         </li>
-                                        <li class="message-divider">|</li>
-                                        <li class="message-time muted"><?php echo _date($message['time_send']); ?></li>
-                                        <li class="message-divider">|</li>
-                                        <li>
+                                        <li class="list-inline-item message-divider">|</li>
+                                        <li class="list-inline-item message-time muted"><?php echo _date($message['time_send']); ?></li>
+                                        <li class="list-inline-item message-divider">|</li>
+                                        <li class="list-inline-item">
                                             <a href="<?php if (isset($paginator)) {
                                                 echo $this->url('', array(
                                                     'action' => 'delete',
@@ -86,8 +86,8 @@ $guideOfferUrl = Pi::url($this->url('', array(
                                                 <?php _e('Delete'); ?>
                                             </a>
                                         </li>
-                                        <li class="message-divider">|</li>
-                                        <li class="message-mark">
+                                        <li class="list-inline-item message-divider">|</li>
+                                        <li class="list-inline-item message-mark">
                                             <a href="<?php if (isset($paginator)) {
                                                 echo $this->url('', array(
                                                     'action' => 'mark',
@@ -100,8 +100,8 @@ $guideOfferUrl = Pi::url($this->url('', array(
                                                 <?php _e('Mark as read'); ?>
                                             </a>
                                         </li>
-                                        <li class="message-divider">|</li>
-                                        <li class="message-mark">
+                                        <li class="list-inline-item message-divider">|</li>
+                                        <li class="list-inline-item message-mark">
                                             <a href="<?php echo $this->url('', array('action' => 'detail', 'mid' => $message['conversation'])); ?>">
                                                 <?php _e('Read'); ?>
                                             </a>
@@ -121,11 +121,11 @@ $guideOfferUrl = Pi::url($this->url('', array(
                 <?php } ?>
                 <?php if (isset($paginator)) {
                     echo $this->paginationControl($paginator, 'Sliding', 'paginator.phtml', array(
-                        'class' => 'pagination-right pull-right message-pagination'
+                        'class' => 'pagination-right float-right message-pagination'
                     ));
                 } ?>
                 <div class="clearfix">
-                    <form class="form-inline pull-left message-foot-form col-md-12" action="#">
+                    <form class="form-inline float-left message-foot-form col-md-12" action="#">
                         <input type="checkbox" class="message-js-batch" title="<?php _e('Checked all'); ?>">
                         <select class="message-batch-action">
                             <option value=""><?php _e('Massive operation'); ?></option>

@@ -3,34 +3,32 @@
 <div>
     <?php if (!empty($block['list'] )) { ?>
         <?php foreach($block['list']  as $singleMessage) { ?>
-            <div class="messages" id="message-js">
-                <div class="media message-detail">
-                    <div class="message-detail-head">
-                        <h4 class="media-heading pull-left message-head">
-                            <span><?php echo $block['uid'] == $singleMessage['uid_from'] ? __('Message To') : __('Message From'); ?></span>
-                            <a href="<?php echo $singleMessage['profileUrl']; ?>"><?php echo $singleMessage['name']; ?></a>
-                        </h4>
-                        <?php if ($singleMessage['is_deleted_from']) { ?>
-                             &nbsp;<span class="label label-danger"><?php _e('deleted by emitter') ?></span>
-                        <?php } ?>     
-                        <?php if ($singleMessage['is_deleted_to']) { ?>
-                             &nbsp;<span class="label label-danger"><?php _e('deleted by recipient') ?></span>
-                        <?php } ?>     
-                        <p class="message-time text-right">
-                            <span class="muted"><?php echo _date($singleMessage['time_send']); ?></span>
-                        </p>
-                    </div>
-                    <div class="media message-detail-primary">
-                        <a href="<?php echo $singleMessage['profileUrl']; ?>" class="pull-left">
-                            <?php echo $singleMessage['avatar']; ?>
-                        </a>
-                        <div class="media-body message-detail-con">
-                            <p><?php echo $singleMessage['content']; ?></p>
-                        </div>
+            <div class="messages col-md-12" id="message-js">
+                <div class="row justify-content-between">
+                    <h5 class="float-left">
+                        <span><?php echo $block['uid'] == $singleMessage['uid_from'] ? __('Message To') : __('Message From'); ?></span>
+                        <a href="<?php echo $singleMessage['profileUrl']; ?>"><?php echo $singleMessage['name']; ?></a>
+                    </h5>
+                    <?php if ($singleMessage['is_deleted_from']) { ?>
+                        &nbsp;<span class="badge badge-danger"><?php _e('deleted by emitter') ?></span>
+                    <?php } ?>
+                    <?php if ($singleMessage['is_deleted_to']) { ?>
+                        &nbsp;<span class="badge badge-danger"><?php _e('deleted by recipient') ?></span>
+                    <?php } ?>
+                    <div class="float-right">
+                        <span class="muted"><?php echo _date($singleMessage['time_send']); ?></span>
                     </div>
                 </div>
-                <hr />
+                <div class="media message-detail-primary">
+                    <a href="<?php echo $singleMessage['profileUrl']; ?>" class="float-left  mr-2">
+                        <?php echo $singleMessage['avatar']; ?>
+                    </a>
+                    <div class="media-body message-detail-con">
+                        <p><?php echo $singleMessage['content']; ?></p>
+                    </div>
+                </div>
             </div>
+            <hr />
         <?php } ?>
     <?php } ?>
 </div>
