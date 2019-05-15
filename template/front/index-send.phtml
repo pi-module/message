@@ -4,6 +4,7 @@
         <?php include $this->templateModule('front/user-profile-sidebar.phtml', 'user'); ?>
     </div>
     <div class="col-md-9">
+        <?php include $this->template('flash-messenger'); ?>
         <div class="page-header">
             <a class="float-right message-return"
                href="<?php echo $this->url('', array('controller' => 'index', 'action' => 'index')); ?>">
