@@ -1,10 +1,11 @@
 <?php $this->css($this->assetModule('script/front.css')); ?>
-<div class="clearfix row">
+<div class="clearfix row user-section-wrapper">
     <div class="col-md-3">
         <?php $sideActive = 'message'; ?>
         <?php include $this->templateModule('front/user-profile-sidebar.phtml', 'user'); ?>
     </div>
     <div class="col-md-9">
+        <?php include $this->template('flash-messenger'); ?>
         <ul class="nav nav-tabs message-nav-tabs">
             <li class="nav-item">
                 <a class="nav-link active" href="<?php echo $this->url('', array('controller' => 'index', 'action' => 'index')); ?>"
