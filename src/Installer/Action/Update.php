@@ -44,6 +44,11 @@ class Update extends BasicUpdate
         $messageTable   = $messageModel->getTable();
         $messageAdapter = $messageModel->getAdapter();
 
+        // Set message model
+        $notificationModel   = Pi::model('notification', $this->module);
+        $notificationTable   = $notificationModel->getTable();
+        $notificationAdapter = $notificationModel->getAdapter();
+
         // Update to version 1.0.3
         if (version_compare($moduleVersion, '1.0.3', '<')) {
             // Alter table : ADD conversation
@@ -53,10 +58,10 @@ class Update extends BasicUpdate
             } catch (\Exception $exception) {
                 $this->setResult(
                     'db', [
-                    'status'  => false,
-                    'message' => 'Table alter query failed: '
-                        . $exception->getMessage(),
-                ]
+                        'status'  => false,
+                        'message' => 'Table alter query failed: '
+                            . $exception->getMessage(),
+                    ]
                 );
                 return false;
             }
@@ -68,10 +73,10 @@ class Update extends BasicUpdate
             } catch (\Exception $exception) {
                 $this->setResult(
                     'db', [
-                    'status'  => false,
-                    'message' => 'Table alter query failed: '
-                        . $exception->getMessage(),
-                ]
+                        'status'  => false,
+                        'message' => 'Table alter query failed: '
+                            . $exception->getMessage(),
+                    ]
                 );
                 return false;
             }
@@ -83,10 +88,10 @@ class Update extends BasicUpdate
             } catch (\Exception $exception) {
                 $this->setResult(
                     'db', [
-                    'status'  => false,
-                    'message' => 'Table alter query failed: '
-                        . $exception->getMessage(),
-                ]
+                        'status'  => false,
+                        'message' => 'Table alter query failed: '
+                            . $exception->getMessage(),
+                    ]
                 );
                 return false;
             }
@@ -98,10 +103,10 @@ class Update extends BasicUpdate
             } catch (\Exception $exception) {
                 $this->setResult(
                     'db', [
-                    'status'  => false,
-                    'message' => 'Table alter query failed: '
-                        . $exception->getMessage(),
-                ]
+                        'status'  => false,
+                        'message' => 'Table alter query failed: '
+                            . $exception->getMessage(),
+                    ]
                 );
                 return false;
             }
@@ -113,10 +118,10 @@ class Update extends BasicUpdate
             } catch (\Exception $exception) {
                 $this->setResult(
                     'db', [
-                    'status'  => false,
-                    'message' => 'Table alter query failed: '
-                        . $exception->getMessage(),
-                ]
+                        'status'  => false,
+                        'message' => 'Table alter query failed: '
+                            . $exception->getMessage(),
+                    ]
                 );
                 return false;
             }
@@ -128,10 +133,10 @@ class Update extends BasicUpdate
             } catch (\Exception $exception) {
                 $this->setResult(
                     'db', [
-                    'status'  => false,
-                    'message' => 'Table alter query failed: '
-                        . $exception->getMessage(),
-                ]
+                        'status'  => false,
+                        'message' => 'Table alter query failed: '
+                            . $exception->getMessage(),
+                    ]
                 );
                 return false;
             }
@@ -143,10 +148,10 @@ class Update extends BasicUpdate
             } catch (\Exception $exception) {
                 $this->setResult(
                     'db', [
-                    'status'  => false,
-                    'message' => 'Table alter query failed: '
-                        . $exception->getMessage(),
-                ]
+                        'status'  => false,
+                        'message' => 'Table alter query failed: '
+                            . $exception->getMessage(),
+                    ]
                 );
                 return false;
             }
@@ -161,6 +166,24 @@ class Update extends BasicUpdate
                 $conversation      = Pi::api('api', 'message')->setConversation($row->time_send);
                 $row->conversation = $conversation;
                 $row->save();
+            }
+        }
+
+        // Update to version 1.2.0
+        if (version_compare($moduleVersion, '1.2.0', '<')) {
+            // Alter table : ADD image
+            $sql = sprintf("ALTER TABLE %s ADD `image` VARCHAR(255) NOT NULL DEFAULT '' AFTER `content`", $notificationTable);
+            try {
+                $notificationAdapter->query($sql, 'execute');
+            } catch (\Exception $exception) {
+                $this->setResult(
+                    'db', [
+                        'status'  => false,
+                        'message' => 'Table alter query failed: '
+                            . $exception->getMessage(),
+                    ]
+                );
+                return false;
             }
         }
 

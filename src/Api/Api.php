@@ -108,16 +108,18 @@ class Api extends AbstractApi
      * @param string $message
      * @param string $subject
      * @param string $tag
+     * @param string $image
      *
      * @return int|bool
      */
-    public function notify($to, $message, $subject, $tag = '')
+    public function notify($to, $message, $subject, $tag = '', $image = '')
     {
         $message = [
             'uid'       => $to,
             'subject'   => $subject,
             'content'   => $message,
             'tag'       => $tag,
+            'image'     => $image,
             'time_send' => time(),
         ];
         $model   = Pi::model('notification', $this->getModule());
@@ -255,14 +257,14 @@ class Api extends AbstractApi
             // Get user info
             $user = Pi::user()->get(
                 $to, [
-                'id', 'identity', 'name', 'email',
-            ]
+                    'id', 'identity', 'name', 'email',
+                ]
             );
             // Get sender info
             $sender = Pi::user()->get(
                 $from, [
-                'id', 'identity', 'name', 'email',
-            ]
+                    'id', 'identity', 'name', 'email',
+                ]
             );
             // Set to user
             $toUser = [
@@ -475,9 +477,9 @@ class Api extends AbstractApi
         // Get avatar
         $message['avatar'] = Pi::user()->avatar(
             $message['uid_from'], 'medium', [
-            'alt'   => $user->name,
-            'class' => 'rounded-circle',
-        ]
+                'alt'   => $user->name,
+                'class' => 'rounded-circle',
+            ]
         );
 
         // Set profile Url
