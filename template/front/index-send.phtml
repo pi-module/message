@@ -7,7 +7,7 @@
         <?php include $this->template('flash-messenger'); ?>
         <div class="page-header">
             <a class="float-right message-return"
-               href="<?php echo $this->url('', array('controller' => 'index', 'action' => 'index')); ?>">
+               href="<?php echo $this->url('', ['controller' => 'index', 'action' => 'index']); ?>">
                 <?php _e('Return message list page'); ?>
             </a>
             <h3><?php _e('Write message'); ?></h3>

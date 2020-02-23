@@ -10,50 +10,50 @@
 /**
  * Application manifest
  */
-return array(
+return [
     // Module meta
-    'meta' => array(
+    'meta'     => [
         // Module title, required
-        'title' => _a('Message'),
+        'title'       => _a('Message'),
         // Description, for admin, optional
         'description' => _a('A module to send message'),
         // Version number, required
-        'version' => '1.1.0',
+        'version'     => '1.1.0',
         // Distribution license, required
-        'license' => 'New BSD',
+        'license'     => 'New BSD',
         // Module is ready for clone? Default as false
-        'clonable' => false,
-        'icon' => 'fa-envelope',
-    ),
+        'clonable'    => false,
+        'icon'        => 'fa-envelope',
+    ],
     // Author information
-    'author' => array(
+    'author'   => [
         // Author full name, required
-        'Dev' => 'Xingyu Ji; Liu Chuang',
+        'Dev'     => 'Xingyu Ji; Liu Chuang',
         // Email address, optional
-        'Email' => 'xingyu@eefocus.com',
-        'UI/UE' => '@zhangsimon, @loidco',
-        'QA' => 'Zhang Hua, @lavenderli',
+        'Email'   => 'xingyu@eefocus.com',
+        'UI/UE'   => '@zhangsimon, @loidco',
+        'QA'      => 'Zhang Hua, @lavenderli',
         // Website link, optional
         'Website' => 'http://piengine.org',
         // Credits and aknowledgement, optional
-        'Credits' => 'Zend Framework Team; Pi Engine Team; EEFOCUS Team.'
-    ),
+        'Credits' => 'Zend Framework Team; Pi Engine Team; EEFOCUS Team.',
+    ],
     // resource
-    'resource' => array(
+    'resource' => [
         // Database meta
-        'database' => array(
+        'database'   => [
             // SQL schema/data file
             'sqlfile' => 'sql/mysql.sql',
-        ),
+        ],
         // permission
         'permission' => 'permission.php',
         // page
-        'page' => 'page.php',
+        'page'       => 'page.php',
         // Navigation definition
         'navigation' => 'navigation.php',
         // User specs
-        'user' => 'user.php',
-        'block' => 'block.php',
-        
-    ),
-);
+        'user'       => 'user.php',
+        'block'      => 'block.php',
+
+    ],
+];

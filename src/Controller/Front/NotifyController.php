@@ -39,7 +39,7 @@ class NotifyController extends ActionController
         Pi::service('authentication')->requireLogin();
         $userId = Pi::user()->getUser()->id;
 
-        $messageTitle = sprintf(
+        $messageTitle      = sprintf(
             __('Private message ( <span class="badge badge-danger">%s</span> unread )'),
             _number(Pi::api('api', 'message')->getUnread($userId, 'message'))
         );
@@ -58,9 +58,9 @@ class NotifyController extends ActionController
      */
     public function indexAction()
     {
-        $page = _get('p', 'int');
-        $page = $page ?: 1;
-        $limit = Pi::config('list_number');
+        $page   = _get('p', 'int');
+        $page   = $page ?: 1;
+        $limit  = Pi::config('list_number');
         $offset = (int)($page - 1) * $limit;
 
         //current user id
@@ -81,54 +81,62 @@ class NotifyController extends ActionController
                         ->where(array('uid' => $userId, 'is_deleted' => 0));
         $count = $model->selectWith($select)->current()->count;
         */
-        $count = $model->count(array('uid' => $userId, 'is_deleted' => 0));
+        $count = $model->count(['uid' => $userId, 'is_deleted' => 0]);
         if ($count) {
             //get notification list
-            $select = $model->select()
-                ->where(array(
-                    'uid' => $userId,
-                    'is_deleted' => 0
-                ))
+            $select           = $model->select()
+                ->where(
+                    [
+                        'uid'        => $userId,
+                        'is_deleted' => 0,
+                    ]
+                )
                 ->order('time_send DESC')
                 ->limit($limit)
                 ->offset($offset);
-            $rowset = $model->selectWith($select);
+            $rowset           = $model->selectWith($select);
             $notificationList = $rowset->toArray();
             //jump to last page
             if (empty($notificationList) && $page > 1) {
-                $this->redirect()->toRoute('', array(
+                $this->redirect()->toRoute(
+                    '', [
                     'controller' => 'notify',
-                    'action' => 'index',
-                    'p' => ceil($count / $limit),
-                ));
+                    'action'     => 'index',
+                    'p'          => ceil($count / $limit),
+                ]
+                );
 
                 return;
             }
 
-            array_walk($notificationList, function (&$v, $k) {
+            array_walk(
+                $notificationList, function (&$v, $k) {
                 //markup content
                 $v['content'] = Pi::service('markup')->compile(
                     $v['content'],
                     'text',
-                    array('nl2br' => false)
+                    ['nl2br' => false]
                 );
-            });
+            }
+            );
 
-            $paginator = Paginator::factory(intval($count), array(
-                'page' => $page,
-                'limit' => $limit,
-                'url_options' => array(
+            $paginator = Paginator::factory(
+                intval($count), [
+                'page'        => $page,
+                'limit'       => $limit,
+                'url_options' => [
                     'page_param' => 'p',
-                    'params' => array(
-                        'module' => $this->getModule(),
+                    'params'     => [
+                        'module'     => $this->getModule(),
                         'controller' => 'notify',
-                        'action' => 'index',
-                    ),
-                ),
-            ));
+                        'action'     => 'index',
+                    ],
+                ],
+            ]
+            );
             $this->view()->assign('paginator', $paginator);
         } else {
-            $notificationList = array();
+            $notificationList = [];
         }
         $this->renderNav();
         $this->view()->assign('notifications', $notificationList);
@@ -152,10 +160,12 @@ class NotifyController extends ActionController
         $model = $this->getModel('notification');
         //get notification
         $select = $model->select()
-            ->where(array(
-                'id' => $notificationId,
-                'uid' => $userId
-            ));
+            ->where(
+                [
+                    'id'  => $notificationId,
+                    'uid' => $userId,
+                ]
+            );
         $rowset = $model->selectWith($select)->current();
         if (!$rowset) {
             return;
@@ -167,8 +177,10 @@ class NotifyController extends ActionController
 
         if (!$detail['is_read']) {
             //mark the notification as read
-            $model->update(array('is_read' => 1),
-                array('id' => $notificationId));
+            $model->update(
+                ['is_read' => 1],
+                ['id' => $notificationId]
+            );
         }
 
         $this->view()->assign('notificationDetail', $detail);
@@ -184,19 +196,23 @@ class NotifyController extends ActionController
      */
     public function markAction()
     {
-        $notificationIds = _get('ids',
+        $notificationIds = _get(
+            'ids',
             'regexp',
-            array('regexp' => '/^[0-9,]+$/'));
-        $page = _get('p', 'int');
-        $page = $page ?: 1;
+            ['regexp' => '/^[0-9,]+$/']
+        );
+        $page            = _get('p', 'int');
+        $page            = $page ?: 1;
         //current user id
         $userId = Pi::user()->getUser()->id;
         if (empty($notificationIds)) {
-            $this->redirect()->toRoute('', array(
+            $this->redirect()->toRoute(
+                '', [
                 'controller' => 'notify',
-                'action' => 'index',
-                'p' => $page
-            ));
+                'action'     => 'index',
+                'p'          => $page,
+            ]
+            );
         }
 
         if (strpos($notificationIds, ',')) {
@@ -204,16 +220,20 @@ class NotifyController extends ActionController
         }
 
         $model = $this->getModel('notification');
-        $model->update(array('is_read' => 1), array(
-            'id' => $notificationIds,
-            'uid' => $userId
-        ));
+        $model->update(
+            ['is_read' => 1], [
+            'id'  => $notificationIds,
+            'uid' => $userId,
+        ]
+        );
 
-        $this->redirect()->toRoute('', array(
+        $this->redirect()->toRoute(
+            '', [
             'controller' => 'notify',
-            'action' => 'index',
-            'p' => $page
-        ));
+            'action'     => 'index',
+            'p'          => $page,
+        ]
+        );
     }
 
     /**
@@ -223,34 +243,42 @@ class NotifyController extends ActionController
      */
     public function deleteAction()
     {
-        $notificationIds = _get('ids',
+        $notificationIds = _get(
+            'ids',
             'regexp',
-            array('regexp' => '/^[0-9,]+$/'));
-        $page = _get('p', 'int');
-        $page = $page ?: 1;
+            ['regexp' => '/^[0-9,]+$/']
+        );
+        $page            = _get('p', 'int');
+        $page            = $page ?: 1;
 
         if (strpos($notificationIds, ',')) {
             $notificationIds = explode(',', $notificationIds);
         }
         if (empty($notificationIds)) {
-            $this->redirect()->toRoute('', array(
+            $this->redirect()->toRoute(
+                '', [
                 'controller' => 'notify',
-                'action' => 'index',
-                'p' => $page
-            ));
+                'action'     => 'index',
+                'p'          => $page,
+            ]
+            );
         }
         $userId = Pi::user()->getUser()->id;
-        $model = $this->getModel('notification');
-        $model->update(array('is_deleted' => 1), array(
-            'id' => $notificationIds,
-            'uid' => $userId
-        ));
+        $model  = $this->getModel('notification');
+        $model->update(
+            ['is_deleted' => 1], [
+            'id'  => $notificationIds,
+            'uid' => $userId,
+        ]
+        );
 
-        $this->redirect()->toRoute('', array(
+        $this->redirect()->toRoute(
+            '', [
             'controller' => 'notify',
-            'action' => 'index',
-            'p' => $page
-        ));
+            'action'     => 'index',
+            'p'          => $page,
+        ]
+        );
 
         return;
     }

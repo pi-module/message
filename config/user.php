@@ -10,19 +10,19 @@
 /**
  * User profile and resource specs
  *
- * @see Pi\Application\Installer\Resource\User
+ * @see    Pi\Application\Installer\Resource\User
  * @author Taiwen Jiang <taiwenjiang@tsinghua.org.cn>
  */
-return array(
+return [
     // Quicklinks
-    'quicklink' => array(
-        'message' => array(
+    'quicklink' => [
+        'message' => [
             'title' => _a('Messages'),
-            'link' => Pi::service('url')->assemble(
+            'link'  => Pi::service('url')->assemble(
                 'default',
-                array('module' => 'message')
+                ['module' => 'message']
             ),
-            'icon' => 'icon-bell',
-        ),
-    ),
-);
+            'icon'  => 'icon-bell',
+        ],
+    ],
+];

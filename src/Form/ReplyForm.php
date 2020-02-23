@@ -31,8 +31,8 @@ class ReplyForm extends BaseForm
     /**
      * Constructor
      *
-     * @param null|string|int $name Optional name for the element
-     * @param string $markup Page type: text, html, markdown
+     * @param null|string|int $name   Optional name for the element
+     * @param string          $markup Page type: text, html, markdown
      */
     public function __construct($name = null, $markup = null)
     {
@@ -52,7 +52,7 @@ class ReplyForm extends BaseForm
                 break;
             case 'markdown':
                 $editor = 'markitup';
-                $set = 'markdown';
+                $set    = 'markdown';
                 break;
             case 'text':
             default:
@@ -60,33 +60,39 @@ class ReplyForm extends BaseForm
                 break;
         }
 
-        $this->add(array(
-            'name' => 'content',
-            'options' => array(
-                'label' => __('Answer'),
-                'editor' => $editor,
-                'set' => $set,
-            ),
-            'attributes' => array(
-                'type' => 'editor',
-                'rows' => '5',
-            ),
-        ));
+        $this->add(
+            [
+                'name'       => 'content',
+                'options'    => [
+                    'label'  => __('Answer'),
+                    'editor' => $editor,
+                    'set'    => $set,
+                ],
+                'attributes' => [
+                    'type' => 'editor',
+                    'rows' => '5',
+                ],
+            ]
+        );
 
-        $this->add(array(
-            'name' => 'uid_to',
-            'attributes' => array(
-                'type' => 'hidden',
-            ),
-        ));
+        $this->add(
+            [
+                'name'       => 'uid_to',
+                'attributes' => [
+                    'type' => 'hidden',
+                ],
+            ]
+        );
 
-        $this->add(array(
-            'name' => 'submit',
-            'type' => 'submit',
-            'attributes' => array(
-                'class' => 'btn btn-primary',
-                'value' => __('Send'),
-            )
-        ));
+        $this->add(
+            [
+                'name'       => 'submit',
+                'type'       => 'submit',
+                'attributes' => [
+                    'class' => 'btn btn-primary',
+                    'value' => __('Send'),
+                ],
+            ]
+        );
     }
 }

@@ -10,6 +10,7 @@
 /**
  * @author Hossein Azizabadi <azizabadi@faragostaresh.com>
  */
+
 namespace Module\Message\Controller\Admin;
 
 use Pi;
@@ -22,11 +23,11 @@ class ListController extends ActionController
     public function indexAction()
     {
         // Get page
-        $page = $this->params('page', 1);
-        $list = array();
+        $page  = $this->params('page', 1);
+        $list  = [];
         $limit = 50;
         // Set info
-        $order = array('time_send DESC', 'id DESC');
+        $order  = ['time_send DESC', 'id DESC'];
         $offset = (int)($page - 1) * $limit;
         // Get info
         $select = $this->getModel('message')->select()->order($order)->offset($offset)->limit($limit);
@@ -38,48 +39,57 @@ class ListController extends ActionController
             $list[$row->id]['content'] = Pi::service('markup')->compile(
                 $row->content,
                 'html',
-                array('nl2br' => false)
+                ['nl2br' => false]
             );
             // content Short
-            $list[$row->id]['contentShort'] = (mb_strlen(strip_tags($row->content), 'utf-8') > 300) ? mb_substr(strip_tags($row->content), 0, 300, 'utf-8' )  . ' ... ' : strip_tags($row->content);
+            $list[$row->id]['contentShort'] = (mb_strlen(strip_tags($row->content), 'utf-8') > 300) ? mb_substr(strip_tags($row->content), 0, 300, 'utf-8')
+                . ' ... ' : strip_tags($row->content);
             // user from
             $list[$row->id]['userFrom'] = Pi::user()->getUser($row->uid_from);
             if ($list[$row->id]['userFrom']) {
                 $list[$row->id]['userFrom'] = $list[$row->id]['userFrom']->toArray();
             }
-            $list[$row->id]['userFrom']['avatar'] = Pi::user()->avatar($row->uid_from, 'medium', array(
-                'alt' => $list[$row->id]['userFrom']['name'],
+            $list[$row->id]['userFrom']['avatar'] = Pi::user()->avatar(
+                $row->uid_from, 'medium', [
+                'alt'   => $list[$row->id]['userFrom']['name'],
                 'class' => 'rounded-circle',
-            ));
+            ]
+            );
             // user to
             $list[$row->id]['userTo'] = Pi::user()->getUser($row->uid_to);
             if ($list[$row->id]['userTo']) {
                 $list[$row->id]['userTo'] = Pi::user()->getUser($row->uid_to)->toArray();
             }
-            
-            $list[$row->id]['userTo']['avatar'] = Pi::user()->avatar($row->uid_to, 'medium', array(
-                'alt' => $list[$row->id]['userTo']['name'],
+
+            $list[$row->id]['userTo']['avatar'] = Pi::user()->avatar(
+                $row->uid_to, 'medium', [
+                'alt'   => $list[$row->id]['userTo']['name'],
                 'class' => 'rounded-circle',
-            ));
+            ]
+            );
             // Tiem send view
             $list[$row->id]['time_send_view'] = _date($row->time_send);
         }
         // Set paginator
-        $columns = array('count' => new Expression('count(*)'));
-        $select = $this->getModel('message')->select()->columns($columns);
-        $count = $this->getModel('message')->selectWith($select)->current()->count;
+        $columns   = ['count' => new Expression('count(*)')];
+        $select    = $this->getModel('message')->select()->columns($columns);
+        $count     = $this->getModel('message')->selectWith($select)->current()->count;
         $paginator = Paginator::factory(intval($count));
         $paginator->setItemCountPerPage($limit);
         $paginator->setCurrentPageNumber($page);
-        $paginator->setUrlOptions(array(
-            'router' => $this->getEvent()->getRouter(),
-            'route' => $this->getEvent()->getRouteMatch()->getMatchedRouteName(),
-            'params' => array_filter(array(
-                'module' => $this->getModule(),
-                'controller' => 'list',
-                'action' => 'index',
-            )),
-        ));
+        $paginator->setUrlOptions(
+            [
+                'router' => $this->getEvent()->getRouter(),
+                'route'  => $this->getEvent()->getRouteMatch()->getMatchedRouteName(),
+                'params' => array_filter(
+                    [
+                        'module'     => $this->getModule(),
+                        'controller' => 'list',
+                        'action'     => 'index',
+                    ]
+                ),
+            ]
+        );
         // Set view
         $this->view()->setTemplate('list-index');
         $this->view()->assign('list', $list);

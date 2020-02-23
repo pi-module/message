@@ -31,8 +31,8 @@ class SendForm extends BaseForm
     /**
      * Constructor
      *
-     * @param null|string|int $name Optional name for the element
-     * @param string $markup Page type: text, html, markdown
+     * @param null|string|int $name   Optional name for the element
+     * @param string          $markup Page type: text, html, markdown
      */
     public function __construct($name = null, $markup = null)
     {
@@ -45,16 +45,18 @@ class SendForm extends BaseForm
      */
     public function init()
     {
-        $this->add(array(
-            'name' => 'name',
-            'attributes' => array(
-                'type' => 'text',
-                'readonly' => 'true'
-            ),
-            'options' => array(
-                'label' => __('Recipient'),
-            ),
-        ));
+        $this->add(
+            [
+                'name'       => 'name',
+                'attributes' => [
+                    'type'     => 'text',
+                    'readonly' => 'true',
+                ],
+                'options'    => [
+                    'label' => __('Recipient'),
+                ],
+            ]
+        );
 
         $set = '';
         switch ($this->markup) {
@@ -63,7 +65,7 @@ class SendForm extends BaseForm
                 break;
             case 'markdown':
                 $editor = 'markitup';
-                $set = 'markdown';
+                $set    = 'markdown';
                 break;
             case 'text':
             default:
@@ -71,27 +73,31 @@ class SendForm extends BaseForm
                 break;
         }
 
-        $this->add(array(
-            'name' => 'content',
-            'options' => array(
-                'label' => __('Content'),
-                'editor' => $editor,
-                'set' => $set,
-            ),
-            'attributes' => array(
-                'type' => 'editor',
-                'placeholder' => __('Message content'),
-                'rows' => '5',
-              ),
-        ));
+        $this->add(
+            [
+                'name'       => 'content',
+                'options'    => [
+                    'label'  => __('Content'),
+                    'editor' => $editor,
+                    'set'    => $set,
+                ],
+                'attributes' => [
+                    'type'        => 'editor',
+                    'placeholder' => __('Message content'),
+                    'rows'        => '5',
+                ],
+            ]
+        );
 
-        $this->add(array(
-            'name' => 'submit',
-            'type' => 'submit',
-            'attributes' => array(
-                'class' => 'btn btn-primary',
-                'value' => __('Send'),
-            )
-        ));
+        $this->add(
+            [
+                'name'       => 'submit',
+                'type'       => 'submit',
+                'attributes' => [
+                    'class' => 'btn btn-primary',
+                    'value' => __('Send'),
+                ],
+            ]
+        );
     }
 }

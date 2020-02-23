@@ -10,6 +10,7 @@
 /**
  * @author Hossein Azizabadi <azizabadi@faragostaresh.com>
  */
+
 namespace Module\Message\Block;
 
 use Pi;
@@ -21,14 +22,14 @@ use Module\Message\Form\ReplyFilter;
 
 class Block
 {
-    public static function conversation($options = array(), $module = null)
+    public static function conversation($options = [], $module = null)
     {
-        $block = array();
+        $block = [];
         $block = array_merge($block, $options);
-        
+
         Pi::service('authentication')->requireLogin();
         $conversation = isset($options['conversation']) ? $options['conversation'] : 0;
-        
+
         // Current user id
         $userId = Pi::user()->getUser()->id;
         // Get message detail
@@ -38,28 +39,28 @@ class Block
         } else {
             $toId = $detail['uid_from'];
         }
-        
+
         // Get list of conversations
-        $list = array();
+        $list = [];
         if ($conversation) {
-            $where = array(
+            $where = [
                 'conversation' => $conversation,
-            );
+            ];
             if (!isset($options['admin']) || (isset($options['admin']) && !$options['admin'])) {
                 $where['is_deleted_from'] = 0;
-                $where['is_deleted_to'] = 0;
+                $where['is_deleted_to']   = 0;
             }
-            $order = array('time_send ASC', 'id ASC');
-            $model = Pi::model('message', 'message');
+            $order  = ['time_send ASC', 'id ASC'];
+            $model  = Pi::model('message', 'message');
             $select = $model->select()->where($where)->order($order);
             $rowset = $model->selectWith($select);
             foreach ($rowset as $row) {
                 $list[$row->id] = Pi::api('api', 'message')->canonizeMessage($row);
             }
         }
-         
+
         $block['list'] = $list;
-        $block['uid'] = $userId;
+        $block['uid']  = $userId;
         return $block;
 
     }

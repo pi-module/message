@@ -53,32 +53,33 @@ class Api extends AbstractApi
     /**
      * Send a message
      *
-     * @param  int $to
-     * @param  string $message
-     * @param  int $from
-     * @param  string $conversation
+     * @param int    $to
+     * @param string $message
+     * @param int    $from
+     * @param string $conversation
+     *
      * @return bool
      */
     public function send($to, $message, $from, $conversation = '', $mailNotification = true)
     {
         $result = true;
-        $model = Pi::model('message', $this->getModule());
+        $model  = Pi::model('message', $this->getModule());
 
         $conversation = empty($conversation) ? $this->setConversation() : $conversation;
-        $messageData = array(
-            'uid_from' => $from,
-            'uid_to' => $to,
-            'is_read_to' => 0,
+        $messageData  = [
+            'uid_from'     => $from,
+            'uid_to'       => $to,
+            'is_read_to'   => 0,
             'is_read_from' => 1,
-            'content' => $message,
-            'time_send' => time(),
+            'content'      => $message,
+            'time_send'    => time(),
             'conversation' => $conversation,
-        );
-        $row = $model->createRow($messageData);
+        ];
+        $row          = $model->createRow($messageData);
         try {
             $row->save();
 
-            if($conversation){
+            if ($conversation) {
                 $result = $conversation;
             }
         } catch (\Exception $e) {
@@ -86,15 +87,15 @@ class Api extends AbstractApi
         }
         if ($result) {
             //audit log
-            Pi::service('audit')->log('message', array($from, $to));
+            Pi::service('audit')->log('message', [$from, $to]);
         }
 
         // increase message alert
         $this->increaseAlert($to);
 
         // Send mail
-        if ($mailNotification)  {
-        $this->sendMail($to, $message, $from);
+        if ($mailNotification) {
+            $this->sendMail($to, $message, $from);
         }
 
         return $result;
@@ -103,23 +104,24 @@ class Api extends AbstractApi
     /**
      * Send a notification
      *
-     * @param  int $to
-     * @param  string $message
-     * @param  string $subject
-     * @param  string $tag
+     * @param int    $to
+     * @param string $message
+     * @param string $subject
+     * @param string $tag
+     *
      * @return int|bool
      */
     public function notify($to, $message, $subject, $tag = '')
     {
-        $message = array(
-            'uid' => $to,
-            'subject' => $subject,
-            'content' => $message,
-            'tag' => $tag,
+        $message = [
+            'uid'       => $to,
+            'subject'   => $subject,
+            'content'   => $message,
+            'tag'       => $tag,
             'time_send' => time(),
-        );
-        $model = Pi::model('notification', $this->getModule());
-        $row = $model->createRow($message);
+        ];
+        $model   = Pi::model('notification', $this->getModule());
+        $row     = $model->createRow($message);
         $row->save();
         if (!$row->id) {
             return false;
@@ -131,9 +133,9 @@ class Api extends AbstractApi
     /**
      * Get total count
      *
-     * @param int $uid
-     * @param bool $includeRead Include read messages
-     * @param string $type Message, notification, all
+     * @param int    $uid
+     * @param bool   $includeRead Include read messages
+     * @param string $type        Message, notification, all
      *
      * @return int
      */
@@ -148,10 +150,10 @@ class Api extends AbstractApi
                 break;
         }
         if ('notification' == $type) {
-            $where = array(
-                'uid' => $uid,
-                'is_deleted' => 0
-            );
+            $where = [
+                'uid'        => $uid,
+                'is_deleted' => 0,
+            ];
             if (!$includeRead) {
                 $where['is_read'] = 0;
             }
@@ -166,16 +168,16 @@ class Api extends AbstractApi
             $count = (int) $row['count'];
             */
         } elseif ('message' == $type) {
-            $whereTo = array(
-                'uid_to' => $uid,
+            $whereTo   = [
+                'uid_to'        => $uid,
                 'is_deleted_to' => 0,
-            );
-            $whereFrom = array(
-                'uid_from' => $uid,
+            ];
+            $whereFrom = [
+                'uid_from'        => $uid,
                 'is_deleted_from' => 0,
-            );
+            ];
             if (!$includeRead) {
-                $whereTo['is_read_to'] = 0;
+                $whereTo['is_read_to']     = 0;
                 $whereFrom['is_read_from'] = 0;
             }
 
@@ -207,7 +209,8 @@ class Api extends AbstractApi
      *
      * Alert user the new message he receives since last visit.
      *
-     * @param  int $uid
+     * @param int $uid
+     *
      * @return int
      */
     public function getAlert($uid)
@@ -218,7 +221,8 @@ class Api extends AbstractApi
     /**
      * Dismiss message alter by resetting alert count to zero
      *
-     * @param  int $uid
+     * @param int $uid
+     *
      * @return bool
      */
     public function dismissAlert($uid)
@@ -229,7 +233,8 @@ class Api extends AbstractApi
     /**
      * Increment message alter
      *
-     * @param  int $uid
+     * @param int $uid
+     *
      * @return bool
      */
     public function increaseAlert($uid)
@@ -240,29 +245,34 @@ class Api extends AbstractApi
     /**
      * Send notification as mail
      *
-     * @param  int $uid
+     * @param int $uid
+     *
      * @return bool
      */
     public function sendMail($to, $message, $from)
     {
         if (Pi::service('module')->isActive('notification')) {
             // Get user info
-            $user = Pi::user()->get($to, array(
-                'id', 'identity', 'name', 'email'
-            ));
+            $user = Pi::user()->get(
+                $to, [
+                'id', 'identity', 'name', 'email',
+            ]
+            );
             // Get sender info
-            $sender = Pi::user()->get($from, array(
-                'id', 'identity', 'name', 'email'
-            ));
+            $sender = Pi::user()->get(
+                $from, [
+                'id', 'identity', 'name', 'email',
+            ]
+            );
             // Set to user
-            $toUser = array(
+            $toUser = [
                 $user['email'] => $user['name'],
-            );
+            ];
             // Set information
-            $information = array(
-                'name' => $user['name'],
+            $information = [
+                'name'   => $user['name'],
                 'sender' => $sender['name'],
-            );
+            ];
             // Send mail
             Pi::service('notification')->send(
                 $toUser,
@@ -276,8 +286,9 @@ class Api extends AbstractApi
     /**
      * Message summary
      *
-     * @param  string $message
-     * @param  int $length
+     * @param string $message
+     * @param int    $length
+     *
      * @return string
      */
     /* public static function messageSummary($message, $length = 40)
@@ -347,8 +358,9 @@ class Api extends AbstractApi
     /**
      * Get unread message count
      *
-     * @param  int $uid
-     * @param  string $type
+     * @param int    $uid
+     * @param string $type
+     *
      * @return int|false
      */
     public static function getUnread($uid, $type = '')
@@ -362,11 +374,11 @@ class Api extends AbstractApi
                 break;
         }
         if ('notification' == $type) {
-            $where = array(
-                'uid' => $uid,
+            $where = [
+                'uid'        => $uid,
                 'is_deleted' => 0,
-                'is_read' => 0,
-            );
+                'is_read'    => 0,
+            ];
             $model = Pi::model('notification', 'message');
             /*
             $select = $model->select();
@@ -379,11 +391,11 @@ class Api extends AbstractApi
             */
             $count = $model->count($where);
         } elseif ('message' == $type) {
-            $where = array(
-                'uid_to' => $uid,
+            $where = [
+                'uid_to'        => $uid,
                 'is_deleted_to' => 0,
-                'is_read_to' => 0,
-            );
+                'is_read_to'    => 0,
+            ];
             $model = Pi::model('message', 'message');
             /*
             $select = $model->select();
@@ -406,26 +418,27 @@ class Api extends AbstractApi
     /**
      * Get unread conversation
      *
-     * @param  int $uid
-     * @param  string $type
+     * @param int    $uid
+     * @param string $type
+     *
      * @return int|false
      */
     public function getUnreadConversation($uid)
     {
-        
-        $where = array(
-            'uid_to' => $uid,
+
+        $where = [
+            'uid_to'        => $uid,
             'is_deleted_to' => 0,
-            'is_read_to' => 0,
-        );
-        
-        $select = Pi::model('message', $this->getModule())->select()->columns(array('conversation'))->where($where)->group('conversation');
+            'is_read_to'    => 0,
+        ];
+
+        $select = Pi::model('message', $this->getModule())->select()->columns(['conversation'])->where($where)->group('conversation');
         $rowset = Pi::model('message', $this->getModule())->selectWith($select);
-        
+
         // Retrieve data
-        $data = array();
+        $data = [];
         foreach ($rowset as $row) {
-            $data[]  = $row['conversation'];
+            $data[] = $row['conversation'];
         }
 
         return $data;
@@ -449,21 +462,23 @@ class Api extends AbstractApi
         // Get user
         if ($userId == $message['uid_from']) {
             //get username url
-            $user = Pi::user()->getUser($message['uid_to'])
+            $user            = Pi::user()->getUser($message['uid_to'])
                 ?: Pi::user()->getUser(0);
             $message['name'] = $user->name;
         } else {
             //get username url
-            $user = Pi::user()->getUser($message['uid_from'])
+            $user            = Pi::user()->getUser($message['uid_from'])
                 ?: Pi::user()->getUser(0);
             $message['name'] = $user->name;
         }
 
         // Get avatar
-        $message['avatar'] = Pi::user()->avatar($message['uid_from'], 'medium', array(
-            'alt' => $user->name,
+        $message['avatar'] = Pi::user()->avatar(
+            $message['uid_from'], 'medium', [
+            'alt'   => $user->name,
             'class' => 'rounded-circle',
-        ));
+        ]
+        );
 
         // Set profile Url
         $message['profileUrl'] = Pi::user()->getUrl(
@@ -479,7 +494,7 @@ class Api extends AbstractApi
 
         if (!$message['is_read_to'] && $userId == $message['uid_to']) {
             //mark the message as read
-            $model->update(array('is_read_to' => 1), array('id' => $message['id']));
+            $model->update(['is_read_to' => 1], ['id' => $message['id']]);
         }
 
         return $message;
@@ -488,6 +503,6 @@ class Api extends AbstractApi
     public function is_html($message)
     {
         // return $string != strip_tags($string) ? true:false;
-        return preg_match("/<[^<]+>/",$message,$m) != 0;
+        return preg_match("/<[^<]+>/", $message, $m) != 0;
     }
 }

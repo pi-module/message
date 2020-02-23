@@ -10,6 +10,7 @@
 /**
  * @author Hossein Azizabadi <azizabadi@faragostaresh.com>
  */
+
 namespace Module\Message\Installer\Action;
 
 use Pi;
@@ -25,7 +26,7 @@ class Update extends BasicUpdate
     protected function attachDefaultListeners()
     {
         $events = $this->events;
-        $events->attach('update.pre', array($this, 'updateSchema'));
+        $events->attach('update.pre', [$this, 'updateSchema']);
         parent::attachDefaultListeners();
 
         return $this;
@@ -39,8 +40,8 @@ class Update extends BasicUpdate
         $moduleVersion = $e->getParam('version');
 
         // Set message model
-        $messageModel = Pi::model('message', $this->module);
-        $messageTable = $messageModel->getTable();
+        $messageModel   = Pi::model('message', $this->module);
+        $messageTable   = $messageModel->getTable();
         $messageAdapter = $messageModel->getAdapter();
 
         // Update to version 1.0.3
@@ -50,11 +51,13 @@ class Update extends BasicUpdate
             try {
                 $messageAdapter->query($sql, 'execute');
             } catch (\Exception $exception) {
-                $this->setResult('db', array(
-                    'status' => false,
+                $this->setResult(
+                    'db', [
+                    'status'  => false,
                     'message' => 'Table alter query failed: '
                         . $exception->getMessage(),
-                ));
+                ]
+                );
                 return false;
             }
 
@@ -63,11 +66,13 @@ class Update extends BasicUpdate
             try {
                 $messageAdapter->query($sql, 'execute');
             } catch (\Exception $exception) {
-                $this->setResult('db', array(
-                    'status' => false,
+                $this->setResult(
+                    'db', [
+                    'status'  => false,
                     'message' => 'Table alter query failed: '
                         . $exception->getMessage(),
-                ));
+                ]
+                );
                 return false;
             }
 
@@ -76,11 +81,13 @@ class Update extends BasicUpdate
             try {
                 $messageAdapter->query($sql, 'execute');
             } catch (\Exception $exception) {
-                $this->setResult('db', array(
-                    'status' => false,
+                $this->setResult(
+                    'db', [
+                    'status'  => false,
                     'message' => 'Table alter query failed: '
                         . $exception->getMessage(),
-                ));
+                ]
+                );
                 return false;
             }
 
@@ -89,11 +96,13 @@ class Update extends BasicUpdate
             try {
                 $messageAdapter->query($sql, 'execute');
             } catch (\Exception $exception) {
-                $this->setResult('db', array(
-                    'status' => false,
+                $this->setResult(
+                    'db', [
+                    'status'  => false,
                     'message' => 'Table alter query failed: '
                         . $exception->getMessage(),
-                ));
+                ]
+                );
                 return false;
             }
 
@@ -102,11 +111,13 @@ class Update extends BasicUpdate
             try {
                 $messageAdapter->query($sql, 'execute');
             } catch (\Exception $exception) {
-                $this->setResult('db', array(
-                    'status' => false,
+                $this->setResult(
+                    'db', [
+                    'status'  => false,
                     'message' => 'Table alter query failed: '
                         . $exception->getMessage(),
-                ));
+                ]
+                );
                 return false;
             }
 
@@ -115,11 +126,13 @@ class Update extends BasicUpdate
             try {
                 $messageAdapter->query($sql, 'execute');
             } catch (\Exception $exception) {
-                $this->setResult('db', array(
-                    'status' => false,
+                $this->setResult(
+                    'db', [
+                    'status'  => false,
                     'message' => 'Table alter query failed: '
                         . $exception->getMessage(),
-                ));
+                ]
+                );
                 return false;
             }
 
@@ -128,11 +141,13 @@ class Update extends BasicUpdate
             try {
                 $messageAdapter->query($sql, 'execute');
             } catch (\Exception $exception) {
-                $this->setResult('db', array(
-                    'status' => false,
+                $this->setResult(
+                    'db', [
+                    'status'  => false,
                     'message' => 'Table alter query failed: '
                         . $exception->getMessage(),
-                ));
+                ]
+                );
                 return false;
             }
         }
@@ -143,7 +158,7 @@ class Update extends BasicUpdate
             $select = $messageModel->select();
             $rowset = $messageModel->selectWith($select);
             foreach ($rowset as $row) {
-                $conversation = Pi::api('api', 'message')->setConversation($row->time_send);
+                $conversation      = Pi::api('api', 'message')->setConversation($row->time_send);
                 $row->conversation = $conversation;
                 $row->save();
             }

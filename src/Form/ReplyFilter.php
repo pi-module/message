@@ -24,16 +24,18 @@ class ReplyFilter extends InputFilter
      */
     public function __construct()
     {
-        $this->add(array(
-            'name' => 'content',
-            'filters' => array(
-                array(
-                    'name' => 'StringTrim',
-                ), 
-                 array(
-                    'name' => 'StripTags'
-                ),
-            ),
-        ));
+        $this->add(
+            [
+                'name'    => 'content',
+                'filters' => [
+                    [
+                        'name' => 'StringTrim',
+                    ],
+                    [
+                        'name' => 'StripTags',
+                    ],
+                ],
+            ]
+        );
     }
 }

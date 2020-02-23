@@ -24,26 +24,30 @@ class SendFilter extends InputFilter
      */
     public function __construct()
     {
-        $this->add(array(
-            'name' => 'name',
-            'required' => true,
-            'filters' => array(
-                array(
-                    'name' => 'StringTrim',
-                ),
-            ),
-        ));
+        $this->add(
+            [
+                'name'     => 'name',
+                'required' => true,
+                'filters'  => [
+                    [
+                        'name' => 'StringTrim',
+                    ],
+                ],
+            ]
+        );
 
-        $this->add(array(
-            'name' => 'content',
-            'filters' => array(
-                array(
-                    'name' => 'StringTrim',
-                ),
-                array(
-                    'name' => 'StripTags',
-                ),
-            ),
-        ));
+        $this->add(
+            [
+                'name'    => 'content',
+                'filters' => [
+                    [
+                        'name' => 'StringTrim',
+                    ],
+                    [
+                        'name' => 'StripTags',
+                    ],
+                ],
+            ]
+        );
     }
 }

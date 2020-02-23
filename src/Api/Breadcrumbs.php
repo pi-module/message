@@ -10,6 +10,7 @@
 /**
  * @author Hossein Azizabadi <azizabadi@faragostaresh.com>
  */
+
 namespace Module\Message\Api;
 
 use Pi;
@@ -30,34 +31,36 @@ class Breadcrumbs extends AbstractBreadcrumbs
         if ($params['action'] == 'index') {
             $href = '';
         } else {
-            $href = Pi::service('url')->assemble('default', array(
+            $href = Pi::service('url')->assemble(
+                'default', [
                 'module' => $this->getModule(),
-            ));
+            ]
+            );
         }
         // Set result
-        $result = array();
-        $result[] = array(
+        $result   = [];
+        $result[] = [
             'label' => $moduleData['title'],
             'href'  => $href,
-        );
+        ];
         // Set module internal links
         switch ($params['action']) {
             case 'archive':
-                $result[] = array(
+                $result[] = [
                     'label' => __('Archive'),
-                );
+                ];
                 break;
 
             case 'detail':
-                $result[] = array(
+                $result[] = [
                     'label' => __('Message detail'),
-                );
+                ];
                 break;
 
             case 'send':
-                $result[] = array(
+                $result[] = [
                     'label' => __('Send message'),
-                );
+                ];
                 break;
         }
 

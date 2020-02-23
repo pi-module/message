@@ -7,30 +7,30 @@
  * @license         http://piengine.org/license.txt BSD 3-Clause License
  */
 
-return array(
+return [
     // Hide from front menu
     'front' => false,
     // Admin side
-    'admin' => array(
-        'list' => array(
-            'label' => _a('List'),
-            'permission' => array(
+    'admin' => [
+        'list'  => [
+            'label'      => _a('List'),
+            'permission' => [
                 'resource' => 'list',
-            ),
-            'route' => 'admin',
-            'module' => 'message',
+            ],
+            'route'      => 'admin',
+            'module'     => 'message',
             'controller' => 'list',
-            'action' => 'index',
-        ),
-        'prune' => array(
-            'label' => _a('Prune'),
-            'permission' => array(
+            'action'     => 'index',
+        ],
+        'prune' => [
+            'label'      => _a('Prune'),
+            'permission' => [
                 'resource' => 'prune',
-            ),
-            'route' => 'admin',
-            'module' => 'message',
+            ],
+            'route'      => 'admin',
+            'module'     => 'message',
             'controller' => 'prune',
-            'action' => 'index',
-        ),
-    ),
-);
+            'action'     => 'index',
+        ],
+    ],
+];

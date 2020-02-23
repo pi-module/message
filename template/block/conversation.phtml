@@ -1,8 +1,8 @@
-<?php Pi::service('i18n')->load(array('module/message', 'default')); ?>
+<?php Pi::service('i18n')->load(['module/message', 'default']); ?>
 
 <div>
-    <?php if (!empty($block['list'] )) { ?>
-        <?php foreach($block['list']  as $singleMessage) { ?>
+    <?php if (!empty($block['list'])) { ?>
+        <?php foreach ($block['list'] as $singleMessage) { ?>
             <div class="messages col-md-12" id="message-js">
                 <div class="row justify-content-between">
                     <h5 class="float-left">
@@ -28,7 +28,7 @@
                     </div>
                 </div>
             </div>
-            <hr />
+            <hr/>
         <?php } ?>
     <?php } ?>
 </div>

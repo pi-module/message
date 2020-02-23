@@ -10,6 +10,7 @@
 /**
  * @author Hossein Azizabadi <azizabadi@faragostaresh.com>
  */
+
 namespace Module\Message\Controller\Admin;
 
 use Pi;
@@ -21,12 +22,14 @@ class PruneController extends ActionController
     public function indexAction()
     {
         $form = new PruneForm('prune');
-        $message = __('You can prune all old message, select time to remove messages before that time and you can filter list  of removed messages by this from option.');
+        $message = __(
+            'You can prune all old message, select time to remove messages before that time and you can filter list  of removed messages by this from option.'
+        );
         if ($this->request->isPost()) {
             // Set form date
             $values = $this->request->getPost();
             // Set prune create
-            $where = array('`time_send` < ?' => strtotime($values['date']));
+            $where = ['`time_send` < ?' => strtotime($values['date'])];
             // Set prune read
             if ($values['read']) {
                 $where['is_read_to'] = 1;
