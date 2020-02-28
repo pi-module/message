@@ -22,14 +22,17 @@ CREATE TABLE `{message}`
 
 CREATE TABLE `{notification}`
 (
-    `id`         INT(11) UNSIGNED    NOT NULL AUTO_INCREMENT,
-    `uid`        INT(11) UNSIGNED    NOT NULL DEFAULT 0,
-    `subject`    VARCHAR(255)        NOT NULL DEFAULT '',
-    `content`    TEXT,
-    `image`      VARCHAR(255)        NOT NULL DEFAULT '',
-    `tag`        VARCHAR(64)         NOT NULL DEFAULT '',
-    `time_send`  INT(11) UNSIGNED    NOT NULL DEFAULT 0,
-    `is_read`    TINYINT(1) UNSIGNED NOT NULL DEFAULT 0,
-    `is_deleted` TINYINT(1) UNSIGNED NOT NULL DEFAULT 0,
+    `id`            INT(11) UNSIGNED    NOT NULL AUTO_INCREMENT,
+    `uid`           INT(11) UNSIGNED    NOT NULL DEFAULT 0,
+    `subject`       VARCHAR(255)        NOT NULL DEFAULT '',
+    `content`       TEXT,
+    `image`         VARCHAR(255)        NOT NULL DEFAULT '',
+    `tag`           VARCHAR(64)         NOT NULL DEFAULT '',
+    `entity_module` VARCHAR(64)         NOT NULL DEFAULT '',
+    `entity_type`   VARCHAR(64)         NOT NULL DEFAULT '',
+    `entity_id`     INT(10) UNSIGNED    NOT NULL DEFAULT '0',
+    `time_send`     INT(11) UNSIGNED    NOT NULL DEFAULT 0,
+    `is_read`       TINYINT(1) UNSIGNED NOT NULL DEFAULT 0,
+    `is_deleted`    TINYINT(1) UNSIGNED NOT NULL DEFAULT 0,
     PRIMARY KEY (`id`)
 );

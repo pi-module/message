@@ -187,6 +187,54 @@ class Update extends BasicUpdate
             }
         }
 
+        // Update to version 1.2.1
+        if (version_compare($moduleVersion, '1.2.1', '<')) {
+            // Alter table : ADD entity
+            $sql = sprintf("ALTER TABLE %s ADD `entity_module` VARCHAR(64) NOT NULL DEFAULT '' AFTER `tag`", $notificationTable);
+            try {
+                $notificationAdapter->query($sql, 'execute');
+            } catch (\Exception $exception) {
+                $this->setResult(
+                    'db', [
+                        'status'  => false,
+                        'message' => 'Table alter query failed: '
+                            . $exception->getMessage(),
+                    ]
+                );
+                return false;
+            }
+
+            // Alter table : ADD entity
+            $sql = sprintf("ALTER TABLE %s ADD `entity_type` VARCHAR(64) NOT NULL DEFAULT '' AFTER `entity_module`", $notificationTable);
+            try {
+                $notificationAdapter->query($sql, 'execute');
+            } catch (\Exception $exception) {
+                $this->setResult(
+                    'db', [
+                        'status'  => false,
+                        'message' => 'Table alter query failed: '
+                            . $exception->getMessage(),
+                    ]
+                );
+                return false;
+            }
+
+            // Alter table : ADD entity_id
+            $sql = sprintf("ALTER TABLE %s ADD `entity_id`  INT(10) UNSIGNED NOT NULL DEFAULT '0' AFTER `entity_type`", $notificationTable);
+            try {
+                $notificationAdapter->query($sql, 'execute');
+            } catch (\Exception $exception) {
+                $this->setResult(
+                    'db', [
+                        'status'  => false,
+                        'message' => 'Table alter query failed: '
+                            . $exception->getMessage(),
+                    ]
+                );
+                return false;
+            }
+        }
+
         return true;
     }
 }

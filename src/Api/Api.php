@@ -57,6 +57,7 @@ class Api extends AbstractApi
      * @param string $message
      * @param int    $from
      * @param string $conversation
+     * @param bool   $mailNotification
      *
      * @return bool
      */
@@ -109,18 +110,24 @@ class Api extends AbstractApi
      * @param string $subject
      * @param string $tag
      * @param string $image
+     * @param string $entityModule
+     * @param string $entityType
+     * @param int    $entityId
      *
      * @return int|bool
      */
-    public function notify($to, $message, $subject, $tag = '', $image = '')
+    public function notify($to, $message, $subject, $tag = '', $image = '', $entityModule = '', $entityType = '', $entityId = 0)
     {
         $message = [
-            'uid'       => $to,
-            'subject'   => $subject,
-            'content'   => $message,
-            'tag'       => $tag,
-            'image'     => $image,
-            'time_send' => time(),
+            'uid'           => $to,
+            'subject'       => $subject,
+            'content'       => $message,
+            'image'         => $image,
+            'entity_module' => $entityModule,
+            'entity_type'   => $entityType,
+            'entity_id'     => $entityId,
+            'tag'           => $tag,
+            'time_send'     => time(),
         ];
         $model   = Pi::model('notification', $this->getModule());
         $row     = $model->createRow($message);
