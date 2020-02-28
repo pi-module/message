@@ -100,4 +100,122 @@ class NotifyController extends ActionController
         // Return result
         return $result;
     }
+
+    public function readAction()
+    {
+        // Set default result
+        $result = [
+            'result' => false,
+            'data'   => [],
+            'error'  => [
+                'code'        => 1,
+                'message'     => __('Nothing selected'),
+                'messageFlag' => false,
+            ],
+        ];
+
+        // Get info from url
+        $token = $this->params('token');
+
+        // Check token
+        $check = Pi::api('token', 'tools')->check($token, true);
+        if ($check['status'] == 1) {
+
+            // Get info from url
+            $notificationId = $this->params('notification_id');
+
+            if (intval($notificationId) > 0) {
+
+                //mark the notification as read
+                $this->getModel('notification')->update(
+                    ['is_read' => 1],
+                    ['id' => $notificationId]
+                );
+
+                // Set result
+                $result = [
+                    'result' => true,
+                    'data'   => [
+                        [
+                            'message' => 'OK'
+                        ]
+                    ],
+                    'error'  => [
+                        'code'    => 0,
+                        'message' => '',
+                    ],
+                ];
+            } else {
+                $result['error']['message'] = __('Notification not set');
+            }
+        } else {
+            // Set error
+            $result['error'] = [
+                'code'    => $check['code'],
+                'message' => $check['message'],
+            ];
+        }
+
+        // Return result
+        return $result;
+    }
+
+    public function deleteAction()
+    {
+        // Set default result
+        $result = [
+            'result' => false,
+            'data'   => [],
+            'error'  => [
+                'code'        => 1,
+                'message'     => __('Nothing selected'),
+                'messageFlag' => false,
+            ],
+        ];
+
+        // Get info from url
+        $token = $this->params('token');
+
+        // Check token
+        $check = Pi::api('token', 'tools')->check($token, true);
+        if ($check['status'] == 1) {
+
+            // Get info from url
+            $notificationId = $this->params('notification_id');
+
+            if (intval($notificationId) > 0) {
+
+                //mark the notification as delete
+                $this->getModel('notification')->update(
+                    ['is_deleted' => 1],
+                    ['id' => $notificationId]
+                );
+
+                // Set result
+                $result = [
+                    'result' => true,
+                    'data'   => [
+                        [
+                            'message' => 'OK'
+                        ]
+                    ],
+                    'error'  => [
+                        'code'    => 0,
+                        'message' => '',
+                    ],
+                ];
+            } else {
+                $result['error']['message'] = __('Notification not set');
+            }
+        } else {
+            // Set error
+            $result['error'] = [
+                'code'    => $check['code'],
+                'message' => $check['message'],
+            ];
+        }
+
+        // Return result
+        return $result;
+    }
 }
