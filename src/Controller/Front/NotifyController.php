@@ -74,7 +74,7 @@ class NotifyController extends ActionController
         /*
         $select = $model->select()
                         ->columns(array(
-                            'count' => new \Zend\Db\Sql\Predicate\Expression(
+                            'count' => new \Laminas\Db\Sql\Predicate\Expression(
                                 'count(*)'
                             )
                         ))

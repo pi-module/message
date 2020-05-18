@@ -63,7 +63,7 @@ class IndexController extends ActionController
         $select = $model->select()
             ->columns(
                 [
-                    'count' => new \Zend\Db\Sql\Predicate\Expression(
+                    'count' => new \Laminas\Db\Sql\Predicate\Expression(
                         'count(*)'
                     ),
                 ]
@@ -97,7 +97,7 @@ class IndexController extends ActionController
                             ->orPredicate($toWhere);
                     }
                 )
-                ->group(new \Zend\Db\Sql\Predicate\Expression('conversation DESC'))
+                ->group(new \Laminas\Db\Sql\Predicate\Expression('conversation DESC'))
                 ->order('time_send DESC')
                 ->limit($limit)
                 ->offset($offset);
