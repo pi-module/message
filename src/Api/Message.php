@@ -11,7 +11,7 @@ namespace Module\Message\Api;
 
 use Pi;
 use Pi\Application\Api\AbstractApi;
-use Zend\Db\Sql\Predicate\Expression;
+use Laminas\Db\Sql\Predicate\Expression;
 
 class Message extends AbstractApi
 {

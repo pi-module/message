@@ -36,7 +36,7 @@ return [
         // Website link, optional
         'Website' => 'http://piengine.org',
         // Credits and aknowledgement, optional
-        'Credits' => 'Zend Framework Team; Pi Engine Team; EEFOCUS Team.',
+        'Credits' => 'Laminas Framework Team; Pi Engine Team; EEFOCUS Team.',
     ],
     // resource
     'resource' => [

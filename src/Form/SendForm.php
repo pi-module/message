@@ -11,8 +11,8 @@ namespace Module\Message\Form;
 
 use Pi;
 use Pi\Form\Form as BaseForm;
-use Zend\Form\Form;
-use Zend\Form\Element;
+use Laminas\Form\Form;
+use Laminas\Form\Element;
 
 /**
  * Form of send message

@@ -15,8 +15,8 @@ namespace Module\Message\Block;
 
 use Pi;
 use Module\Guide\Form\SearchLocationForm;
-use Zend\Db\Sql\Predicate\Expression;
-use Zend\Db\Sql\Predicate\In;
+use Laminas\Db\Sql\Predicate\Expression;
+use Laminas\Db\Sql\Predicate\In;
 use Module\Message\Form\ReplyForm;
 use Module\Message\Form\ReplyFilter;
 

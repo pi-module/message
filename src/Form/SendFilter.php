@@ -10,7 +10,7 @@
 namespace Module\Message\Form;
 
 use Pi;
-use Zend\InputFilter\InputFilter;
+use Laminas\InputFilter\InputFilter;
 
 /**
  * Filter of send message
